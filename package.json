@@ -1,0 +1,17 @@
+{
+  "name": "netdb",
+  "version": "1.0.0",
+  "description": "<br />\r <p align=\"center\">\r   <a href=\"https://netdb.at\">\r     <img src=\"images/netdb_Logo_medium.png\" alt=\"Logo\" width=\"480\" height=\"270\">\r   </a>",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "animejs": "^3.2.2",
+    "vite": "^5.1.5"
+  }
+}

@@ -1,0 +1,143 @@
+.dialog-container {
+  width: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  opacity: 0;
+  animation: fadein .5s forwards;
+}
+
+.dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  background-color: #444;
+  flex-direction: column;
+  border-radius: 1em;
+  overflow: hidden;
+  min-width: 20%;
+  padding-bottom: 1em;
+  opacity: 0;
+  animation: fadein .5s forwards;
+  /* animation: scale .5s forwards; */
+  /* transform: scale(.75); */
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale {
+  from {
+    transform: scale(.75);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.dialog-container.visible {
+  display: block;
+}
+
+.dialog-container.visible .dialog {
+  opacity: 1;
+}
+
+.dialog-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  width: 100%;
+  color: white;
+  padding: .5em;
+  margin: 0;
+}
+
+.dialog-content {
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: .5em 2em;
+}
+
+.dialog-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  color: black;
+  width: 30%;
+  align-self: center;
+  border-radius: 11em;
+}
+
+.dialog-button:hover {
+  background-color: #ccc;
+}
+
+.dialog.info .dialog-title {
+  background-color: #3077d2;
+}
+
+.dialog.error .dialog-title {
+  background-color: #c11f1f;
+}
+
+.dialog.warning .dialog-title {
+  background-color: #ffa500;
+}
+
+.dialog.debug .dialog-title {
+  background-color: #888;
+}
+
+.dialog.pink .dialog-title {
+  background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+  background-size: 1800% 1800%;
+  animation: rainbow 18s ease infinite;
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 82%
+  }
+
+  50% {
+    background-position: 100% 19%
+  }
+
+  100% {
+    background-position: 0% 82%
+  }
+}
+
+.custom-dialog {
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  z-index: 2100;
+  background-color: #444;
+  border-radius: 1em;
+  padding: 1em;
+}
+
+.custom-dialog.visible {
+  display: block;
+}
