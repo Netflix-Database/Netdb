@@ -7,6 +7,10 @@ let webLink;
 var space;
 
 window.onload = function () {
+  var obj = JSON.parse(sendGetRequest("/api/v1/info/"));
+  document.getElementById("movies").innerHTML = obj.movies;
+  document.getElementById("users").innerHTML = obj.users;
+  document.getElementById("series").innerHTML = obj.series;
     init();
 }
 

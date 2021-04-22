@@ -12,6 +12,7 @@ body {
         background-color: #333;
 
         position: fixed;
+        z-index: 99;
         top: 0;
         left: 0;
         width: 100%;
@@ -65,6 +66,8 @@ li img {
   font-family: Gill Sans, sans-serif  ;
 }
 .searchbar {
+  display: block;
+  position: relative;
   margin: auto;
   width: 50%;
   text-align: center;
@@ -117,7 +120,7 @@ footer {
   background-color: #333;
 }
 
-h1 {
+.col h1 {
 display:inline-block;
 position: relative;
 top: 8%;
@@ -127,7 +130,7 @@ margin-left: auto;
 margin-right: auto;
 }
 
-h1:after {
+.col h1:after {
   background: none repeat scroll 0 0 transparent;
   bottom: 0;
   content: "";
@@ -140,14 +143,22 @@ h1:after {
   width: 0;
 }
 
-h1:hover:after {
+.col h1:hover:after {
   width: 100%;
   left: 0;
 }
 
-h1:hover {
+.col h1:hover {
 transform: translate(0px, -3px);
 transition: transform 300ms ease-in-out;
+}
+
+.about h1 {
+  margin-top: 10%;
+  color: white;
+  font-size: 400%;
+  font-family: 'Roboto';
+  font-weight: bold;
 }
 
 .roundcorners {
