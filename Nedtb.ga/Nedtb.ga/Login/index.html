@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="google-signin-client_id" content="736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com">
+    <title>Sign in</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+  <body>
+    <div class="main">
+        <img src="ressources/netdb_Logo.png" alt="Logo" width="100">
+        <p class="sign" align="center">Sign in</p>
+        <hr>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <hr>
+        <form class="text-center">
+          <input class="input" type="text" align="center" placeholder="Username">
+          <input class="input" type="password" align="center" placeholder="Password">
+        </form>
+        <div class="signin">
+          <a class="submit">Sign in</a>
+          <a class="forgot" href="#">Forgot Password?</a>
+        </div>
+          <a class="create" href="#">Create Account</a>
+    </div>
+  </body>
+</html>
