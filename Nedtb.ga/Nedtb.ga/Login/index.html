@@ -1,19 +1,19 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="google-signin-client_id" content="736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com">
-    <title>Sign in</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-  </head>
-  <body>
-    <div class="main">
-        <img src="ressources/netdb_Logo.png" alt="Logo" width="100">
+  <div class="main">
+        <img src="resources/netdb_Logo.png" alt="Logo" width="100">
         <p class="sign" align="center">Sign in</p>
         <hr>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <div class="LoginBtn" style="background-color: #1dd05e;">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+        <div class="LoginBtn" style="background-color: #1dd05e;">
+          <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://netdb.ga/api/v1/auth/spotify&scope=user-read-private%20user-read-email"><p>Login with<img src="resources/spotify.png" style="width: 14%; overflow:hidden;margin-top: -0.1em; margin-left: 0.3em;"></p></a>
+        </div>
+        <div class="LoginBtn" style="background-color: #613f9f;">
+          <a href="https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.ga/api/v1/twitchauth/&response_type=token&scope=user_read"><p>Login with <img src="resources/twitch.png" style="width: 8%; overflow:hidden;margin-top: -0.2em; margin-left: 0.2em;"></p></a>
+        </div>
+        <div class="LoginBtn" style="background-color: #7289da;">
+          <a href="https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https%3A%2F%2Fnetdb.ga%2Fapi%2Fv1%2Fauth%2Fdiscord&response_type=code&scope=identify%20email"><p>Login with <img src="resources/discord.png" style="width: 14%; overflow:hidden;margin-top: -0.2em; margin-left: 0.2em;"></p></a>
+        </div>
         <hr>
         <form class="text-center">
           <input class="input" type="text" align="center" placeholder="Username">
@@ -25,5 +25,3 @@
         </div>
           <a class="create" href="#">Create Account</a>
     </div>
-  </body>
-</html>
