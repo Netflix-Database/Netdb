@@ -6,21 +6,13 @@ let linkTag;
 let webLink;
 var space;
 
-window.onload = function () {
-  var obj = JSON.parse(sendGetRequest("/api/v1/info/"));
-  document.getElementById("movies").innerHTML = obj.movies;
-  document.getElementById("users").innerHTML = obj.users;
-  document.getElementById("series").innerHTML = obj.series;
-    init();
-}
-
 function init() {
   searchWrapper = document.querySelector(".searchbar");
   inputBox = searchWrapper.querySelector("input");
   suggBox = searchWrapper.querySelector(".autocom-box");
   icon = searchWrapper.querySelector("button");
   linkTag = searchWrapper.querySelector("a");
-  space = document.getElementById('app');
+  space = document.getElementById('displayspace');
 
   inputBox.onkeyup = (e)=>{
       let userData = e.target.value; //user enetered data
@@ -29,7 +21,7 @@ function init() {
         var suggestions = [];
         for(var i = 0;i < obj.items.length;i++)
         {
-            suggestions.push(obj.items[i].Name);
+            suggestions.push(obj.items[i].Name_en);
         }
       }
       let emptyArray = [];
@@ -62,9 +54,13 @@ function init() {
 }
 
 function changePage(mode) {
-    space.innerHTML = sendGetRequest(mode);
-}
-
+  document.getElementById('displayspace').innerHTML = sendGetRequest(mode);
+  var obj = JSON.parse(sendGetRequest("/api/v1/info/"));
+  document.getElementById("movies").innerHTML = obj.movies;
+  document.getElementById("users").innerHTML = obj.users;
+  document.getElementById("series").innerHTML = obj.series;
+    init();
+    }
 
 function sendGetRequest(url) {
   var oReq = new XMLHttpRequest();
@@ -83,3 +79,8 @@ function showSuggestions(list){
     }
     suggBox.innerHTML = listData;
 }
+
+function login(token){
+ console.log(token);
+}
+
