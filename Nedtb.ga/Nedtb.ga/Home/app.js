@@ -55,12 +55,34 @@ function init() {
 
 function changePage(mode) {
   document.getElementById('displayspace').innerHTML = sendGetRequest(mode);
-  var obj = JSON.parse(sendGetRequest("/api/v1/info/"));
+
+  switch (mode) {
+  case 'https://netdb.ga/webapp/home/index.html':
+	window.history.pushState('home', 'Netdb | Home', '/home');
+	
+  var obj = JSON.parse(sendGetRequest('/api/v1/info/'));
   document.getElementById("movies").innerHTML = obj.movies;
   document.getElementById("users").innerHTML = obj.users;
   document.getElementById("series").innerHTML = obj.series;
     init();
-    }
+
+    break;
+  case 'https://netdb.ga/webapp/news/index.html':
+	window.history.pushState('news', 'Netdb | News', '/news');
+    break;
+  case 'https://netdb.ga/webapp/dc_bot/index.html':
+	window.history.pushState('discordbot', 'Netdb | Discord Bot', '/discordbot');
+    break;
+  case 'https://netdb.ga/webapp/docs/index.html':
+	window.history.pushState('docs', 'Netdb | Docs', '/docs');
+    break;
+  case 'https://netdb.ga/webapp/login/index.html':
+	window.history.pushState('login', 'Netdb | Login', '/login');
+    break;
+   default:
+      break;
+}
+}
 
 function sendGetRequest(url) {
   var oReq = new XMLHttpRequest();
@@ -80,7 +102,24 @@ function showSuggestions(list){
     suggBox.innerHTML = listData;
 }
 
-function login(token){
- console.log(token);
+function login(){
+
+var data = JSON.parse(sendGetRequest('/api/v1/login/' + document.cookie.split(';')[0].split('=')[1]));
+console.log(data);
+
+if(data['Name'] == null) {
+ return;
 }
 
+document.getElementById('loginbtn').style.display= "none";
+document.getElementById("username").innerHTML= data['Name']; 
+document.getElementById("profilepicture").src= data['Avatar'];
+document.getElementById("profile").style.display= "block"; 
+
+}
+
+function createacc(){
+  document.getElementById("login").style.display= "none"; 
+  document.getElementById("create").style.display= "block"; 
+  document.getElementById("create").classList.add("show");
+}
