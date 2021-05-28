@@ -10,9 +10,9 @@
 }
 
 .container {
-    text-align: center;
-    position: relative;
-    top:40%;
+  text-align: center;
+  position: relative;
+  top:40%;
 }
 
 .logo {
@@ -20,10 +20,10 @@
 }
 
 h1 {
-display:inline-block;
-position: relative;
-top: 8%;
-left: 1%;
+  display:inline-block;
+  position: relative;
+  top: 8%;
+  left: 1%;
   color: #dbdbdb;
   margin-left: auto;
   margin-right: auto;
@@ -48,6 +48,10 @@ h1:hover:after {
 }
 
 h1:hover {
-transform: translate(0px, -3px);
-transition: transform 300ms ease-in-out;
+  transform: translate(0px, -3px);
+  transition: transform 300ms ease-in-out;
+}
+
+h2 {
+  color: #444;
 }
