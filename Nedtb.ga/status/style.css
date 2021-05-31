@@ -2,6 +2,10 @@ body {
   background-color: #333;
 }
 
+* {
+font-family: sans-serif;
+}
+
 .head img {
   display: block;
   margin-left: auto;
@@ -17,4 +21,17 @@ body {
 
 .statuslist {
   margin-bottom: 2em;
+}
+
+.chart {
+ border-radius: 1em;
+}
+
+.chart h1 {
+ font-size: 100%;
+}
+
+#ping {
+float:right;
+color: gray;
 }

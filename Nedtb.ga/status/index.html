@@ -27,8 +27,8 @@
          </li>
        </ul>
       </div>
-      <div class="chart">
-	<h1>API Response Time</h1>
+      <div class="list-group-item chart">
+	<h1 style="float:left;">API Response Time</h1><h1 id="ping">1ms</h1>
           <canvas id="pingChart" style="width: 100%; height: 10em;"></canvas>
       </div>
       <div>
@@ -59,10 +59,12 @@ var myChart = new Chart(ctx, {
    }
  },
         scales: {
-            y: {
-                beginAtZero: true
+  y: {
+              gridLines: {
+                show: false
+              }
             }
-        }
+          }
     }
 });
 </script>
