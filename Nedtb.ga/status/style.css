@@ -1,0 +1,20 @@
+body {
+  background-color: #333;
+}
+
+.head img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40em;
+}
+
+.container {
+  background-color: white;
+  border-radius: 1em;
+  padding: 3em 7em;
+}
+
+.statuslist {
+  margin-bottom: 2em;
+}
