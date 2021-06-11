@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:700,900%2');
+
+.login {
+  background-color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+  width: 40%;
+  margin: 7em auto;
+  border-radius: 1.5em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.login img {
+  margin-left: 2em;
+  margin-top: 1em;
+}
+
+.login a {
+  text-decoration:none;
+}
+
+.login .sign {
+  padding-top: 10%;
+  color: red;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 200%;
+}
+
+.login .input {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 100%;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 2em;
+  font-family: sans-serif;
+}
+
+.un:focus, .pass:focus {
+  border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
+
+.login .submit {
+  cursor: pointer;
+  border-radius: 5em;
+  background: linear-gradient(to right, red, #5e0000);
+  padding-left: 3em;
+  padding-right: 3em;
+  padding-bottom: 0.7em;
+  padding-top: 0.7em;
+  font-family: 'Roboto', sans-serif;
+  font-size: 85%;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+  background-size: 15em 5em;
+  transition: background 300ms ease-out;
+}
+
+.login .submit:hover {
+  background-position: -5em;
+}
+
+.login .signin {
+  text-align: center;
+}
+
+.login .forgot {
+  color: #AAAAAA;
+  margin-left: 17%;
+}
+
+.login .create {
+  color: #AAAAAA;
+  text-align: center;
+  display: block;
+  margin-top: 6%;
+  padding-bottom: 5%;
+}
+
+.login .LoginBtn {
+  text-align: center;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+  border-radius: 1.5em;
+  margin-top: 1em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.20);
+
+  -webkit-transition: transform 300ms ease;
+  -moz-transition: transform 300ms ease;
+  -ms-transition: transform 300ms ease;
+  -o-transition: transform 300ms ease;
+  transition: transform 300ms ease;
+  }
+
+.login .LoginBtn p {
+  color: white;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+}
+
+.login .LoginBtn:hover {
+  -webkit-transform:  scale(1.05);
+  -moz-transform:  scale(1.05);
+  -ms-transform:  scale(1.05);
+  -o-transform: scale(1.05);
+  transform:  scale(1.05);
+}

@@ -1,0 +1,143 @@
+.dashboard .container {
+  max-width: 100em;
+}
+
+.dashboard .head {
+  margin-top: 5em;
+}
+
+.dashboard .name {
+  padding: 3em;
+  float: left;
+}
+
+.dashboard .name h1 {
+  font-size: 500%;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.dashboard .name p {
+  color: gray;
+  margin-left: 2em;
+  margin-top: -1em;
+  float: left;
+}
+
+.dashboard hr {
+  clear: both;
+  background-color: white;
+}
+
+.dashboard .row {
+  margin: 1em 3em;
+}
+
+.dashboard .col {
+  padding: 1em;
+}
+
+.dashboard .card {
+  width: auto;
+  height: 12em;
+  border: 0;
+  background: #ffffff;
+  margin-bottom: 2em;
+}
+
+.dashboard .col .blue {
+    background: linear-gradient(-20deg, #03254c 0%, #0e4a7b 38%, #0096cf 100%);
+}
+
+.dashboard .col .red {
+    background: linear-gradient(-20deg, #4c0303 0%, #7b0e0e 38%, #ff3535 100%);
+}
+
+.dashboard .col .green {
+    background: linear-gradient(-20deg, #034c0e 0%, #117b0e 38%, #7eff35 100%);
+}
+
+.dashboard .col .yellow {
+    background: linear-gradient(-20deg, #3c3b07 0%, #7b6f0e 38%, #ffe935 100%);
+}
+
+.dashboard .col .purple {
+    background: linear-gradient(-20deg, #3c072a 0%, #7b0e65 38%, #ff35d6 100%);
+}
+
+.dashboard .col .gray {
+    background: linear-gradient(-20deg, #2b2a2a 0%, #625f5f 38%, #6a6a6a 100%);
+}
+
+
+.dashboard .card:hover {
+
+}
+
+.dashboard .card a {
+  float: right;
+  margin-top: 2.5em;
+  text-decoration: none;
+}
+
+.dashboard .create {
+  width: auto;
+  height: 12em;
+  border: 0;
+  background: white;
+}
+
+.dashboard #acccreationdate {
+  margin-left: 0.5em;
+}
+
+.dashboard .card h5, .dashboard .card p, .dashboard .card h1{
+  color: #222;
+}
+
+.dashboard #d_AppDescription {
+  display: inline-block;
+}
+
+.dashboard .card h5 {
+  font-family: 'Roboto', sans-serif;
+  display:  inline-block;
+}
+
+.dashboard .noborder {
+ border-bottom: 0;
+ border-top: 0;
+}
+
+.dashboard .modal-dialog {
+  max-width: 1000px;
+}
+
+.dashboard .modal-content {
+  border-radius: 1em;
+  padding: 1em;
+  background-color: #333;
+}
+
+.dashboard .width-100 {
+  width: 100%;
+}
+
+.dashboard .text-left {
+  text-align: left !important;
+}
+
+.dashboard #d_ClientId {
+  float: left;
+  margin-top: 3em;
+}
+
+.dashboard #appStats #d_Stats_Description {
+  color: black;
+}
+
+.dashboard .form-check {
+  float: left;
+  margin-top: 1em;
+  margin-left: 0.5em;
+}
