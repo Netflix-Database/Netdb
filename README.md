@@ -14,16 +14,16 @@
   <h3 align="center">Netdb</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    An unofficial Netflix API
     <br />
     <a href="https://netdb.ga/docs"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://netdb.ga">View Page</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/YannickFuereder/Netdb.ga/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/YannickFuereder/Netdb.ga/issues">Request Feature</a>
   </p>
 </p>
 
