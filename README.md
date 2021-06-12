@@ -1,7 +1,7 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+[![Stargazers][stars-shield]][https://github.com/YannickFuereder/Netdb.ga/stargazers]
+[![Issues][issues-shield]][https://github.com/YannickFuereder/Netdb.ga/issues]
 [![MIT License][license-shield]][license-url]
   
 <!-- PROJECT LOGO -->
