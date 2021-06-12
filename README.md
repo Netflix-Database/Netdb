@@ -145,14 +145,14 @@ Project Link: [https://github.com/YannickFuereder/Netdb.ga](https://github.com/Y
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/YannickFuereder/Netdb.ga.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/YannickFuereder/Netdb.svg?style=for-the-badge
 [contributors-url]: https://github.com/YannickFuereder/Netdb.ga/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/YannickFuereder/Netdb.ga.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/YannickFuereder/Netdb.svg?style=for-the-badge
 [forks-url]: https://github.com/YannickFuereder/Netdb.ga/network/members
-[stars-shield]: https://img.shields.io/github/stars/YannickFuereder/Netdb.ga.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/YannickFuereder/Netdb.svg?style=for-the-badge
 [stars-url]: https://github.com/YannickFuereder/Netdb.ga/stargazers
-[issues-shield]: https://img.shields.io/github/issues/YannickFuereder/Netdb.ga.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/YannickFuereder/Netdb.svg?style=for-the-badge
 [issues-url]: https://github.com/YannickFuereder/Netdb.ga/issues
-[license-shield]: https://img.shields.io/github/license/YannickFuereder/Netdb.ga.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/YannickFuereder/Netdb.svg?style=for-the-badge
 [license-url]: https://github.com/YannickFuereder/Netdb.ga/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
