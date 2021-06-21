@@ -78,7 +78,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 support@netdb.ga
 
-Project Link: [https://github.com/YannickFuereder/Netdb.ga](https://github.com/YannickFuereder/Netdb.ga)
+Project Link: [https://github.com/Netflix-Database/Webpage](https://github.com/Netflix-Database/Webpage)
 
 
 
