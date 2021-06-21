@@ -95,6 +95,7 @@ Project Link: [https://github.com/YannickFuereder/Netdb.ga](https://github.com/Y
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 * [Img Shields](https://shields.io)
+* [Charts.js](https://www.chartjs.org/)
 
 
 
