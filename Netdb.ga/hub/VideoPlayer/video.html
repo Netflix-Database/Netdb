@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="video.css">
+  </head>
+  <body>
+    <div id="video-container" class="video-container">
+      <video poster="hubtest/your/desktopImg.png">
+        <source src="Joker/Joker.mp4" type="video/mp4">
+          Geht ned
+      </video>
+      <div id="controls" class="controls">
+        <div id="progress" class="progress">
+          <div class="progressbar">
+            <input type="range" min="1" max="1000" value="1" class="progressbar" id="progressbar" oninput="skipToTime();">
+          </div>
+          <div class="timetillend">
+            <h1 id="timetillend">00:00</h1>
+          </div>
+        </div>
+        <div class="controlsleft">
+          <div class="buttons">
+            <div class="play margin">
+              <button type="button" name="button"><img id="play-pause" src="playwhitethick.png" alt="Play" width="30"></button>
+            </div>
+            <div class="skipback margin">
+                <button type="button" name="button"><img id="back" src="https://assets.netdb.ga/content/15back.png" alt="Back" width="30"></button>
+            </div>
+            <div class="skipfor margin">
+               <button type="button" name="button"><img id="skip" src="https://assets.netdb.ga/content/15for.png" alt="Skip" width="30"></button>
+            </div>
+            <div class="volume margin">
+              <div class="tooltip" onmouseover="hideProgress()" onmouseout="displayProgress()"><img src="volume.png" alt="Volume" width="30">
+                <div class="tooltipitem">
+                  <div class="volumetooltip">
+                      <input type="range" min="0" max="100" value="1" orient="vertical" class="volumebar" id="" oninput="controlVolume();">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="title">
+              <h1 id="title">Joker</h1>
+            </div>
+          </div>
+        </div>
+        <div class="controlsright">
+          <div class="buttons">
+            <div class="speed margin">
+
+            </div>
+            <div class="language margin">
+
+            </div>
+            <div class="fullscreen margin">
+              <button type="button" name="button"><img id="fullscreen" src="https://assets.netdb.ga/content/fullscreen.png" alt="" width="30"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="video.js" charset="utf-8"></script>
+  </body>
+</html>
