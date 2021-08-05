@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+
+body {
+background-color: gray;font-family: 'Source Sans Pro', sans-serif; margin: 0; height: 100vh; width: 100%; background: radial-gradient(gray, #111);
+}
+
+.intro {
+  display: block;
+  width: 100%; 
+  max-height: 100vh; 
+  height: 100vh; 
+  background-color: orange;
+  animation-name: transitionheight; 
+  animation-duration: 1s; 
+  animation-delay: 2s; 
+  animation-fill-mode: forwards; 
+  z-index: 10;
+}
+
+.intro .center {
+  display: inline-block;
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  animation: d-none 1s ease 2s normal forwards running;
+}
+
+.intro .center .fade {
+  height: 60pt;
+  margin-top: 3.5em;
+  margin-left: 4em;
+  z-index: 2;
+  background: linear-gradient(to left,rgba(255,165,0,1) 0%, rgba(255,165,0,1) 39%, rgba(255,165,0,0.700717787114846) 63%, rgba(255,165,0,0) 81%);
+}
+
+.intro .center .text {
+  position: relative;
+  float: left;
+  font-size: 60pt;
+  margin-left: 2em;
+  z-index: -1;
+  animation: transitiontext 500ms ease 500ms normal forwards running;
+}
+
+.intro .center .logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); 
+  animation: transitionimage 500ms ease 500ms normal forwards running;
+}
+
+@keyframes d-none {
+  0% {
+	top: 50%;
+	opacity: 1;
+    }
+    100% {
+ 	top: -50%;
+	opacity: 0;
+    }
+}
+
+@keyframes transitionheight {
+    0% {
+        max-height: 100vh;
+    }
+    100% {
+        max-height: 0;
+    }
+}
+
+@keyframes transitiontext {
+    0% {
+       margin-left: 2em;
+    }
+    100% {
+     margin-left: -2em;
+    }
+}
+
+@keyframes transitionimage {
+    0% {
+	margin-left: 0;
+    }
+    100% {
+	margin-left: 10em;
+    }
+}
