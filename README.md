@@ -102,6 +102,6 @@ Project Link: [https://github.com/Netflix-Database/Webpage](https://github.com/N
 [stars-url]: https://github.com/YannickFuereder/Netdb.ga/stargazers
 [issues-shield]: https://img.shields.io/github/issues/YannickFuereder/Netdb.svg?style=for-the-badge
 [issues-url]: https://github.com/YannickFuereder/Netdb.ga/issues
-[license-shield]: https://img.shields.io/github/license/YannickFuereder/Netdb.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Netflix-Database/Webpage?style=for-the-badge
 [license-url]: https://github.com/Netflix-Database/Webpage/blob/main/LICENSE
 [product-screenshot]: images/screenshot.png
