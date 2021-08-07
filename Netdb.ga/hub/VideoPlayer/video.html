@@ -1,60 +1,180 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title></title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <html lang="en">
+    <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+    <meta name="keywords" content="Netflix, API, Netdb, Hub">
+    <meta name="author" content="Yannick Fuereder">
+    <meta name="theme-color" content="#ff9900">
+    <meta name="google" value="notranslate">
+  
+    <title>Netdb Hub</title>
+    <meta name="title" content="Netdb Hub">
+    <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+  
+    <link rel="icon" href="https://assets.netdb.ga/content/hubfavicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="https://assets.netdb.ga/content/hubfavicon.png" type="image/x-icon"/>
+
     <link rel="stylesheet" href="video.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.0.0-npm/dash.all.min.js"></script>
   </head>
-  <body>
+  <body onload="Setup()">
     <div id="video-container" class="video-container">
-      <video poster="hubtest/your/desktopImg.png">
-        <source src="Joker/Joker.mp4" type="video/mp4">
+      <video poster=""> <!--https://cdn.netdb.ga/content/81092221/desktopImg.png-->
           Geht ned
       </video>
-      <div id="controls" class="controls">
-        <div id="progress" class="progress">
-          <div class="progressbar">
-            <input type="range" min="1" max="1000" value="1" class="progressbar" id="progressbar" oninput="skipToTime();">
-          </div>
-          <div class="timetillend">
-            <h1 id="timetillend">00:00</h1>
+      <div id="overlay" class="overlay">
+        <div class="overlay-top">
+          <div class="backbtn hoveranimation">
+            <button type="button">
+              <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 600 600" width="3em" height="3em" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                  <rect transform="matrix(0.773239, 0.773239, -0.773239, 0.773239, 349.503, -98.6303)" height="85" width="291" y="371.70235" x="60.83951" stroke-width="0" stroke="#000000" fill="#ffffff"/>
+                  <rect transform="matrix(0.773239, -0.773239, 0.773239, 0.773239, -114.441, 197.899)" height="85" width="291" y="168.37517" x="37.76199" stroke-width="0" stroke="#000000" fill="#ffffff"/>
+                  <rect height="85" width="463.66779" y="257.22042" x="86.9841" stroke-width="0" stroke="#000000" fill="#ffffff"/>
+                 </g>
+               </svg>
+             <h1 class="backbtntext">Back to Browse</h1>
+            </button>
           </div>
         </div>
-        <div class="controlsleft">
-          <div class="buttons">
-            <div class="play margin">
-              <button type="button" name="button"><img id="play-pause" src="playwhitethick.png" alt="Play" width="30"></button>
-            </div>
-            <div class="skipback margin">
-                <button type="button" name="button"><img id="back" src="https://assets.netdb.ga/content/15back.png" alt="Back" width="30"></button>
-            </div>
-            <div class="skipfor margin">
-               <button type="button" name="button"><img id="skip" src="https://assets.netdb.ga/content/15for.png" alt="Skip" width="30"></button>
-            </div>
-            <div class="volume margin">
-              <div class="tooltip" onmouseover="hideProgress()" onmouseout="displayProgress()"><img src="volume.png" alt="Volume" width="30">
-                <div class="tooltipitem">
-                  <div class="volumetooltip">
-                      <input type="range" min="0" max="100" value="1" orient="vertical" class="volumebar" id="" oninput="controlVolume();">
+        <div class="overlay-bottom">
+          <div id="controls" class="controls">
+            <div id="progressbar" class="progressbar">
+             <div id="bar" class="bar" onmousemove="displayHover();">
+               <div id="buffer" class="buffer"></div> 
+               <div id="hover" class="hover"></div> 
+               <div id="progress" class="progress"></div> 
+               <div id="progressthumb" class="progressthumb">
+                <div class="tooltip">
+                  <div class="thumb-tooltiptext">
+                    <h1 id="thumbtime">00:00</h1>
                   </div>
+                </div>
+               </div>
+             </div>
+              <div class="timetillend">
+                <h1 id="timetillend">00:00</h1>
+              </div>
+            </div>
+            <div class="controlsleft">
+              <div class="buttons">
+                <div class="play margin">
+                  <button type="button" name="button"><img id="play-pause" src="playwhitethick.png" alt="Play" width="30"></button>
+                </div>
+                <div class="skipback margin">
+                    <button type="button" name="button"><img id="back" src="15back.png" alt="Skip1" width="30"></button>
+                </div>
+                <div class="skipfor margin">
+                   <button type="button" name="button"><img id="skip" src="15for.png" alt="Skip2" width="30"></button>
+                </div>
+                <div class="volume margin">
+                  <div class="tooltip" onmouseover="hideProgress()" onmouseout="displayProgress()"><img src="volume.png" alt="Volume" width="30">
+                    <div class="tooltipitem">
+                      <div class="item">
+                          <input type="range" min="0" max="100" value="1" orient="vertical" class="volumebar" id="volume" oninput="changeVolume();">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="title">
+                  <h1 id="title"></h1>
+                </div>
+                <div class="episode">
+                  <h1 id="episode"></h1>
                 </div>
               </div>
             </div>
-            <div class="title">
-              <h1 id="title">Joker</h1>
+            <div class="controlsright">
+              <div class="buttons">
+                <div class="speed margin">
+    
+                </div>
+                <div class="language margin">
+    
+                </div>
+                <div class="options margin">
+                  <div class="tooltip" onmouseover="hideProgress()" onmouseout="displayProgress()"><img src="volume.png" alt="Language" width="30">
+                    <div class="tooltipitem">
+                      <div class="item">
+                        <div class="header">
+                          <h1>Language</h1>
+                        </div>
+                        <div class="body">
+                          <ul id="languageOptions">
+                            <h1>No options available</h1>
+                          </ul>
+                          <ul id="languageOptions">
+                            <h1>No options available</h1>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="options margin">
+                  <div class="tooltip" onmouseover="hideProgress()" onmouseout="displayProgress()"><img src="volume.png" alt="Quality" width="30">
+                    <div class="tooltipitem">
+                      <div class="item">
+                        <div class="header">
+                          <h1>Quality</h1>
+                        </div>
+                        <div class="body">
+                          <ul id="qualityOptions">
+                            <h1>No options available</h1>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fullscreen margin">
+                  <button type="button" name="button"><img id="fullscreen" src="fullscreen.png" alt="" width="30"></button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="controlsright">
-          <div class="buttons">
-            <div class="speed margin">
-
+      </div>
+      <div id="pausedoverlay" class="overlay">
+        <div class="pausedoverlay">
+          <div class="text">
+            <p>You're watching</p>
+            <h1 id="overlaytitle"></h1>
+            <p id="description" class="description"></p>
+          </div>
+        </div>
+      </div>
+      <div class="info-overlay">
+        <div class="info">
+          <div id="pauseicon" class="icon">
+            <div class="icon-animation">
+              <h1>play</h1>
             </div>
-            <div class="language margin">
-
+          </div>
+          <div id="playicon" class="icon">
+            <div class="icon-animation">
+             <h1>pause</h1>
             </div>
-            <div class="fullscreen margin">
-              <button type="button" name="button"><img id="fullscreen" src="https://assets.netdb.ga/content/fullscreen.png" alt="" width="30"></button>
+          </div>
+          <div id="muteicon" class="icon">
+            <div class="icon-animation">
+              <h1>mute</h1>
+            </div>
+          </div>
+          <div id="loadinganimation" class="icon" style="display: block;">
+            <div class="loadinganimation"></div>
+          </div>
+          <div id="skipforicon" class="icon-right">
+            <div class="icon-animation">
+              <h1>skip</h1>
+            </div>
+          </div>
+          <div id="skipbackicon" class="icon-left">
+            <div class="icon-animation">
+              <h1>skip</h1>
             </div>
           </div>
         </div>
