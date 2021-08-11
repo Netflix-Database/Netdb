@@ -1,0 +1,80 @@
+.profilepage .profile {
+  padding: 5em 10em;
+}
+
+.profilepage .container {
+    background-color: #111;
+    min-height: 100vh;
+}
+
+.profilepage .pfp {
+  display: block;
+  margin-bottom: 12em;
+}
+
+.profilepage .pfp img {
+  border: 0.2em solid;
+  border-color: #111;
+  float: left;
+  margin-right: 1em;
+}
+
+.profilepage .pfp h1 {
+  padding-top: 0.2em;
+  font-size: 500%;
+  font-family: 'Roboto' sans-serif;
+}
+
+.profilepage .pfp .stats {
+  float: left;
+  margin-top: 2em;
+}
+
+.profilepage hr {
+  margin: 3em 3em;
+  clear: both;
+}
+
+.profilepage .pfp p {
+  padding-left: 2em;
+  color: gray;
+}
+
+.profilepage .pfp .badges {
+  padding-left: 2em;
+}
+
+.profilepage .form {
+  padding: 0 5em;
+}
+
+.profilepage .addacc {
+  margin-top: 2em;
+}
+
+.profilepage .acc {
+  border-radius: 0.5em;
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+  margin-right: 1em;
+  float: left;
+}
+
+.profilepage .acc img {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.profilepage .accounts .spotify {
+  background-color: #1ed761;
+}
+
+.profilepage .accounts .twitch {
+  background-color: #9147ff;
+}
+
+.profilepage .accounts .discord {
+  background-color: #7289da;
+}

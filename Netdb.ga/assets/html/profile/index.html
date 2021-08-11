@@ -1,0 +1,55 @@
+    <div class="profilepage">
+      <div class="container">
+        <div class="profile">
+          <div class="pfp">
+            <img id="p_avatar" class="rounded-circle" src="" alt="" width="300" height="300">
+            <div class="stats">
+              <h1 id="p_name"></h1>
+              <div id="badges" class="badges">
+              </div>
+              <p id="p_email"></p>
+            </div>
+          </div>
+        </div>
+        <hr>
+          <div class="form">
+            <form class="needs-validation" novalidate="">
+              <div class="form-group">
+                <label for="validationServer03" class="form-label">Name</label>
+                <input name="name" type="text" value="" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required="">
+                <div id="validationServer03Feedback" class="invalid-feedback">
+                  Please provide a valid username.
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="validationServer04" class="form-label">Email</label>
+                <input name="email" type="text" value="" class="form-control" id="validationServer04" aria-describedby="validationServer04Feedback" required="">
+                <div id="validationServer04Feedback" class="invalid-feedback">
+                  Please provide a valid email.
+                </div>
+              </div>
+              <div class="addacc">
+                <h1>Add other accounts</h1>
+                <div id="accounts" class="accounts">
+
+                </div>
+                <div style="display: none;">
+                  <div id="spotifylink" class="acc spotify">
+                  <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://api.netdb.ga/link/spotify&scope=user-read-private%20user-read-email"><img src="https://assets.netdb.ga/content/spotify-small.png" alt="" width="30"></a>
+                  </div>
+                  <div id="twitchlink" class="acc twitch">
+                  <a href="https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://api.netdb.ga/link/twitch&response_type=code&scope=user_read"><img src="https://assets.netdb.ga/content/twitch-small.png" alt="" width="30"></a>
+                  </div>
+                  <div id="discordlink" class="acc discord">
+                  <a href="https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://api.netdb.ga/link/discord&response_type=code&scope=identify%20email"><img src="https://assets.netdb.ga/content/discord-small.png" alt="" width="30"></a>
+                  </div>
+                </div>
+              </div>
+                  <div class="modal-footer noborder">
+                    <button id="p_deleteacc" type="button" class="btn btn-danger" onclick="deleteAccount();">Delete</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+               </form>
+          </div>
+      </div>
+    </div>

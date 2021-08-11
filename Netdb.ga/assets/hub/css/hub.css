@@ -1,0 +1,361 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:700,900%2&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+
+body, html {
+  background-color: #111;
+  margin: 0;
+}
+
+body.blocked {
+  overflow: hidden;
+}
+
+*{
+  color: white;
+  font-family: 'Roboto' sans-serif;
+}
+
+.carousel .carousel-item {
+    max-height: 45em;
+}
+
+.carousel-item .large-cover img{
+  object-fit:cover;
+  max-height: 45em;
+  text-align: center;
+  color: white;
+}
+
+.navbar {
+  background-color: #333;
+  z-index: 10;
+}
+
+.carousel-margin {
+  margin: 2em;
+}
+
+.carousel-caption {
+  text-align: left;
+  width: 20%;
+}
+
+.carousel-caption .tags {
+  margin-left: 3em;
+}
+
+.carousel-caption .play {
+  margin-top: 1em;
+  margin-left: 3em;
+}
+
+.carousel-caption .title img {
+  width: 600px;
+  height: 255px;
+}
+
+.content-element {
+  display: block;
+  position: relative;
+  border-radius: 0.5em;
+  background-color: #222;
+}
+
+.content-element .cover img {
+  display: block;
+  object-fit: cover;
+  border-radius: 0.5em;
+  width: 100%;
+  background-color: #222;
+}
+
+.content-element .title img {
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
+  object-fit:cover;
+  width: 60%;
+  max-height: 10vh;
+}
+
+.carousel-control-prev, .carousel-control-next {
+  width: 4%;
+}
+
+.hover {
+  transition: background-color ease-in-out 300ms;
+}
+
+.hover:hover {
+ background-color: rgba(51, 51, 51,0.9);
+}
+
+.large {
+  min-height: 30em;
+}
+
+.loading {
+  height: 20vh;
+  animation-name: pulsate;
+  animation-duration: 3.6s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+
+}
+
+@keyframes pulsate {
+  0% {background-color: #222;}
+  50% {background-color: #333;}
+  100% {background-color: #222;}
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #111;
+}
+
+.modal-header {
+  padding: 0;
+  border-bottom: 0;
+}
+
+.modal-dialog {
+  max-width: 60em;
+  transform: scale(1);
+}
+
+.modal-header .cover img {
+  width: 100%;
+  border-radius: 0.5em;
+}
+
+.modal-header .covertop {
+  align-self: end;
+  position: absolute;
+}
+
+.modal-header .title {
+  padding-left: 2em;
+}
+
+.modal-header .buttons {
+  padding: 1em 2em;
+}
+
+.modal-header .title img {
+  width: 70%;
+}
+
+.modal-content {
+  background-color: #111;
+  border-radius: 0.5em;
+}
+
+.img-gradient{
+  position:relative;
+  display:inline-block;
+}
+
+.img-gradient:after {
+  content:'';
+  position:absolute;
+  left:0; top:0;
+  width:100%; height:100%;
+  display: inline-block;
+  background: -moz-linear-gradient(0deg, rgba(17,17,17,1) 0%, rgba(255,255,255,0) 11%);
+  background: -webkit-linear-gradient(0deg, rgba(17,17,17,1) 0%, rgba(255,255,255,0) 11%);
+  background: linear-gradient(0deg, rgba(17,17,17,1) 0%, rgba(255,255,255,0) 11%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#111111",endColorstr="#ffffff",GradientType=1);
+}
+
+.img-gradient img{
+  display:block;
+}
+
+.modal.fade .modal-dialog {
+  transform: none;
+}
+
+.closebtn {
+  align-self: baseline;
+  position: absolute;
+  z-index: 1;
+  padding: 1em;
+  right: 1em;
+}
+
+
+
+
+
+
+.square {
+  width: 100%;
+  height: 100%;
+  transition: transform 200ms ease-in-out;
+}
+
+.square .cover img{
+  width: 100%;
+  height: 100%;
+}
+
+.square .text {
+  display: none;
+  background: #181818;
+  color: #fff;
+  width: 100%;
+  height: 5em;
+  padding: 5px;
+  box-sizing: border-box;
+  transition: opacity 300ms ease-out;
+}
+
+.square:hover {
+  transform: scale(1.5);
+  box-shadow: 0 0 2px #000a;
+}
+
+.square:hover .text {
+  display: block;
+}
+
+.square.one:hover .cover {
+  background: url(https://media.giphy.com/media/lgcUUCXgC8mEo/giphy.gif), url(https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Arrestbygningen_ved_r%C3%A5d-_og_domhuset.jpg/320px-Arrestbygningen_ved_r%C3%A5d-_og_domhuset.jpg), skyblue;
+}
+
+.square .text .info {
+  font-size: 8px;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icons :nth-child(3) {
+  margin-left: auto;
+}
+
+.icons span{
+  border-radius: 50%;
+  border: 1px solid #777;
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  
+  font-size: 12px;
+  text-align: center;
+  line-height: 18px;
+  font-weight: 1000;
+  overflow: hidden;
+}
+
+.rating {
+  border: 0.1px solid white;
+  padding: 1px 2px;
+  
+}
+.match {
+  color: green;
+  font-weight: bold;
+}
+
+
+
+
+.intro {
+  display: block;
+  width: 100%; 
+  max-height: 100vh; 
+  height: 100vh; 
+  background-color: orange;
+  animation-name: transitionheight; 
+  animation-duration: 1s; 
+  animation-delay: 2s; 
+  animation-fill-mode: forwards; 
+  z-index: 10;
+}
+
+.intro .center {
+  display: inline-block;
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  animation: d-none 1s ease 2s normal forwards running;
+}
+
+.intro .center .fadetext {
+  height: 60pt;
+  margin-top: 1em;
+  margin-left: 7.7em;
+  z-index: 2;
+  background: linear-gradient(to left,rgba(255,165,0,1) 0%, rgba(255,165,0,1) 39%, rgba(255,165,0,0.700717787114846) 63%, rgba(255,165,0,0) 81%);
+}
+
+.intro .center .text {
+  color: black;
+  position: relative;
+  float: left;
+  font-size: 60pt;
+  margin-left: 2em;
+  z-index: -1;
+  animation: transitiontext 500ms ease 500ms normal forwards running;
+
+margin-top: 0;
+margin-bottom: 0;
+font-weight: 10000;
+line-height: initial;
+}
+
+.intro .center .logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); 
+  animation: transitionimage 500ms ease 500ms normal forwards running;
+}
+
+@keyframes d-none {
+  0% {
+    top: 50%;
+    opacity: 1;
+    }
+    100% {
+     top: -50%;
+    opacity: 0;
+    }
+}
+
+@keyframes transitionheight {
+    0% {
+        max-height: 100vh;
+    }
+    100% {
+        max-height: 0;
+    }
+}
+
+@keyframes transitiontext {
+    0% {
+       margin-left: 2em;
+    }
+    100% {
+     margin-left: -1.5em;
+    }
+}
+
+@keyframes transitionimage {
+    0% {
+    margin-left: 0;
+    }
+    100% {
+    margin-left: 10em;
+    }
+}

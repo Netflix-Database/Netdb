@@ -1,0 +1,93 @@
+body, html {
+  background-color: #111;
+}
+
+.carousel .carousel-item {
+    max-height: 45em;
+}
+
+.carousel-item .large-cover img{
+  object-fit:cover;
+  max-height: 45em;
+  text-align: center;
+  color: white;
+}
+
+.navbar {
+  background-color: #333;
+  z-index: 10;
+}
+
+.carousel-caption {
+  text-align: left;
+  width: 20%;
+}
+
+.carousel-caption .tags {
+  margin-left: 3em;
+}
+
+.carousel-caption .play {
+  margin-top: 1em;
+  margin-left: 3em;
+}
+
+.carousel-caption .title img {
+  width: 600px;
+  height: 255px;
+}
+
+.content-element {
+  display: block;
+  position: relative;
+  border-radius: 0.5em;
+  background-color: #222;
+}
+
+.content-element .cover img {
+  display: block;
+  object-fit:vcover;
+  border-radius: 0.5em;
+  width: 100%;
+  background-color: #222;
+}
+
+.content-element .title img {
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
+  object-fit:cover;
+  width: 60%;
+  max-height: 10vh;
+}
+
+.carousel-control-prev, .carousel-control-next {
+  width: 4%;
+}
+
+.hover {
+  transition: background-color ease-in-out 300ms;
+}
+
+.hover:hover {
+ background-color: rgba(51, 51, 51,0.9);
+}
+
+.large {
+  min-height: 30em;
+}
+
+.loading {
+  height: 20vh;
+  animation-name: pulsate;
+  animation-duration: 3.6s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+
+}
+
+@keyframes pulsate {
+  0% {background-color: #222;}
+  50% {background-color: #333;}
+  100% {background-color: #222;}
+}
