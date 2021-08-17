@@ -22,7 +22,7 @@
     case 'https://assets.netdb.ga/html/news/index.html':
   	window.history.pushState('news', 'Netdb | News', '/news/');
       break;
-    case 'https://assets.netdb.ga/html/dc_bot/index.html':
+    case 'https://assets.netdb.ga/html/discordbot/index.html':
   	window.history.pushState('discordbot', 'Netdb | Discord Bot', '/discordbot/');
       break;
     case 'https://assets.netdb.ga/html/docs/index.html':
@@ -30,6 +30,7 @@
       break;
     case 'https://assets.netdb.ga/html/login/index.html':
   	window.history.pushState('login', 'Netdb | Login', '/login/');
+    initLogin();
       break;
     case 'https://assets.netdb.ga/html/dashboard/index.html':
     window.history.pushState('dashboard', 'Netdb | Dashboard', '/dashboard/');
@@ -43,6 +44,49 @@
      default:
         break;
     }
+  }
+
+  window.onpopstate = function() {
+    changePage('https://assets.netdb.ga/html/' + window.location.toString().split('/')[3] + '/index.html');
+  };
+  
+
+  function initLogin()
+  {
+  var forms = document.getElementsByClassName('needs-validation');
+  
+  // Loop over them and prevent submission
+  var validation = Array.prototype.filter.call(forms, function(form) {
+    form.addEventListener('submit', function(event) {
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      else {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var request = new XMLHttpRequest();
+        request.open('POST', 'https://api.netdb.ga/login/pw', true);
+        request.onload = () => {
+
+          if(!request.response.includes('error')) {
+            document.cookie = 'token=' + request.response + ';path=/;Domain=netdb.ga;SameSite=Strict; Secure';
+            login();
+            changePage('https://assets.netdb.ga/html/home/index.html');
+          }
+          else
+          {
+              console.log('invalid password');
+          }
+        };
+
+      request.send(urlencodeFormData(new FormData(event.target)));
+
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
   }
 
 function displayNavandFooter() {
@@ -177,6 +221,17 @@ myModal.hide();
 });
 }
 
+function switchLoginForm() {
+  if(document.getElementById('loginForm').classList.contains('active')) {
+    document.getElementById('loginForm').classList.remove('active');
+    document.getElementById('accountForm').classList.add('active');
+  }
+  else {
+    document.getElementById('accountForm').classList.remove('active');
+    document.getElementById('loginForm').classList.add('active');
+  }
+}
+
   function loadApps() {
       const req = new XMLHttpRequest();
       req.responseType = 'json';
@@ -248,11 +303,11 @@ myModal.hide();
     var request = new XMLHttpRequest();
     request.responseType = 'json';
     request.open('GET', 'https://api.netdb.ga/info', true);
-    request.onload = function() { // request successful
+    request.onload = function() {
 
-          document.getElementById("movies").innerHTML = request.response.movies;
-          document.getElementById("users").innerHTML = request.response.users;
-          document.getElementById("series").innerHTML = request.response.series;
+          count(document.getElementById('movies'), request.response.movies);
+          count(document.getElementById('users'), request.response.users);
+          count(document.getElementById('series'), request.response.series);
     };
 
     request.send();
@@ -272,6 +327,35 @@ myModal.hide();
   	}
     };
 
+  }
+
+  function count(object, number) {
+    let   counter = 0,
+    delay = 0;
+
+    counter_js();
+
+    function counter_js(){
+
+      if(counter >= number - 50) {
+        delay ++;
+      }
+
+      object.innerHTML = counter.toString();
+
+      if(counter >= number - 50) {
+        counter++;
+      }
+      else {
+        counter += 11;
+      }
+
+       if ( counter < number ) {
+         setTimeout(function(){
+             counter_js();
+         }, delay)    
+     } 
+  }
   }
 
   function sendGetRequest(url) {
