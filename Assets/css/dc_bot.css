@@ -1,0 +1,73 @@
+.dcbot .header {
+  display: block;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+
+.dcbot .header h1 {
+  display: block;
+  color: white;
+  font-size: 100px;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: -2%;
+}
+
+.dcbot .header p {
+  margin-top: 10%;
+  color: white;
+}
+
+.dcbot .header img {
+  position: relative;
+  padding-right: 10mm;
+  float: right;
+}
+
+.dcbot .header .colortransition {
+  color: darkred;
+  animation: color-change 6s infinite;
+}
+
+.dcbot @keyframes color-change {
+  0% { color: #ac0710; }
+  50% { color: darkred; }
+  100% { color: #ac0710; }
+}
+
+.dcbot .commands {
+  display: block;
+  margin-top: 21em;
+  color: white;
+}
+
+.dcbot .commandsnav {
+  text-align: center;
+  background-color: #111;
+  border-radius: 1.5em;
+  margin-top: 3em;
+  margin-left: 7em;
+  width: 20%;
+  float: left;
+  padding: 2em;
+  margin-bottom: 3em;
+}
+
+.dcbot .commandsnav a {
+  color: white;
+}
+
+.dcbot .nav-pills .nav-link.active {
+  background-color: #ad241a !important;
+}
+
+.dcbot .navcontent {
+  background-color: #111;
+  border-radius: 1.5em;
+  margin-top: 3em;
+  margin-left: 7em;
+  width: 60%;
+  float: left;
+  padding: 3em;
+  padding-bottom: 6em;
+  margin-bottom: 3em;
+}

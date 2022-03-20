@@ -1,0 +1,109 @@
+body {
+  background: #333;
+}
+
+h1, h2, h3, h4, h5 ,h6, p, a,label, th, div,app {
+  color: white !important;
+}
+
+.bottom-row {
+  display: none;
+}
+
+.top-row {
+  background-color: #000 !important;
+  border: none !important
+}
+
+.btn-light {
+  background-color: #1a1a1a !important;
+  border: none !important
+}
+
+.form-control {
+  border: none;
+  color: gray;
+  background-color: #1a1a1a;
+}
+
+.form-control:focus {
+  color: #fff !important;
+  background-color: #000 !important;;
+}
+
+.navbar-brand {
+  color: white !important;
+  font-family: "Berlin Sans FB" !important;
+}
+
+.input-group .form-check.form-check-inline b-tooltip {
+  display: none !important;
+}
+
+.sidebar {
+  background-image: none !important;
+  background-color: black;
+}
+
+input.form-control.form-control-long {
+color: orange !important;
+}
+
+table .form-control {
+border: none;
+}
+
+.table td, .table th {
+  border-top: none;
+}
+
+.td-favorites, .td-record-boring {
+  padding-top: initial !important;
+}
+
+.btn-primary {
+  background-color: #000 !important;
+  border-color: #000 !important;
+}
+
+hr {
+  border: none !important;
+}
+
+table tbody tr:first-child td {
+  padding-top: 2em !important;
+}
+
+img {
+  filter: invert(1) !important;
+  -webkit-filter: invert(1) !important;
+}
+
+input[type="date"] {
+    color-scheme: dark;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+   filter: invert(1);
+}
+
+.dropdown-menu {
+	color: black !important;
+	background-color: #444 !important;
+	border-radius: 1em !important;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 1em;
+  height: 8px;
+  background-color: #aaa; /* or add it to the track */
+  border-radius: 1em;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Add a thumb */
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 1em;
+}

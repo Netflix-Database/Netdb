@@ -1,0 +1,43 @@
+{
+    "name": "norkunas/youtube-dl-php",
+    "type": "library",
+    "description": "youtube-dl wrapper for php",
+    "keywords": ["youtube", "youtube-dl"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomas Norkūnas",
+            "email": "norkunas.tom@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4.0",
+        "ext-json": "*",
+        "symfony/filesystem": "^4.4|^5.1|^6.0",
+        "symfony/polyfill-php80": "^1.18",
+        "symfony/process": "^4.4|^5.1|^6.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "mikey179/vfsstream": "^1.6.7",
+        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "symfony/phpunit-bridge": "^5.1.5|^6.0"
+    },
+    "autoload": {
+        "psr-4": { "YoutubeDl\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "YoutubeDl\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}
