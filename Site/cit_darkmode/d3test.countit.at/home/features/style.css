@@ -1,0 +1,55 @@
+.v-application {
+  background: #2f2b2b !important;
+}
+
+header {
+  background-color: #222 !important;
+}
+
+body {
+  background-color: #2f2b2b !important;
+}
+
+header:nth-child(1) {
+  background-color: #2f2b2b !important;
+}
+
+.theme--light.v-sheet {
+  color: white;
+}
+
+.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){
+  color: white;
+}
+
+.theme--light.v-card {
+  background-color: #171717;
+}
+
+.theme--light.v-list-item:not(.v-list-item--disabled) .v-list-item__action-text, .theme--light.v-list-item:not(.v-list-item--disabled) .v-list-item__subtitle {
+  color: rgba(176, 176, 176, 0.6);
+}
+
+.v-btn--fab.v-size--default .v-icon, .v-btn--fab.v-size--small .v-icon, .v-btn--icon.v-size--default .v-icon, .v-btn--icon.v-size--small .v-icon {
+  color: #dfdfdf;
+}
+
+.controls {
+  border: none;
+}
+
+.breadcrumb > a:first-child:nth-last-of-type(2) {
+ color: #888;
+}
+
+.breadcrumb > a#back + a {
+  border-left: 1px solid #888;
+}
+
+.theme--light.v-chip {
+  color: white;
+}
+
+.theme--light.v-chip:not(.v-chip--active) {
+  background: black;
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+  <meta name="keywords" content="Netflix, API, Netdb, Hub">
+  <meta name="author" content="Yannick Fuereder">
+  <meta name="theme-color" content="#ff9900">
+  <meta name="google" value="notranslate">
+
+ <!-- Primary Meta Tags -->
+  <title>Netdb YT Downloader</title>
+  <meta name="title" content="Netdb YT Downloader">
+  <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+  <style>
+      body {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1920' height='1080' preserveAspectRatio='none' viewBox='0 0 1920 1080'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1032%26quot%3b)' fill='none'%3e%3crect width='1920' height='1080' x='0' y='0' fill='%230e2a47'%3e%3c/rect%3e%3cpath d='M0%2c759.386C139.866%2c765.898%2c242.954%2c637.03%2c360.822%2c561.451C478.828%2c485.783%2c629.016%2c441.276%2c691.67%2c315.875C754.81%2c189.501%2c719.279%2c39.058%2c690.976%2c-99.347C664.031%2c-231.112%2c599.265%2c-344.719%2c532.686%2c-461.575C450.005%2c-606.691%2c413.296%2c-814.915%2c254.243%2c-865.873C95.831%2c-916.626%2c-47.472%2c-751.563%2c-204.92%2c-697.893C-353.622%2c-647.204%2c-543.641%2c-678.937%2c-645.37%2c-559.217C-747.079%2c-439.52%2c-682.259%2c-256.646%2c-711.061%2c-102.235C-741.547%2c61.202%2c-903.783%2c230.945%2c-819.49%2c374.248C-732.564%2c522.026%2c-495.023%2c455.905%2c-339.857%2c528.829C-213.402%2c588.259%2c-139.573%2c752.888%2c0%2c759.386' fill='%230b2239'%3e%3c/path%3e%3cpath d='M1920 1565.632C2012.476 1550.605 2103.908 1539.112 2185.773 1493.551 2271.67 1445.746 2346.187 1381.6109999999999 2399.295 1298.887 2458.304 1206.972 2519.858 1104.099 2505.2960000000003 995.847 2490.705 887.384 2401.569 806.9639999999999 2322.888 730.896 2249.777 660.213 2169.533 586.5930000000001 2068.66 573.712 1972.323 561.41 1890.086 633.571 1797.806 663.845 1709.202 692.913 1604.8519999999999 684.162 1537.005 748.133 1467.143 814.004 1460.599 918.35 1431.001 1009.693 1394.8899999999999 1121.138 1312.914 1230.05 1344.277 1342.924 1376.161 1457.671 1481.173 1547.029 1592.246 1589.996 1696.533 1630.338 1809.63 1583.567 1920 1565.632' fill='%23113255'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1032'%3e%3crect width='1920' height='1080' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+        background-size: cover;
+      }
+
+      .container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .input {
+          background-color: white;
+          border-radius: 2em;
+          padding: 0.6em;
+    	  width: 20vw;
+          float: left;
+      }
+
+      .input input {
+          width: 100%;
+          height: 2em;
+          border: none;
+      }
+
+      .btn {
+        float: left;
+      }
+
+      .btn button {
+          margin-top: 0.2em;
+          margin-left: 1em;
+          cursor: pointer;
+          color: #fff;
+          background-color: #0d6efd;
+          border-color: #0d6efd;
+          display: inline-block;
+          font-weight: 400;
+          line-height: 1.5;
+          text-align: center;
+          text-decoration: none;
+          vertical-align: middle;
+          border: 1px solid transparent;
+          padding: .375rem .75rem;
+          font-size: 1rem;
+          border-radius: .25rem;
+          transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      }
+
+      .btn button:hover {
+        color: #fff;
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+      }
+
+      .btn button:focus {
+        color: #fff;
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+        box-shadow: 0 0 0 .25rem rgba(49,132,253,.5);
+      }
+
+      .status h1 {
+        display: none;
+        text-align: center;
+        color: white;
+        font-family: sans-serif;
+        font-size: 2em;
+        margin-top: 2em;
+      }
+  </style>
+  </head>
+  <body>
+      <div class="container">
+        <div class="input">
+            <input id="input" type="text" placeholder="YouTube Link">
+        </div>
+        <div class="btn">
+            <button onclick="getMP3()">Get</button>
+        </div>
+        <div class="status">
+          <h1 id="downloading">Downloading...</h1>
+          <h1 id="finished">Finished</h1>
+          <h1 id="error">Error</h1>
+        </div>
+      </div>
+      <script>
+        function getMP3() {
+            if(document.getElementById("input").value == "") {
+              return;
+            }
+
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('finished').style.display = 'none';
+            document.getElementById('downloading').style.display = 'block';
+
+            var oReq = new XMLHttpRequest();
+            oReq.responseType = 'json';
+            oReq.onload = function () {
+
+              if(oReq.response.status == 'Success') {
+                document.getElementById('downloading').style.display = 'none';
+                document.getElementById('finished').style.display = 'block';
+                download(oReq.response.url);
+              } else {
+                document.getElementById('downloading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+              }
+            };
+            oReq.open("GET","controller.php?url=" + document.getElementById("input").value);
+            oReq.send();
+        }
+
+        function download(url) {
+            const a = document.createElement('a');
+          a.href = url;
+          a.download = url.split('/').pop();
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      </script>
+  </body>
+</html>

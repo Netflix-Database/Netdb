@@ -1,0 +1,20 @@
+{
+    "available_pages" : [
+        {
+            "url" : "example.com"
+        },
+	{
+            "url" : "d3test.countit.at/home/features"
+        },
+	{
+            "url" : "my.countit.at/Anna"
+        },
+        {
+            "url" : "lena.countit.at/record-boring"
+        },
+	{
+            "url" : "lena.countit.at"
+        }
+
+    ]
+}

@@ -1,0 +1,73 @@
+<div class="login">
+      <img src="https://assets.netdb.at/logo/netdb_Logo_small.png" alt="Logo" width="100">
+      <div id="loginForm" class="loginForm form active">
+        <p class="sign">Sign in</p>
+        <hr>
+        <div class="LoginBtn" style="background-color: #1dd05e;">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+        <div class="LoginBtn" style="background-color: #1dd05e;">
+          <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://api.netdb.at/auth/spotify?redirect_uri=https://netdb.at/&scope=user-read-private%20user-read-email"><p>Login with<img src="https://assets.netdb.at/content/spotify.png" style="width: 14%; overflow:hidden;margin-top: -0.1em; margin-left: 0.3em;"></p></a>
+        </div>
+        <div class="LoginBtn" style="background-color: #613f9f;">
+          <a href="https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://api.netdb.at/auth/twitch?redirect_uri=https://netdb.at/&response_type=code&scope=user_read"><p>Login with <img src="https://assets.netdb.at/content/twitch.png" style="width: 8%; overflow:hidden;margin-top: -0.2em; margin-left: 0.2em;"></p></a>
+        </div>
+        <div class="LoginBtn" style="background-color: #7289da;">
+          <a href="https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https%3A%2F%2Fapi.netdb.at%2Fauth%2Fdiscord%3Fredirect_uri%3Dhttps%3A%2F%2Fnetdb.at%2F&response_type=code&scope=identify%20email"><p>Login with <img src="https://assets.netdb.at/content/discord.png" style="width: 14%; overflow:hidden;margin-top: -0.2em; margin-left: 0.2em;"></p></a>
+        </div>
+        <hr>
+        <form id="login" class="needs-validation text-center" novalidate>
+          <h1 id="invalidLogin" class="invalidLogin">Invalid password or username</h1>
+          <div class="form-group">
+            <input class="input" type="text" name="username" placeholder="Username" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+              <div id="validationServer03Feedback" class="invalid-feedback">  
+                Please provide a valid username.
+              </div>
+          </div>
+          <div class="form-group">
+            <input class="input" type="password" name="pw" placeholder="Password" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+              <div class="invalid-feedback">
+                Please enter a password.
+              </div>
+          </div>
+          <div class="signin">
+            <button class="submit">Sign in</button>
+            <a class="forgot" href="#">Forgot Password?</a>
+          </div>
+        </form> 
+        <a class="create" onclick="switchLoginForm()">Create Account</a>
+      </div>
+      <div id="accountForm" class="accountForm form">
+        <p class="sign">Create Account</p>
+        <hr>
+        <form id="login" class="needs-validation text-center" novalidate>
+          <div class="form-group">
+            <input class="input" type="text" name="username" placeholder="Username" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+              <div id="validationServer03Feedback" class="invalid-feedback">  
+                Please provide a valid username.
+              </div>
+          </div>
+          <div class="form-group">
+            <input class="input" type="text" name="username" placeholder="Email" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+              <div id="validationServer03Feedback" class="invalid-feedback">  
+                Please provide a valid email.
+              </div>
+          </div>
+          <div class="form-group">
+            <input class="input" type="password" name="pw" placeholder="Password" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+              <div class="invalid-feedback">
+                Please enter a password.
+              </div>
+          </div>
+          <div class="form-group">
+            <input class="input" type="password" name="pw" placeholder="Repeat password" class="form-control" id="validationServer03" aria-describedby="validationServer03Feedback" required>
+              <div class="invalid-feedback">
+                Please enter a password.
+              </div>
+          </div>
+          <div class="signin">
+            <button class="submit">Create</button>
+          </div>
+        </form> 
+      </div>
+    </div>

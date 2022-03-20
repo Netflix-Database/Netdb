@@ -1,0 +1,43 @@
+body {
+  background-color: #333;
+}
+
+h1, h2, h3, h4, h5 ,h6, p, a,label, th, div,span {
+  color: white !important;
+}
+
+.mdl-layout__header {
+  background-color: rgb(28, 28, 28);
+}
+
+.mdl-selectfield__select {
+  color: white;
+}
+
+.mdl-card {
+  background-color: rgb(28, 28, 28);
+}
+
+.mdl-data-table {
+  background-color: rgb(28, 28, 28);
+}
+
+.mdl-chip {
+  background-color: black;
+}
+
+.mdl-data-table tbody tr:hover {
+  background-color: #333;
+}
+
+.mdl-cell.mdl-shadow--2dp {
+  box-shadow: initial;
+}
+
+.mdl-layout__drawer {
+  background: rgb(28, 28, 28);
+}
+
+option {
+  color: black;
+}
