@@ -3,7 +3,6 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <html lang="en">
-  <meta name="google-signin-client_id" content="736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com">
   <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
   <meta name="keywords" content="Netflix, API, Netdb">
   <meta name="author" content="Yannick Fuereder">
@@ -59,7 +58,7 @@
             <a class="nav-link hovereffect" onclick="changePage('https://assets.netdb.at/netdb/html/docs/index.html');">Docs</a>
           </li>
         </ul>
-        <a id="nav_loginbtn" class="nav-link hovereffect" onclick="changePage('https://assets.netdb.at/netdb/html/login/index.html');" style="display: block;">Login</a>
+        <a id="nav_loginbtn" class="nav-link hovereffect" href="https://login.netdb.at" style="display: block;">Login</a>
         <div id="nav_profile" class="dropdown" style="display: none;">
           <a id="nav_username" class="text-white text-decoration-none dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false"></a>
           <a><img id="nav_profilepicture" src="" alt="" class="rounded-circle" width="35" height="35"></a>
@@ -72,10 +71,11 @@
       </div>
     </div>
   </nav>
+  <h1 style="width: 100%;text-align: center;background-color: red;padding: 0.5em;">⚠️ Deprecated ⚠️</h1>
   <div id="displayspace">
     <script>
       window.onload = function (){
-      loginAsync();
+      login();
       changePage('https://assets.netdb.at/netdb/html/discordbot/index.html');
       };
     </script>

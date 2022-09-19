@@ -1,13 +1,13 @@
 <!DOCTYPE html>
+
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <html lang="en">
-  <meta name="google-signin-client_id" content="736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com">
   <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
   <meta name="keywords" content="Netflix, API, Netdb">
   <meta name="author" content="Yannick Fuereder">
-  <meta name="theme-color" content="#fc0303">  
+  <meta name="theme-color" content="#fc0303">
   <meta name="google" value="notranslate">
 
   <!-- Primary Meta Tags -->
@@ -29,16 +29,17 @@
   <meta property="twitter:description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
   <meta property="twitter:image" content="https://assets.netdb.at/logo/favicon.png">
 
-  <link rel="icon" href="https://assets.netdb.at/logo/favicon.png" type="image/x-icon"/>
-  <link rel="shortcut icon" href="https://assets.netdb.at/logo/favicon.png" type="image/x-icon"/>
+  <link rel="icon" href="https://assets.netdb.at/logo/favicon.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="https://assets.netdb.at/logo/favicon.png" type="image/x-icon" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://assets.netdb.at/netdb/css/style.css">
   <script src="https://assets.netdb.at/netdb/js/app.js" defer></script>
+  <script src="https://assets.netdb.at/login/js/loginmanager.min.js" type="text/javascript"></script>
 </head>
 
 <body>
- <nav class="navbar navbar-expand-lg navbar-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand"><img src="https://assets.netdb.at/logo/netdb_Logo_small.png" alt="logo" width="90"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +60,7 @@
             <a class="nav-link hovereffect" onclick="changePage('https://assets.netdb.at/netdb/html/docs/index.html');">Docs</a>
           </li>
         </ul>
-        <a id="nav_loginbtn" class="nav-link hovereffect" onclick="changePage('https://assets.netdb.at/netdb/html/login/index.html');" style="display: block;">Login</a>
+        <a id="nav_loginbtn" class="nav-link hovereffect" href="https://login.netdb.at" style="display: block;">Login</a>
         <div id="nav_profile" class="dropdown" style="display: none;">
           <a id="nav_username" class="text-white text-decoration-none dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false"></a>
           <a><img id="nav_profilepicture" src="" alt="" class="rounded-circle" width="35" height="35"></a>
@@ -72,35 +73,37 @@
       </div>
     </div>
   </nav>
+  <h1 style="width: 100%;text-align: center;background-color: red;padding: 0.5em;">⚠️ Deprecated ⚠️</h1>
   <div id="displayspace">
     <script>
-      window.onload = function (){
-      changePage('https://assets.netdb.at/netdb/html/news/index.html');
-      loginAsync();
+      window.onload = function () {
+        changePage('https://assets.netdb.at/netdb/html/news/index.html');
+        login();
       };
     </script>
   </div>
-<footer>
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-  <div class="col">
-<h1>Netdb</h1>
-<hr style="margin-top: -0.3em;">
-<p style="text-align: left; font-size: 100%; margin-left: 1em; margin-right: 1em;">Netdb is an unofficial Netflix API. Build experiences for millions of Netflix lovers.</p>
-  </div>
-  <div class="col">
-<p>Quick Links</p>
-<ul>
-<li><a href="https://github.com/Netflix-Database">Github</a></li>
-<li><a href="https://netdb.at/error_pages/404">Imprint</a></li>
-<li><a href="https://netdb.at/privacy">Privacy Policy</a></li>
-<li><a href="https://netdb.at/credits">Credits</a></li>
-</ul>
-  </div>
-  <div class="col">
-<p>Contact us</p>
-<input class="contact form-control" type="text" placeholder="Your email address">
-<input class="contact form-control" style="margin-top: 0.5em; padding-bottom: 3em;" type="text" placeholder="Message...">
-  </div>
-  </div>
-</footer></body>
+  <footer>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col">
+          <h1>Netdb</h1>
+          <hr style="margin-top: -0.3em;">
+          <p style="text-align: left; font-size: 100%; margin-left: 1em; margin-right: 1em;">Netdb is an unofficial Netflix API. Build experiences for millions of Netflix lovers.</p>
+        </div>
+        <div class="col">
+          <p>Quick Links</p>
+          <ul>
+            <li><a href="https://github.com/Netflix-Database">Github</a></li>
+            <li><a href="https://netdb.at/error_pages/404">Imprint</a></li>
+            <li><a href="https://netdb.at/privacy">Privacy Policy</a></li>
+            <li><a href="https://netdb.at/credits">Credits</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <p>Contact us</p>
+          <input class="contact form-control" type="text" placeholder="Your email address">
+          <input class="contact form-control" style="margin-top: 0.5em; padding-bottom: 3em;" type="text" placeholder="Message...">
+        </div>
+      </div>
+  </footer>
+</body>
