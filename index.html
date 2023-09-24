@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netdb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+  <style type="text/css">
+    .stroke {
+      fill: none;
+      stroke-width: 3px;
+      stroke: white;
+    }
+
+    body {
+      background-color: black;
+      font-family: 'Roboto Mono', monospace;
+      color: white;
+      margin: 0;
+      /* background-image: radial-gradient(gray 2px,transparent 0);
+            background-size: 60px 60px; */
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .st0 {
+      fill: none;
+    }
+
+    .st1 {
+      fill: url(#SVGID_1_);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1em;
+      z-index: 10;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .logo {
+      width: 60vw;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      margin-top: 25vh;
+    }
+
+    footer {
+      padding: 1em 12em;
+      padding-top: 3em;
+      border-top: #666 solid 1px;
+    }
+
+    .logo-background {
+      position: absolute;
+      filter: blur(20px);
+      z-index: -1;
+    }
+
+    .logo-container {
+      background-repeat: no-repeat;
+      background-color: hsla(0, 100%, 50%, 0);
+      background-image:
+        radial-gradient(at 2% 0%, hsla(1, 0%, 34%, 1) 0px, black 50%);
+      height: 90vh;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      z-index: -1;
+    }
+
+    .container {
+      position: relative;
+      padding: 0 20em;
+    }
+
+    .feature-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 1em;
+      gap: 1em;
+    }
+
+    .feature-container .item {
+      background-color: #222;
+      border-radius: 2em;
+      border: 1px solid #666;
+      padding: 1em;
+      width: 100%;
+      height: 15em;
+      box-shadow: 0 0 10px #060606;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+  <nav>
+    <div>
+
+    </div>
+    <div>
+      <a href="https://login.netdb.at">Login</a>
+    </div>
+  </nav>
+
+  <div class="logo-container">
+    <div class="logo">
+      <svg class="logo-background" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 512" style="enable-background:new 0 0 1920 512;" xml:space="preserve">
+        <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="350.5099" y1="147.3397" x2="354.231" y2="424.2253">
+          <stop id="startColor" offset="0" style="stop-color:#00D4D1" />
+          <stop id="endColor" offset="0.9942" style="stop-color:#00596A" />
+        </linearGradient>
+        <path class="stroke st0" d="M784.08,154.77v-0.19c0-39.87-32.62-72.5-72.5-72.5H572.41c-39.87,0-72.5,32.62-72.5,72.5v72.68l-0.04,23.05 c0,0.05,0,0.1,0,0.15v0.19c0,0.04,0,0.08,0,0.12l-0.05,33.98v72.68c0,39.87,32.62,72.5,72.5,72.5H711.5 c39.87,0,72.5-32.62,72.5-72.5v-0.19c0-38.69-30.72-70.55-68.97-72.41c5.5-10.2,8.63-21.85,8.63-34.19v-0.19 c0-8.28-1.42-16.23-4.01-23.66C755.77,222.76,784.08,191.92,784.08,154.77z" />
+        <path class="stroke st1" d="M351.93,424.94c-39.82,0-72.4-32.58-72.4-72.4c0,0,0-198.34,0-198.34c0-39.82,32.58-72.4,72.4-72.4 c39.82,0,72.4,32.58,72.4,72.4c0,0,0,198.34,0,198.34C424.34,392.35,391.76,424.94,351.93,424.94z" />
+        <path class="stroke st0" d="M397.31,295.79L156.18,102.18C125.1,77.22,79.31,82.3,54.41,113.46c-0.19,0.24-0.36,0.48-0.55,0.72 C43.35,126.75,37,142.91,37,160.49v195.05c0,39.82,32.58,72.4,72.4,72.4c39.82,0,72.4-32.58,72.4-72.4v-46.79 c62.41,50.11,124.98,100.36,124.98,100.36c31.08,24.96,76.88,19.88,101.77-11.28C433.45,366.66,428.39,320.75,397.31,295.79z" />
+        <path class="stroke st0" d="M1007.22,429L1007.22,429c-39.82,0-72.4-32.58-72.4-72.4V158.4c0-39.82,32.58-72.4,72.4-72.4h0 c39.82,0,72.4,32.58,72.4,72.4v198.2C1079.62,396.42,1047.04,429,1007.22,429z" />
+        <path class="stroke st1" d="M839.05,157.63v1.59 c0,39.49,32.31,71.79,71.79,71.79h192.09c39.49,0,71.79-32.31,71.79-71.79v-1.59c0-39.49-32.31-71.79-71.79-71.79H910.84 C871.36,85.84,839.05,118.15,839.05,157.63z" />
+        <path class="stroke st0" d="M1315.87,85.84c-1.88,0-3.7,0.05-5.5,0.12c-1.32-0.07-2.65-0.12-4-0.12h0c-39.82,0-72.4,32.58-72.4,72.4v55.97 c-0.02,4.95-0.02,10,0,15.11v56.17c-0.02,5.12-0.02,10.16,0,15.11v55.97c0,39.82,32.58,72.4,72.4,72.4h0c1.34,0,2.67-0.04,3.99-0.12 c1.8,0.07,3.62,0.12,5.5,0.12c100.17,0,181.38-76.82,181.38-171.57S1416.04,85.84,1315.87,85.84z" />
+        <path class="stroke st1" d="M499.79,250.91v-0.19 c0-39.87,32.62-72.5,72.5-72.5h78.8c39.87,0,72.5,32.62,72.5,72.5v0.19c0,39.87-32.62,72.5-72.5,72.5l-78.8,0 C532.41,323.4,499.79,290.78,499.79,250.91z" />
+        <path class="stroke st1" d="M1306.37,429.07L1306.37,429.07 c39.82,0,72.4-32.58,72.4-72.4V158.32c0-39.82-32.58-72.4-72.4-72.4h0c-39.82,0-72.4,32.58-72.4,72.4v198.34 C1233.97,396.49,1266.55,429.07,1306.37,429.07z" />
+        <path class="stroke st0" d="M1883.12,172.75v-12.68c0-42.92-35.18-78.05-78.19-78.05h-127.8c-0.46,0-0.91,0.03-1.37,0.03 c-1.55-0.1-3.11-0.17-4.69-0.17h0c-36.13,0-66.29,26.77-71.58,61.42c-0.56,3.62-0.86,7.32-0.86,11.08v198.2 c0,39.82,32.58,72.4,72.4,72.4h0c1.19,0,2.38-0.03,3.56-0.09c1.14,0.05,2.29,0.09,3.45,0.09h125.82c43.55,0,79.18-35.57,79.18-79.04 v-16.23c0-42.62-34.26-77.62-76.64-78.97C1848.74,249.97,1883.12,215.19,1883.12,172.75z" />
+        <path class="stroke st1" d="M1671.29,425.39L1671.29,425.39 c39.82,0,72.4-32.58,72.4-72.4v-198.2c0-39.82-32.58-72.4-72.4-72.4h0c-39.82,0-72.4,32.58-72.4,72.4v198.2 C1598.89,392.81,1631.47,425.39,1671.29,425.39z" />
+      </svg>
+
+      <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 512" style="enable-background:new 0 0 1920 512;" xml:space="preserve">
+        <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="350.5099" y1="147.3397" x2="354.231" y2="424.2253">
+          <stop id="startColor" offset="0" style="stop-color:#00D4D1" />
+          <stop id="endColor" offset="0.9942" style="stop-color:#00596A" />
+        </linearGradient>
+        <path class="stroke st0" d="M784.08,154.77v-0.19c0-39.87-32.62-72.5-72.5-72.5H572.41c-39.87,0-72.5,32.62-72.5,72.5v72.68l-0.04,23.05 c0,0.05,0,0.1,0,0.15v0.19c0,0.04,0,0.08,0,0.12l-0.05,33.98v72.68c0,39.87,32.62,72.5,72.5,72.5H711.5 c39.87,0,72.5-32.62,72.5-72.5v-0.19c0-38.69-30.72-70.55-68.97-72.41c5.5-10.2,8.63-21.85,8.63-34.19v-0.19 c0-8.28-1.42-16.23-4.01-23.66C755.77,222.76,784.08,191.92,784.08,154.77z" />
+        <path class="stroke st1" d="M351.93,424.94c-39.82,0-72.4-32.58-72.4-72.4c0,0,0-198.34,0-198.34c0-39.82,32.58-72.4,72.4-72.4 c39.82,0,72.4,32.58,72.4,72.4c0,0,0,198.34,0,198.34C424.34,392.35,391.76,424.94,351.93,424.94z" />
+        <path class="stroke st0" d="M397.31,295.79L156.18,102.18C125.1,77.22,79.31,82.3,54.41,113.46c-0.19,0.24-0.36,0.48-0.55,0.72 C43.35,126.75,37,142.91,37,160.49v195.05c0,39.82,32.58,72.4,72.4,72.4c39.82,0,72.4-32.58,72.4-72.4v-46.79 c62.41,50.11,124.98,100.36,124.98,100.36c31.08,24.96,76.88,19.88,101.77-11.28C433.45,366.66,428.39,320.75,397.31,295.79z" />
+        <path class="stroke st0" d="M1007.22,429L1007.22,429c-39.82,0-72.4-32.58-72.4-72.4V158.4c0-39.82,32.58-72.4,72.4-72.4h0 c39.82,0,72.4,32.58,72.4,72.4v198.2C1079.62,396.42,1047.04,429,1007.22,429z" />
+        <path class="stroke st1" d="M839.05,157.63v1.59 c0,39.49,32.31,71.79,71.79,71.79h192.09c39.49,0,71.79-32.31,71.79-71.79v-1.59c0-39.49-32.31-71.79-71.79-71.79H910.84 C871.36,85.84,839.05,118.15,839.05,157.63z" />
+        <path class="stroke st0" d="M1315.87,85.84c-1.88,0-3.7,0.05-5.5,0.12c-1.32-0.07-2.65-0.12-4-0.12h0c-39.82,0-72.4,32.58-72.4,72.4v55.97 c-0.02,4.95-0.02,10,0,15.11v56.17c-0.02,5.12-0.02,10.16,0,15.11v55.97c0,39.82,32.58,72.4,72.4,72.4h0c1.34,0,2.67-0.04,3.99-0.12 c1.8,0.07,3.62,0.12,5.5,0.12c100.17,0,181.38-76.82,181.38-171.57S1416.04,85.84,1315.87,85.84z" />
+        <path class="stroke st1" d="M499.79,250.91v-0.19 c0-39.87,32.62-72.5,72.5-72.5h78.8c39.87,0,72.5,32.62,72.5,72.5v0.19c0,39.87-32.62,72.5-72.5,72.5l-78.8,0 C532.41,323.4,499.79,290.78,499.79,250.91z" />
+        <path class="stroke st1" d="M1306.37,429.07L1306.37,429.07 c39.82,0,72.4-32.58,72.4-72.4V158.32c0-39.82-32.58-72.4-72.4-72.4h0c-39.82,0-72.4,32.58-72.4,72.4v198.34 C1233.97,396.49,1266.55,429.07,1306.37,429.07z" />
+        <path class="stroke st0" d="M1883.12,172.75v-12.68c0-42.92-35.18-78.05-78.19-78.05h-127.8c-0.46,0-0.91,0.03-1.37,0.03 c-1.55-0.1-3.11-0.17-4.69-0.17h0c-36.13,0-66.29,26.77-71.58,61.42c-0.56,3.62-0.86,7.32-0.86,11.08v198.2 c0,39.82,32.58,72.4,72.4,72.4h0c1.19,0,2.38-0.03,3.56-0.09c1.14,0.05,2.29,0.09,3.45,0.09h125.82c43.55,0,79.18-35.57,79.18-79.04 v-16.23c0-42.62-34.26-77.62-76.64-78.97C1848.74,249.97,1883.12,215.19,1883.12,172.75z" />
+        <path class="stroke st1" d="M1671.29,425.39L1671.29,425.39 c39.82,0,72.4-32.58,72.4-72.4v-198.2c0-39.82-32.58-72.4-72.4-72.4h0c-39.82,0-72.4,32.58-72.4,72.4v198.2 C1598.89,392.81,1631.47,425.39,1671.29,425.39z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="divider" style="margin-top: 58vh; margin-bottom: -36em;">
+    <svg style="margin-bottom: -.5em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="#111111" fill-opacity="1" d="M0,224L1440,160L1440,320L0,320Z"></path>
+    </svg>
+    <div style=" background: rgb(17,17,17); background: linear-gradient(180deg, rgba(17,17,17,1) 34%, rgba(66,53,53,0) 100%); height: 20em;"></div>
+  </div>
+
+  <div class="container">
+    <div class="feature-container">
+      <div class="item">
+        <h1>Test</h1>
+      </div>
+      <div class="item">
+        <h1>Test</h1>
+      </div>
+      <div class="item">
+        <h1>Test</h1>
+      </div>
+    </div>
+    <div style="height: 40em;"></div>
+  </div>
+
+  <footer>
+    <div style="display: flex; gap: 1em; justify-content: space-between; ">
+      <div>
+        <h1>Netdb</h1>
+      </div>
+      <div>
+        <h1>Products</h1>
+        <ul>
+          <li><a href="https://hub.netdb.at">Hub</a></li>
+          <li><a href="https://fileshare.netdb.at">Fileshare</a></li>
+          <li><a href="https://stocks.netdb.at">Stocks</a></li>
+          <li><a href="https://music.netdb.at">Music</a></li>
+          <li><a href="https://flows.netdb.at">Flows</a></li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><a href="https://us.netdb.at">Url Shortener</a></li>
+          <li><a href="https://mail.netdb.at">Mail</a></li>
+          <li>and many more to come</li>
+        </ul>
+      </div>
+    </div>
+    <div style="display: flex; gap: 1em; width: 100%; align-items: center;">
+      <p>© 2023</p>
+      <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
+      <a href="https://github.com"><svg fill="none" height="19" viewBox="0 0 17 16" width="19" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(githublogo)"><path clip-rule="evenodd" d="M8.18391.249268C3.82241.249268.253906 3.81777.253906 8.17927c0 3.46933 2.279874 6.44313 5.451874 7.53353.3965.0991.49563-.1983.49563-.3965v-1.3878c-2.18075.4956-2.67638-.9912-2.67638-.9912-.3965-.8922-.89212-1.1895-.89212-1.1895-.69388-.4957.09912-.4957.09912-.4957.793.0992 1.1895.793 1.1895.793.69388 1.2887 1.88338.8922 2.27988.6939.09912-.4956.29737-.8921.49562-1.0904-1.78425-.1982-3.5685-.8921-3.5685-3.96496 0-.89212.29738-1.586.793-2.08162-.09912-.19825-.3965-.99125.09913-2.08163 0 0 .69387-.19825 2.18075.793.59475-.19825 1.28862-.29737 1.9825-.29737.69387 0 1.38775.09912 1.98249.29737 1.4869-.99125 2.1808-.793 2.1808-.793.3965 1.09038.1982 1.88338.0991 2.08163.4956.59475.793 1.28862.793 2.08162 0 3.07286-1.8834 3.66766-3.66764 3.86586.29737.3965.59474.8921.59474 1.586v2.1808c0 .1982.0991.4956.5948.3965 3.172-1.0904 5.4518-4.0642 5.4518-7.53353-.0991-4.3615-3.6676-7.930002-8.02909-7.930002z" fill="currentColor" fill-rule="evenodd"></path></g><defs><clipPath id="githublogo"><path d="M0 0h15.86v15.86H0z" fill="transparent" transform="translate(.253906 .0493164)"></path></clipPath></defs></svg></a>
+      <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
+      <a href="https://discord.com">
+        <svg width="19" height="19" viewBox="0 -28.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="currentColor" fill-rule="nonzero"></path></g></svg>
+      </a>
+      <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
+      <a href="https://status.netdb.at">Status</a>
+    </div>
+  </footer>
+  <script>
+    var lineDrawing = anime({
+      targets: '.logo path',
+      strokeDashoffset: [anime.setDashoffset, 0],
+      easing: 'easeInOutCubic',
+      duration: 1500,
+      begin: function (anim) {
+        document.querySelector('path').setAttribute("stroke", "black");
+        document.querySelector('path').setAttribute("fill", "none");
+      },
+      complete: function (anim) {
+        document.querySelector('path').setAttribute("fill", "yellow");
+      },
+      autoplay: true
+    });
+
+    var border = anime({
+      targets: ".stroke",
+      duration: 1500,
+      delay: 1000,
+      strokeWidth: ["3px", "0"],
+      direction: 'forward',
+      easing: 'easeInOutQuad'
+    });
+
+    var white = anime({
+      targets: ".st0",
+      duration: 1500,
+      delay: 800,
+      fill: ["#F2F2F2"],
+      direction: 'forward',
+      easing: 'easeInOutQuad'
+    });
+
+    var startColor = anime({
+      targets: "#startColor",
+      duration: 1500,
+      delay: 800,
+      stopColor: ["none", startColor],
+      direction: 'forward',
+      easing: 'easeInOutQuad'
+    });
+
+    var endColor = anime({
+      targets: "#endColor",
+      duration: 1500,
+      delay: 800,
+      stopColor: ["none", endColor],
+      direction: 'forward',
+      easing: 'easeInOutQuad'
+    });
+
+    setTimeout(function () {
+      changeColor("#fd1414", "#7c0d00");
+    }, 4000);
+
+    function changeColor(startColor, endColor) {
+      var white = anime({
+        targets: ".st0",
+        duration: 1500,
+        delay: 1000,
+        fill: ["#F2F2F2"],
+        direction: 'forward',
+        easing: 'easeInOutQuad'
+      });
+
+      var startColor = anime({
+        targets: "#startColor",
+        duration: 1500,
+        delay: 1000,
+        stopColor: [startColor],
+        direction: 'forward',
+        easing: 'easeInOutQuad'
+      });
+
+      var endColor = anime({
+        targets: "#endColor",
+        duration: 1500,
+        delay: 1000,
+        stopColor: [endColor],
+        direction: 'forward',
+        easing: 'easeInOutQuad'
+      });
+    }
+  </script>
+</body>
+
+</html>
