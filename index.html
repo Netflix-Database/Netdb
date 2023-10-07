@@ -75,9 +75,8 @@
 
     .logo-container {
       background-repeat: no-repeat;
-      background-color: hsla(0, 100%, 50%, 0);
-      background-image:
-        radial-gradient(at 2% 0%, hsla(1, 0%, 34%, 1) 0px, black 50%);
+      background-color: #ff000000;
+      background-image: radial-gradient(at 2% 0%, hsla(1, 0%, 34%, 1) 0px, black 50%);
       height: 90vh;
       width: 100%;
       position: absolute;
@@ -87,7 +86,7 @@
 
     .container {
       position: relative;
-      padding: 0 20em;
+      padding: 0 15em;
     }
 
     .feature-container {
@@ -98,13 +97,80 @@
     }
 
     .feature-container .item {
-      background-color: #222;
-      border-radius: 2em;
+      background-color: #222222b0;
+      border-radius: 15px;
       border: 1px solid #666;
       padding: 1em;
       width: 100%;
-      height: 15em;
       box-shadow: 0 0 10px #060606;
+      backdrop-filter: blur(16px);
+    }
+
+    .service-container {
+      display: flex;
+      padding: 1em;
+      gap: 1em;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .service-container .item {
+      width: 29%;
+      border: 1px solid #444;
+      border-radius: 1em;
+      padding: 1em;
+      box-shadow: 0 0 10px #060606;
+      position: relative;
+      min-height: 10em;
+      background: linear-gradient(180deg,#242424,#121212 65.62%);
+    }
+
+    /* .service-container .item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      width: 100%;
+      height: 100%;
+      --accents-2: #44444400;
+      border-radius: inherit;
+      background: conic-gradient(from 100deg at 50% 50%,var(--accents-2) 0deg,var(--accents-2) 176deg,#fff 193deg,var(--accents-2) 217deg,var(--accents-2) 1turn);
+    } */
+
+    .service-container .item .footer {
+      font-size: .8em; 
+      display: flex; 
+      gap: .5em;
+      align-items: center;
+      position: absolute;
+      bottom: 1em;
+    }
+
+    .service-container .item .footer hr {
+      border: 0; 
+      background: #ffffff; 
+      height: 19px; 
+      width: 1px; 
+      margin: 0;
+    }
+
+    .service-container .item:nth-child(1) {
+      background: linear-gradient(180deg,#ffad1e69,#ffa2008a 65.62%);
+    }
+
+    .service-container .item:nth-child(2) {
+      background: linear-gradient(180deg,#63a0d969,#63a0d98a 65.62%);
+    }
+
+    .service-container .item:nth-child(5) {
+      background: linear-gradient(180deg,#c5120b69,#c5120b8a 65.62%);
+    }
+
+    .service-container .item:nth-child(6) {
+      background: linear-gradient(180deg,#6600ff69,#6600ff8a 65.62%);
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
@@ -160,28 +226,147 @@
 
   <div class="divider" style="margin-top: 58vh; margin-bottom: -36em;">
     <svg style="margin-bottom: -.5em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path fill="#111111" fill-opacity="1" d="M0,224L1440,160L1440,320L0,320Z"></path>
+      <path fill="#222" fill-opacity="1" d="M0,224L1440,160L1440,320L0,320Z"></path>
     </svg>
-    <div style=" background: rgb(17,17,17); background: linear-gradient(180deg, rgba(17,17,17,1) 34%, rgba(66,53,53,0) 100%); height: 20em;"></div>
+    <div style=" background: #222; background: linear-gradient(180deg, #222 34%, rgba(66,53,53,0) 100%); height: 20em;"></div>
   </div>
 
   <div class="container">
     <div class="feature-container">
       <div class="item">
-        <h1>Test</h1>
+        <h1>What is this?</h1>
+        <p>
+          Netdb is a collection of services that are hosted by us. We want to make the internet a better place by providing free services that are helpful and easy to use.
+        </p>
       </div>
       <div class="item">
-        <h1>Test</h1>
+        <h1>Our Mission</h1>
+        <p>
+          We are constantly trying to improve our coding skills. By creating these services we want to learn new things and improve our skills.
+        </p>
       </div>
       <div class="item">
-        <h1>Test</h1>
+        <h1>
+          Interested?
+        </h1>
+        <p>
+          We are always looking for new people to join our team. If you are interested in coding, design or just want to help us, please contact us.
+        </p>
       </div>
     </div>
-    <div style="height: 40em;"></div>
+    <div style="padding-top: 6em; padding-bottom: 5em;">
+      <h1>Services</h1>
+      <div class="service-container">
+        <div class="item">
+          <h1>Hub</h1>
+          <p>
+            A video streaming plattform that is similar to Netflix.
+          </p>
+          <h1 class="footer">
+            <a href="https://github.com/Netflix-Database/Netdb-Hub">
+              <svg height="1.5em" width="1.5em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+              </svg>
+            </a>
+            <hr />
+            <a target="_blank" href="https://hub.netdb.at">hub.netdb.at</a>
+          </h1>
+        </div>
+        <div class="item">
+          <h1>Music</h1>
+          <p>
+            (Coming Soon)
+          </p>
+          <h1 class="footer">
+            <a href="https://github.com/Netflix-Database/Netdb-Music">
+              <svg height="1.5em" width="1.5em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+              </svg>
+            </a>
+            <hr />
+            <a target="_blank" href="https://music.netdb.at">music.netdb.at</a>
+          </h1>
+        </div>
+        <div class="item">
+          <h1>Fileshare</h1>
+          <p>
+            (Coming Soon)
+          </p>
+          <h1 class="footer">
+            <a href="https://github.com/Netflix-Database/Netdb-Fileshare">
+              <svg height="1.5em" width="1.5em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+              </svg>
+            </a>
+            <hr />
+            <a target="_blank" href="https://fileshare.netdb.at">fileshare.netdb.at</a>
+          </h1>
+        </div>
+        <div class="item">
+          <h1>Stocks</h1>
+          <p>
+            (Coming Soon)
+          </p>
+          <h1 class="footer">
+            <a href="https://github.com/Netflix-Database/Netdb-Stocks">
+              <svg height="1.5em" width="1.5em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+              </svg>
+            </a>
+            <hr />
+            <a target="_blank" href="https://stocks.netdb.at">stocks.netdb.at</a>
+          </h1>
+        </div>
+        <div class="item">
+          <h1>Auth</h1>
+          <p>
+            A login system that is used by all of our services.
+          </p>
+          <h1 class="footer">
+            <a href="https://github.com/Netflix-Database/Netdb-Auth">
+              <svg height="1.5em" width="1.5em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+              </svg>
+            </a>
+            <hr />
+            <a target="_blank" href="https://login.netdb.at">login.netdb.at</a>
+          </h1>
+        </div>
+        <div class="item">
+          <h1>Url Shortener</h1>
+          <p>
+            Create short links for your website.
+          </p>
+          <h1 class="footer">
+            <a href="https://github.com/Netflix-Database/Netdb-Url-Shortener">
+              <svg height="1.5em" width="1.5em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+              </svg>
+            </a>
+            <hr />
+            <a target="_blank" href="https://us.netdb.at">us.netdb.at</a>
+          </h1>
+        </div>
+      </div>
+
+      <h1 style="margin-top: 3em; width: 100%; text-align: center;">Contact Us</h1>
+      <div style="display: flex; justify-content: center; width: 100%; gap: 1em; padding: 1em 0;">
+        <a href="https://github.com/orgs/Netflix-Database" target="_blank">
+          <svg height="4em" width="4em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+            <use xlink:href="#github" height="17" width="17" viewBox="0 0 17 16"></use>
+          </svg>
+        </a>
+        <a href="https://discord.gg/wZzFqd6dxP" target="_blank">
+          <svg height="4em" width="4em" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg">
+            <use xlink:href="#discord" height="17" width="17" viewBox="0 0 17 16"></use>
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
 
   <footer>
-    <div style="display: flex; gap: 1em; justify-content: space-between; ">
+    <div style="display: flex; gap: 1em; justify-content: space-between;">
       <div>
         <h1>Netdb</h1>
       </div>
@@ -206,10 +391,12 @@
     <div style="display: flex; gap: 1em; width: 100%; align-items: center;">
       <p>© 2023</p>
       <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
-      <a href="https://github.com"><svg fill="none" height="19" viewBox="0 0 17 16" width="19" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(githublogo)"><path clip-rule="evenodd" d="M8.18391.249268C3.82241.249268.253906 3.81777.253906 8.17927c0 3.46933 2.279874 6.44313 5.451874 7.53353.3965.0991.49563-.1983.49563-.3965v-1.3878c-2.18075.4956-2.67638-.9912-2.67638-.9912-.3965-.8922-.89212-1.1895-.89212-1.1895-.69388-.4957.09912-.4957.09912-.4957.793.0992 1.1895.793 1.1895.793.69388 1.2887 1.88338.8922 2.27988.6939.09912-.4956.29737-.8921.49562-1.0904-1.78425-.1982-3.5685-.8921-3.5685-3.96496 0-.89212.29738-1.586.793-2.08162-.09912-.19825-.3965-.99125.09913-2.08163 0 0 .69387-.19825 2.18075.793.59475-.19825 1.28862-.29737 1.9825-.29737.69387 0 1.38775.09912 1.98249.29737 1.4869-.99125 2.1808-.793 2.1808-.793.3965 1.09038.1982 1.88338.0991 2.08163.4956.59475.793 1.28862.793 2.08162 0 3.07286-1.8834 3.66766-3.66764 3.86586.29737.3965.59474.8921.59474 1.586v2.1808c0 .1982.0991.4956.5948.3965 3.172-1.0904 5.4518-4.0642 5.4518-7.53353-.0991-4.3615-3.6676-7.930002-8.02909-7.930002z" fill="currentColor" fill-rule="evenodd"></path></g><defs><clipPath id="githublogo"><path d="M0 0h15.86v15.86H0z" fill="transparent" transform="translate(.253906 .0493164)"></path></clipPath></defs></svg></a>
+      <a href="https://github.com/orgs/Netflix-Database">
+        <svg id="github" height="19" viewBox="0 0 17 16" width="19" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(githublogo)"><path clip-rule="evenodd" d="M8.18391.249268C3.82241.249268.253906 3.81777.253906 8.17927c0 3.46933 2.279874 6.44313 5.451874 7.53353.3965.0991.49563-.1983.49563-.3965v-1.3878c-2.18075.4956-2.67638-.9912-2.67638-.9912-.3965-.8922-.89212-1.1895-.89212-1.1895-.69388-.4957.09912-.4957.09912-.4957.793.0992 1.1895.793 1.1895.793.69388 1.2887 1.88338.8922 2.27988.6939.09912-.4956.29737-.8921.49562-1.0904-1.78425-.1982-3.5685-.8921-3.5685-3.96496 0-.89212.29738-1.586.793-2.08162-.09912-.19825-.3965-.99125.09913-2.08163 0 0 .69387-.19825 2.18075.793.59475-.19825 1.28862-.29737 1.9825-.29737.69387 0 1.38775.09912 1.98249.29737 1.4869-.99125 2.1808-.793 2.1808-.793.3965 1.09038.1982 1.88338.0991 2.08163.4956.59475.793 1.28862.793 2.08162 0 3.07286-1.8834 3.66766-3.66764 3.86586.29737.3965.59474.8921.59474 1.586v2.1808c0 .1982.0991.4956.5948.3965 3.172-1.0904 5.4518-4.0642 5.4518-7.53353-.0991-4.3615-3.6676-7.930002-8.02909-7.930002z" fill="currentColor" fill-rule="evenodd"></path></g><defs><clipPath id="githublogo"><path d="M0 0h15.86v15.86H0z" fill="transparent" transform="translate(.253906 .0493164)"></path></clipPath></defs></svg>
+      </a>
       <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
-      <a href="https://discord.com">
-        <svg width="19" height="19" viewBox="0 -28.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="currentColor" fill-rule="nonzero"></path></g></svg>
+      <a href="https://discord.gg/wZzFqd6dxP">
+        <svg id="discord" width="19" height="19" viewBox="0 -28.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="currentColor" fill-rule="nonzero"></path></g></svg>
       </a>
       <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
       <a href="https://status.netdb.at">Status</a>
@@ -253,7 +440,7 @@
       targets: "#startColor",
       duration: 1500,
       delay: 800,
-      stopColor: ["none", startColor],
+      stopColor: ["none", "#fd1414"],
       direction: 'forward',
       easing: 'easeInOutQuad'
     });
@@ -262,14 +449,33 @@
       targets: "#endColor",
       duration: 1500,
       delay: 800,
-      stopColor: ["none", endColor],
+      stopColor: ["none", "#7c0d00"],
       direction: 'forward',
       easing: 'easeInOutQuad'
     });
 
+  setColors();
+  setInterval(setColors, 5000 * (4 - 1));
+
+  function setColors() {
+    console.log("test");
+
     setTimeout(function () {
-      changeColor("#fd1414", "#7c0d00");
-    }, 4000);
+      changeColor("#e29c25", "#db7220");
+
+      setTimeout(function () {
+        changeColor("#63a0d9", "#394f6b");
+
+        setTimeout(function () {
+          changeColor("#444", "#111");
+
+          setTimeout(function () {
+            changeColor("#fd1414", "#7c0d00");
+          }, 5000);
+        }, 5000);
+      }, 5000);
+    }, 5000);
+  }
 
     function changeColor(startColor, endColor) {
       var white = anime({
