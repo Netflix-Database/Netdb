@@ -1,0 +1,213 @@
+.stroke {
+    fill: none;
+    stroke-width: 3px;
+    stroke: white;
+  }
+
+  body {
+    background-color: black;
+    font-family: 'Roboto Mono', monospace;
+    color: white;
+    margin: 0;
+    /* background-image: radial-gradient(gray 2px,transparent 0);
+          background-size: 60px 60px; */
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  .st0 {
+    fill: none;
+  }
+
+  .st1 {
+    fill: url(#SVGID_1_);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    z-index: 10;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .logo {
+    width: 60vw;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    margin-top: 25vh;
+  }
+
+  footer {
+    padding: 1em 12vw;
+    padding-top: 3em;
+    border-top: #666 solid 1px;
+  }
+
+  .logo-background {
+    position: absolute;
+    filter: blur(15vw);
+    z-index: -1;
+  }
+
+  .logo-container {
+    background-repeat: no-repeat;
+    background-color: #ff000000;
+    background-image: radial-gradient(at 2% 0%, hsla(1, 0%, 34%, 1) 0px, black 50%);
+    height: 90vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+  }
+
+  .container {
+    position: relative;
+    padding: 0 15vw;
+  }
+
+  .feature-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .feature-container .item {
+    background-color: #222222b0;
+    border-radius: 15px;
+    border: 1px solid #666;
+    padding: 1em;
+    width: 19.5em;
+    box-shadow: 0 0 10px #060606;
+    backdrop-filter: blur(16px);
+  }
+
+  .service-container {
+    display: flex;
+    padding: 1em;
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .service-container .item {
+    width: 18em;
+    border: 1px solid #444;
+    border-radius: 1em;
+    padding: 1em;
+    box-shadow: 0 0 10px #060606;
+    position: relative;
+    min-height: 10em;
+    background: linear-gradient(180deg,#242424,#121212 65.62%);
+    overflow: hidden;
+  }
+
+  /* .service-container .item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    width: 100%;
+    height: 100%;
+    --accents-2: #44444400;
+    border-radius: inherit;
+    background: conic-gradient(from 100deg at 50% 50%,var(--accents-2) 0deg,var(--accents-2) 176deg,#fff 193deg,var(--accents-2) 217deg,var(--accents-2) 1turn);
+  } */
+
+  .service-container .item .footer {
+    font-size: .8em; 
+    display: flex; 
+    gap: .5em;
+    align-items: center;
+    position: absolute;
+    bottom: 1em;
+  }
+
+  .service-container .item .footer hr {
+    border: 0; 
+    background: #ffffff; 
+    height: 19px; 
+    width: 1px; 
+    margin: 0;
+  }
+
+  .service-container .item:nth-child(1) {
+    background: linear-gradient(180deg,#ffad1e69,#ffa2008a 65.62%);
+  }
+
+  .service-container .item:nth-child(2) {
+    background: linear-gradient(180deg,#63a0d969,#63a0d98a 65.62%);
+  }
+
+  .service-container .item:nth-child(5) {
+    background: linear-gradient(180deg,#c5120b69,#c5120b8a 65.62%);
+  }
+
+  .service-container .item:nth-child(6) {
+    background: linear-gradient(180deg,#6600ff69,#6600ff8a 65.62%);
+  }
+
+  footer hr {
+    border: 0; 
+    background: gray; 
+    height: 19px; 
+    width: 1px; 
+    margin: 0;
+  }
+
+  footer > div {
+    display: flex;
+    width: 100%;
+    gap: 1em;
+  }
+
+  footer > div:nth-child(1) {
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 600px) {
+    footer > div:nth-child(2) {
+      justify-content: center;
+    }
+
+    footer > div:nth-child(1) > div {
+      width: 100%;
+    }
+  }
+
+  .service-outer {
+    padding-top: 6em; 
+    padding-bottom: 5em;
+  }
+
+  .divider {
+    margin-top: 65vh; 
+    margin-bottom: -36em;
+  }
+
+  .divider svg {
+    margin-bottom: -.5em;
+  }
+
+  .divider > div {
+    background: #222; 
+    background: linear-gradient(180deg, #222 34%, rgba(66,53,53,0) 100%); 
+    height: 20em;
+  }

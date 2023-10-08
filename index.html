@@ -8,178 +8,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
-  <style type="text/css">
-    .stroke {
-      fill: none;
-      stroke-width: 3px;
-      stroke: white;
-    }
-
-    body {
-      background-color: black;
-      font-family: 'Roboto Mono', monospace;
-      color: white;
-      margin: 0;
-      /* background-image: radial-gradient(gray 2px,transparent 0);
-            background-size: 60px 60px; */
-    }
-
-    h1 {
-      margin: 0;
-    }
-
-    .st0 {
-      fill: none;
-    }
-
-    .st1 {
-      fill: url(#SVGID_1_);
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1em;
-      z-index: 10;
-    }
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .logo {
-      width: 60vw;
-      margin-left: auto;
-      margin-right: auto;
-      position: relative;
-      margin-top: 25vh;
-    }
-
-    footer {
-      padding: 1em 12em;
-      padding-top: 3em;
-      border-top: #666 solid 1px;
-    }
-
-    .logo-background {
-      position: absolute;
-      filter: blur(15vw);
-      z-index: -1;
-    }
-
-    .logo-container {
-      background-repeat: no-repeat;
-      background-color: #ff000000;
-      background-image: radial-gradient(at 2% 0%, hsla(1, 0%, 34%, 1) 0px, black 50%);
-      height: 90vh;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      z-index: -1;
-    }
-
-    .container {
-      position: relative;
-      padding: 0 15em;
-    }
-
-    .feature-container {
-      display: flex;
-      justify-content: space-between;
-      padding: 1em;
-      gap: 1em;
-    }
-
-    .feature-container .item {
-      background-color: #222222b0;
-      border-radius: 15px;
-      border: 1px solid #666;
-      padding: 1em;
-      width: 100%;
-      box-shadow: 0 0 10px #060606;
-      backdrop-filter: blur(16px);
-    }
-
-    .service-container {
-      display: flex;
-      padding: 1em;
-      gap: 1em;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .service-container .item {
-      width: 29%;
-      border: 1px solid #444;
-      border-radius: 1em;
-      padding: 1em;
-      box-shadow: 0 0 10px #060606;
-      position: relative;
-      min-height: 10em;
-      background: linear-gradient(180deg,#242424,#121212 65.62%);
-    }
-
-    /* .service-container .item::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      padding: 1px;
-      mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      width: 100%;
-      height: 100%;
-      --accents-2: #44444400;
-      border-radius: inherit;
-      background: conic-gradient(from 100deg at 50% 50%,var(--accents-2) 0deg,var(--accents-2) 176deg,#fff 193deg,var(--accents-2) 217deg,var(--accents-2) 1turn);
-    } */
-
-    .service-container .item .footer {
-      font-size: .8em; 
-      display: flex; 
-      gap: .5em;
-      align-items: center;
-      position: absolute;
-      bottom: 1em;
-    }
-
-    .service-container .item .footer hr {
-      border: 0; 
-      background: #ffffff; 
-      height: 19px; 
-      width: 1px; 
-      margin: 0;
-    }
-
-    .service-container .item:nth-child(1) {
-      background: linear-gradient(180deg,#ffad1e69,#ffa2008a 65.62%);
-    }
-
-    .service-container .item:nth-child(2) {
-      background: linear-gradient(180deg,#63a0d969,#63a0d98a 65.62%);
-    }
-
-    .service-container .item:nth-child(5) {
-      background: linear-gradient(180deg,#c5120b69,#c5120b8a 65.62%);
-    }
-
-    .service-container .item:nth-child(6) {
-      background: linear-gradient(180deg,#6600ff69,#6600ff8a 65.62%);
-    }
-  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="Assets/css/style.css">
 </head>
 
 <body>
   <nav>
     <div>
-
+      
     </div>
     <div>
       <a href="https://login.netdb.at">Login</a>
@@ -188,7 +24,7 @@
 
   <div class="logo-container">
     <div class="logo">
-      <svg class="logo-background" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 512" style="enable-background:new 0 0 1920 512;" xml:space="preserve">
+      <svg class="logo-background" id="logo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 512" xml:space="preserve">
         <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="350.5099" y1="147.3397" x2="354.231" y2="424.2253">
           <stop id="startColor" offset="0" style="stop-color:#00D4D1" />
           <stop id="endColor" offset="0.9942" style="stop-color:#00596A" />
@@ -205,11 +41,7 @@
         <path class="stroke st1" d="M1671.29,425.39L1671.29,425.39 c39.82,0,72.4-32.58,72.4-72.4v-198.2c0-39.82-32.58-72.4-72.4-72.4h0c-39.82,0-72.4,32.58-72.4,72.4v198.2 C1598.89,392.81,1631.47,425.39,1671.29,425.39z" />
       </svg>
 
-      <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 512" style="enable-background:new 0 0 1920 512;" xml:space="preserve">
-        <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="350.5099" y1="147.3397" x2="354.231" y2="424.2253">
-          <stop id="startColor" offset="0" style="stop-color:#00D4D1" />
-          <stop id="endColor" offset="0.9942" style="stop-color:#00596A" />
-        </linearGradient>
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 512" xml:space="preserve">
         <path class="stroke st0" d="M784.08,154.77v-0.19c0-39.87-32.62-72.5-72.5-72.5H572.41c-39.87,0-72.5,32.62-72.5,72.5v72.68l-0.04,23.05 c0,0.05,0,0.1,0,0.15v0.19c0,0.04,0,0.08,0,0.12l-0.05,33.98v72.68c0,39.87,32.62,72.5,72.5,72.5H711.5 c39.87,0,72.5-32.62,72.5-72.5v-0.19c0-38.69-30.72-70.55-68.97-72.41c5.5-10.2,8.63-21.85,8.63-34.19v-0.19 c0-8.28-1.42-16.23-4.01-23.66C755.77,222.76,784.08,191.92,784.08,154.77z" />
         <path class="stroke st1" d="M351.93,424.94c-39.82,0-72.4-32.58-72.4-72.4c0,0,0-198.34,0-198.34c0-39.82,32.58-72.4,72.4-72.4 c39.82,0,72.4,32.58,72.4,72.4c0,0,0,198.34,0,198.34C424.34,392.35,391.76,424.94,351.93,424.94z" />
         <path class="stroke st0" d="M397.31,295.79L156.18,102.18C125.1,77.22,79.31,82.3,54.41,113.46c-0.19,0.24-0.36,0.48-0.55,0.72 C43.35,126.75,37,142.91,37,160.49v195.05c0,39.82,32.58,72.4,72.4,72.4c39.82,0,72.4-32.58,72.4-72.4v-46.79 c62.41,50.11,124.98,100.36,124.98,100.36c31.08,24.96,76.88,19.88,101.77-11.28C433.45,366.66,428.39,320.75,397.31,295.79z" />
@@ -224,11 +56,11 @@
     </div>
   </div>
 
-  <div class="divider" style="margin-top: 58vh; margin-bottom: -36em;">
-    <svg style="margin-bottom: -.5em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <div class="divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
       <path fill="#222" fill-opacity="1" d="M0,224L1440,160L1440,320L0,320Z"></path>
     </svg>
-    <div style=" background: #222; background: linear-gradient(180deg, #222 34%, rgba(66,53,53,0) 100%); height: 20em;"></div>
+    <div></div>
   </div>
 
   <div class="container">
@@ -254,7 +86,7 @@
         </p>
       </div>
     </div>
-    <div style="padding-top: 6em; padding-bottom: 5em;">
+    <div class="service-outer">
       <h1>Services</h1>
       <div class="service-container">
         <div class="item">
@@ -361,12 +193,17 @@
             <use xlink:href="#discord" height="17" width="17" viewBox="0 0 17 16"></use>
           </svg>
         </a>
+        <a href="mailto:support@netdb.at">
+          <svg xmlns="http://www.w3.org/2000/svg" height="4em" width="4em" fill="white" viewBox="0 0 16 16">
+            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+          </svg>
+        </a>
       </div>
     </div>
   </div>
 
   <footer>
-    <div style="display: flex; gap: 1em; justify-content: space-between;">
+    <div style="justify-content: space-between;">
       <div>
         <h1>Netdb</h1>
       </div>
@@ -388,17 +225,17 @@
         </ul>
       </div>
     </div>
-    <div style="display: flex; gap: 1em; width: 100%; align-items: center;">
+    <div style="align-items: center;">
       <p>© 2023</p>
-      <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
+      <hr/>
       <a href="https://github.com/orgs/Netflix-Database">
         <svg id="github" height="19" viewBox="0 0 17 16" width="19" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(githublogo)"><path clip-rule="evenodd" d="M8.18391.249268C3.82241.249268.253906 3.81777.253906 8.17927c0 3.46933 2.279874 6.44313 5.451874 7.53353.3965.0991.49563-.1983.49563-.3965v-1.3878c-2.18075.4956-2.67638-.9912-2.67638-.9912-.3965-.8922-.89212-1.1895-.89212-1.1895-.69388-.4957.09912-.4957.09912-.4957.793.0992 1.1895.793 1.1895.793.69388 1.2887 1.88338.8922 2.27988.6939.09912-.4956.29737-.8921.49562-1.0904-1.78425-.1982-3.5685-.8921-3.5685-3.96496 0-.89212.29738-1.586.793-2.08162-.09912-.19825-.3965-.99125.09913-2.08163 0 0 .69387-.19825 2.18075.793.59475-.19825 1.28862-.29737 1.9825-.29737.69387 0 1.38775.09912 1.98249.29737 1.4869-.99125 2.1808-.793 2.1808-.793.3965 1.09038.1982 1.88338.0991 2.08163.4956.59475.793 1.28862.793 2.08162 0 3.07286-1.8834 3.66766-3.66764 3.86586.29737.3965.59474.8921.59474 1.586v2.1808c0 .1982.0991.4956.5948.3965 3.172-1.0904 5.4518-4.0642 5.4518-7.53353-.0991-4.3615-3.6676-7.930002-8.02909-7.930002z" fill="currentColor" fill-rule="evenodd"></path></g><defs><clipPath id="githublogo"><path d="M0 0h15.86v15.86H0z" fill="transparent" transform="translate(.253906 .0493164)"></path></clipPath></defs></svg>
       </a>
-      <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
+      <hr/>
       <a href="https://discord.gg/wZzFqd6dxP">
         <svg id="discord" width="19" height="19" viewBox="0 -28.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="currentColor" fill-rule="nonzero"></path></g></svg>
       </a>
-      <hr style="border: 0; background: gray; height: 19px; width: 1px; margin: 0;"></hr>
+      <hr/>
       <a href="https://status.netdb.at">Status</a>
     </div>
   </footer>
