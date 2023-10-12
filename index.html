@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <link rel="stylesheet" href="Assets/css/style.css">
+  <script src="https://assets.netdb.at/login/js/lm/LoginManager.portable.js" allowUnauthorized></script>
+  <link rel="stylesheet" href="./Assets/css/style.css">
 </head>
 
 <body>
@@ -17,8 +18,15 @@
     <div>
       
     </div>
-    <div>
+    <div id="loginLink" class="d-none">
       <a href="https://login.netdb.at">Login</a>
+    </div>
+    <div id="profile" class="d-none">
+      <a href="https://login.netdb.at">pfb</a>
+    </div>
+    <div id="loginLoading">
+      <div class="pfb"></div>
+      <div class="name"></div>
     </div>
   </nav>
 
@@ -240,6 +248,16 @@
     </div>
   </footer>
   <script>
+    LoginManager.isLoggedIn().then(async (e) => {
+      if(e) {
+        document.getElementById("loginLoading").style.display = "none";
+        document.getElementById("profile").classList.remove("d-none");
+      } else {
+        document.getElementById("loginLoading").style.display = "none";
+        document.getElementById("loginLink").classList.remove("d-none");
+      }
+    });
+
     var lineDrawing = anime({
       targets: '.logo path',
       strokeDashoffset: [anime.setDashoffset, 0],
@@ -295,8 +313,6 @@
   setInterval(setColors, 5000 * (4 - 1));
 
   function setColors() {
-    console.log("test");
-
     setTimeout(function () {
       changeColor("#e29c25", "#db7220");
 
