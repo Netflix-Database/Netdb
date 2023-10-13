@@ -1,14 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <script src=""></script>
-    <link rel="stylesheet" href="Assets/css/profile.css">
-    <script src="https://assets.netdb.at/login/js/lm/LoginManager.portable.js" allowUnauthorized></script>
-</head>
-<body>
-    
-</body>
-</html>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+  <meta name="keywords" content="Netflix, API, Netdb">
+  <meta name="author" content="Yannick Fuereder">
+  <meta name="theme-color" content="#fc0303">  
+  <meta name="google" value="notranslate">
+
+  <title>Netdb | Profile</title>
+  <meta name="title" content="Netdb">
+  <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://netdb.at/">
+  <meta property="og:title" content="Netdb">
+  <meta property="og:description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+  <meta property="og:image" content="https://assets.netdb.at/logo/favicon.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://netdb.at/">
+  <meta property="twitter:title" content="Netdb">
+  <meta property="twitter:description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
+  <meta property="twitter:image" content="https://assets.netdb.at/logo/favicon.png">
+
+  <link rel="icon" href="https://assets.netdb.at/logo/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="https://assets.netdb.at/logo/favicon.png" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+  <script src="https://assets.netdb.at/login/js/lm/LoginManager.portable.js" allowUnauthorized></script>
+  <link rel="stylesheet" href="../Assets/css/profile.css">
+  <script src="../Assets/js/profile.js" defer></script>
+
+  <style>
+    .sidebar {
+        width: 20em;
+        overflow-x: hidden;
+        border-right: 1px solid #4d4d4d;
+        padding-top: 2em;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+      margin: 0 1em;
+      margin-bottom: .2em;
+    }
+  </style>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <ul>
+          <h2>General</h2>
+          <li>Personal Information</li>
+          <li>Password</li>
+          <li>Connected Accounts</li>
+          <h2>Security</h2>
+          <li>My Devices</li>
+          <li>Third Party Apps</li>
+
+          <li style="margin-top: 2em;">Logout</li>
+          <li style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;">Delete Account</li>
+        </ul>
+      </div>
+      <div style="width: 100%; overflow: hidden; overflow-y: auto; padding: 0 1em;">
+        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+          <h1>Personal Information</h1>
+        </div>
+        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+          <h1>Password</h1>
+        </div>
+        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+          <h1>Connected Accounts</h1>
+        </div>
+        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+          <h1>My Devices</h1>
+        </div>
+        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+          <h1>Third Party Apps</h1>
+        </div>
+      </div>
+    </div>
+  </body>
+  
+  </html>

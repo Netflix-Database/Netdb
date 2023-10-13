@@ -1,16 +1,14 @@
+body {
+  background-color: black;
+  font-family: 'Roboto Mono', monospace;
+  color: white;
+  margin: 0;
+}
+
 .stroke {
     fill: none;
     stroke-width: 3px;
     stroke: white;
-  }
-
-  body {
-    background-color: black;
-    font-family: 'Roboto Mono', monospace;
-    color: white;
-    margin: 0;
-    /* background-image: radial-gradient(gray 2px,transparent 0);
-          background-size: 60px 60px; */
   }
 
   h1 {
@@ -216,6 +214,41 @@
     background: #222; 
     background: linear-gradient(180deg, #222 34%, rgba(66,53,53,0) 100%); 
     height: 20em;
+  }
+
+  .pfb {
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 50%;
+    background-color: #333;
+    animation: skeleton 2s infinite;
+    overflow: hidden;
+    border: 1px solid #666;
+  }
+
+  .name.loading {
+    width: 10em;
+    height: 1em;
+    border-radius: 0.5em;
+    background-color: #333;
+    animation: skeleton 2s infinite;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 1em;
+  }
+
+  .profile img {
+    object-fit: cover;
+  }
+
+  @keyframes skeleton {
+    50% {
+      background-color: #555;
+    }
   }
 
   .d-none {
