@@ -38,57 +38,146 @@
   <link rel="stylesheet" href="../Assets/css/profile.css">
   <script src="../Assets/js/profile.js" defer></script>
 
-  <style>
-    .sidebar {
-        width: 20em;
-        overflow-x: hidden;
-        border-right: 1px solid #4d4d4d;
-        padding-top: 2em;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    li {
-      margin: 0 1em;
-      margin-bottom: .2em;
-    }
-  </style>
-  </head>
+</head>
   
   <body>
     <div class="container">
       <div class="sidebar">
+        <h1>Account Management</h1>
         <ul>
           <h2>General</h2>
-          <li>Personal Information</li>
-          <li>Password</li>
-          <li>Connected Accounts</li>
+          <li><a href="#personalInformation">Personal Information</a></li>
+          <li><a href="#password">Password</a></li>
+          <li><a href="#connectedAccounts">Connected Accounts</a></li>
           <h2>Security</h2>
-          <li>My Devices</li>
-          <li>Third Party Apps</li>
-
-          <li style="margin-top: 2em;">Logout</li>
-          <li style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;">Delete Account</li>
+          <li><a href="#2fa">Two Factor Authentication</a></li>
+          <li><a href="#myDevices">My Devices</a></li>
+          <li><a href="#thirdPartyApps">Third Party Apps</a></li>
+          <li><a href="#apiKeys">Api Keys</a></li>
         </ul>
+
+        <div style="position: absolute; bottom: 2em;">
+          <div style="margin-top: 2em;">Logout</div>
+          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;">Delete Account</div>
+        </div>
       </div>
-      <div style="width: 100%; overflow: hidden; overflow-y: auto; padding: 0 1em;">
-        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+      <div class="settings-container" style="padding-top: 3em;">
+        <div id="personalInformation" class="item">
           <h1>Personal Information</h1>
+          <input type="text" placeholder="Username">
+          <input type="text" placeholder="Firstname">
+          <input type="text" placeholder="Lastname">
+          <input type="text" placeholder="Email">
+          <input type="text" placeholder="Region">
+          <input type="text" placeholder="Prefered Language">
+
+          <div class="flex end">
+            <button>Save</button>
+          </div>
         </div>
-        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+        <div id="password" class="item">
           <h1>Password</h1>
+          <input type="text" placeholder="Email">
+          <input type="text" placeholder="Old Password">
+          <input type="text" placeholder="New Password">
+          <input type="text" placeholder="Repeat Password">
+
+          <div class="flex end">
+            <button>Save</button>
+          </div>
         </div>
-        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+        <div id="connectedAccounts" class="item">
           <h1>Connected Accounts</h1>
+
+          <div class="connected-accounts">
+            <h1 class="item">
+              <span>
+                <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+              </span>
+            </h1>
+            <h1 class="item">
+              <span>
+                <img src="https://brand.twitch.tv/assets/logos/svg/wordmark-extruded/black.svg" alt="Twitch">
+              </span>
+              <span>
+                <h1>Disconnect</h1>
+              </span>
+            </h1>
+            <h1 class="item">
+              <span>
+                <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0b544a3e3c7c05753bcd_full_logo_white_RGB.png" alt="Discord">
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+              </span>
+            </h1>
+            <h1 class="item">
+              <span>
+                <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png" alt="Google">
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+              </span>
+            </h1>
+            <h1 class="item">
+              <span>
+                <img style="filter: invert(1);" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apple_logo_icon_168588.png" alt="Apple">
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+              </span>
+            </h1>
+          </div>
+          
         </div>
-        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+        <div id="2fa" class="item">
+          <h1>Two Factor Authentication</h1>
+          <p>Coming Soon!</p>
+        </div>
+        <div id="myDevices" class="item">
           <h1>My Devices</h1>
+
+          <table>
+            <tr>
+              <th>Device</th>
+              <th>Location</th>
+              <th>IP</th>
+              <th>Last Login</th>
+              <th>Actions</th>
+            </tr>
+            <tr>
+              <td>Chrome</td>
+              <td>Germany</td>
+              <td>12341234</td>
+              <td>12.12.2021</td>
+              <td><button>Logout</button></td>
+            </tr>
+          </table>
+
+          <div class="flex end">
+            <button>Logout all devices</button>
+          </div>
         </div>
-        <div style="background-color: #1e1e1e; border-radius: .5em; width: calc(100% - 2em); padding: 1em; margin: 1em 0;">
+        <div id="thirdPartyApps" class="item">
           <h1>Third Party Apps</h1>
+
+          <p>No third party apps connected</p>
+        </div>
+        <div id="apiKeys" class="item">
+          <h1>Api Keys</h1>
+
+          <p>Coming Soon!</p>
         </div>
       </div>
     </div>
