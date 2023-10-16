@@ -72,4 +72,4 @@ jobs:
         continue-on-error: true
 
       - name: Copy files 
-        run: ssh staging "sudo rsync -av --ignore-existing /home/$SSH_USER/$REPO_NAME/ /var/www/netdbBeta
+        run: ssh staging "sudo rsync -av --ignore-existing /home/$SSH_USER/$REPO_NAME/ /var/www/netdbBeta"
