@@ -14,7 +14,7 @@ jobs:
 
       - name: Zip
         run: | 
-          tar --exclude='./.git' --exclude='./.github' --exclude='./Old' --exclude='build.tar.gz' -zcvf build.tar.gz -C ./ .
+          tar --exclude='./.git' --exclude='./.github' --exclude='./Old' --exclude='./build.tar.gz' -zcvf build.tar.gz -C ./ .
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
