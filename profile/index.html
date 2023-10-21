@@ -53,7 +53,9 @@
           <li><a href="#2fa">Two Factor Authentication</a></li>
           <li><a href="#myDevices">My Devices</a></li>
           <li><a href="#thirdPartyApps">Third Party Apps</a></li>
+          <h2>Developer</h2>
           <li><a href="#apiKeys">Api Keys</a></li>
+          <li><a href="#ssoCredentials">Sso Credentials</a></li>
         </ul>
 
         <div style="position: absolute; bottom: 2em;">
@@ -64,33 +66,34 @@
       <div class="settings-container" style="padding-top: 3em;">
         <div id="personalInformation" class="item">
           <h1>Personal Information</h1>
-          <input type="text" placeholder="Username">
-          <input type="text" placeholder="Firstname">
-          <input type="text" placeholder="Lastname">
-          <input type="text" placeholder="Email">
-          <input type="text" placeholder="Region">
-          <input type="text" placeholder="Prefered Language">
+          <input type="text" id="username" placeholder="Username">
+          <input type="text" id="firstname" placeholder="Firstname">
+          <input type="text" id="lastname" placeholder="Lastname">
+          <input type="text" id="pi_email" disabled placeholder="Email">
+          <input type="text" id="country" placeholder="Country" disabled>
+          <input type="text" id="preferredlang" placeholder="Preferred Language" disabled>
 
           <div class="flex end">
-            <button>Save</button>
+            <button id="pi_save">Save</button>
           </div>
         </div>
         <div id="password" class="item">
           <h1>Password</h1>
-          <input type="text" placeholder="Email">
-          <input type="text" placeholder="Old Password">
-          <input type="text" placeholder="New Password">
-          <input type="text" placeholder="Repeat Password">
+          <input type="text" id="cp_email" placeholder="Email">
+          <input id="oldPassword" type="text" placeholder="Old Password">
+          <input id="newPassword1" type="text" placeholder="New Password">
+          <input id="newPassword2" type="text" placeholder="Repeat Password">
+          <input id="2cp_fa" class="d-none" type="text" placeholder="Repeat Password">
 
           <div class="flex end">
-            <button>Save</button>
+            <button id="cp_save">Save</button>
           </div>
         </div>
         <div id="connectedAccounts" class="item">
           <h1>Connected Accounts</h1>
 
           <div class="connected-accounts">
-            <h1 class="item">
+            <h1 id="ca_spotify" class="item">
               <span>
                 <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
               </span>
@@ -99,16 +102,24 @@
                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
               </span>
+              <span>
+                <h1>Disconnect</h1>
+              </span>
             </h1>
-            <h1 class="item">
+            <h1 id="ca_twitch" class="item">
               <span>
                 <img src="https://brand.twitch.tv/assets/logos/svg/wordmark-extruded/black.svg" alt="Twitch">
+              </span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
               </span>
               <span>
                 <h1>Disconnect</h1>
               </span>
             </h1>
-            <h1 class="item">
+            <h1 id="ca_discord" class="item">
               <span>
                 <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0b544a3e3c7c05753bcd_full_logo_white_RGB.png" alt="Discord">
               </span>
@@ -117,8 +128,11 @@
                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
               </span>
+              <span>
+                <h1>Disconnect</h1>
+              </span>
             </h1>
-            <h1 class="item">
+            <h1 id="ca_google" class="item">
               <span>
                 <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png" alt="Google">
               </span>
@@ -127,8 +141,11 @@
                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
               </span>
+              <span>
+                <h1>Disconnect</h1>
+              </span>
             </h1>
-            <h1 class="item">
+            <h1 id="ca_apple" class="item">
               <span>
                 <img style="filter: invert(1);" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apple_logo_icon_168588.png" alt="Apple">
               </span>
@@ -136,6 +153,9 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
+              </span>
+              <span>
+                <h1>Disconnect</h1>
               </span>
             </h1>
           </div>
@@ -176,6 +196,11 @@
         </div>
         <div id="apiKeys" class="item">
           <h1>Api Keys</h1>
+
+          <p>Coming Soon!</p>
+        </div>
+        <div id="ssoCredentials" class="item">
+          <h1>Single Sign On Credentials</h1>
 
           <p>Coming Soon!</p>
         </div>
