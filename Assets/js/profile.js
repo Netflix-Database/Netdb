@@ -30,13 +30,13 @@ LoginManager.isLoggedIn().then(async (e) => {
   const user = res.data;
   currentUser = user;
 
-  document.getElementById("username").innerHTML = user.username;
-  document.getElementById("firstname").innerHTML = user.firstname;
-  document.getElementById("lastname").innerHTML = user.lastname;
-  document.getElementById("pi_email").innerHTML = user.email;
-  document.getElementById("cp_email").innerHTML = user.email;
-  document.getElementById("country").innerHTML = user.country;
-  document.getElementById("preferredlang").innerHTML = user.preferredLang;
+  document.getElementById("username").value = user.username;
+  document.getElementById("firstname").value = user.firstname;
+  document.getElementById("lastname").value = user.lastname;
+  document.getElementById("pi_email").value = user.email;
+  document.getElementById("cp_email").value = user.email;
+  document.getElementById("country").value = user.country;
+  document.getElementById("preferredlang").value = user.preferredLang;
 
   if (user.discordId !== null)
     document.getElementById("ca_discord").classList.add("connected");
