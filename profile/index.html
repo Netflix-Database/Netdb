@@ -66,12 +66,16 @@
       <div class="settings-container" style="padding-top: 3em;">
         <div id="personalInformation" class="item">
           <h1>Personal Information</h1>
-          <input type="text" id="username" placeholder="Username">
-          <input type="text" id="firstname" placeholder="Firstname">
-          <input type="text" id="lastname" placeholder="Lastname">
           <input type="text" id="pi_email" disabled placeholder="Email">
-          <input type="text" id="country" placeholder="Country">
-          <input type="text" id="preferredlang" placeholder="Preferred Language">
+          <input type="text" id="username" placeholder="Username">
+          <div class="input-group">
+            <input type="text" id="firstname" placeholder="Firstname">
+            <input type="text" id="lastname" placeholder="Lastname">
+          </div>
+          <div class="input-group">
+            <input type="text" id="country" placeholder="Country">
+            <input type="text" id="preferredlang" placeholder="Preferred Language">
+          </div>
 
           <div class="flex end">
             <button id="pi_save">Save</button>
@@ -79,7 +83,7 @@
         </div>
         <div id="password" class="item">
           <h1>Password</h1>
-          <input type="text" id="cp_email" placeholder="Email">
+          <input type="text" id="cp_email" placeholder="Email" disabled>
           <input id="oldPassword" type="password" placeholder="Old Password">
           <input id="newPassword1" type="password" placeholder="New Password">
           <input id="newPassword2" type="password" placeholder="Repeat Password">
@@ -93,7 +97,7 @@
           <h1>Connected Accounts</h1>
 
           <div class="connected-accounts">
-            <h1 id="ca_spotify" class="item">
+            <h1 id="ca_spotify" class="item connected">
               <span>
                 <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
               </span>

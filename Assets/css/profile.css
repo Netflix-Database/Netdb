@@ -81,6 +81,12 @@ input:hover {
   background-color: #4d4d4d;
 }
 
+input[disabled] {
+  background-color: #222;
+  color: #4d4d4d;
+  cursor: pointer;
+}
+
 button {
   border: 2px solid #4d4d4d;
   background-color: transparent;
@@ -181,7 +187,7 @@ button:active {
 }
 
 .connected-accounts .item.connected > span:nth-child(3) {
-  display: block;
+  display: flex;
 }
 
 .connected-accounts .item.connected > span:nth-child(2) {
@@ -195,4 +201,10 @@ button:active {
 
 .flex.end {
   justify-content: flex-end;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: .5em;
 }
