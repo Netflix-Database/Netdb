@@ -103,9 +103,9 @@ async function changePassword() {
       "Content-Type": "application/json"
     },
     body: {
-      OldPassword: document.getElementById("oldpassword").value,
+      OldPassword: document.getElementById("oldPassword").value,
       Email: document.getElementById("cp_email").value,
-      Password: document.getElementById("newpassword").value,
+      Password: document.getElementById("newPassword1").value,
       TwoFaToken: currentUser["2fa"] ? document.getElementById("cp_2fa").value : null
     }
   });
