@@ -102,9 +102,11 @@
                 <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
               </span>
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
+                <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://api.netdb.at/link/spotify&scope=user-read-private%20user-read-email">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                </a>
               </span>
               <span>
                 <h1>Disconnect</h1>
@@ -141,9 +143,9 @@
                 <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png" alt="Google">
               </span>
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
               </span>
               <span>
                 <h1>Disconnect</h1>
@@ -167,27 +169,20 @@
         </div>
         <div id="2fa" class="item">
           <h1>Two Factor Authentication</h1>
-          <p>Coming Soon!</p>
+
+            <div class="flex">
+              <input id="2fa_enable" type="checkbox">
+              <label for="2fa_enable">Enable</label>
+            </div>
+            <div class="flex">
+              <input id="2fa_disable" type="checkbox">
+              <label for="2fa_disable">Disable</label>
+            </div>
         </div>
         <div id="myDevices" class="item">
           <h1>My Devices</h1>
 
-          <table>
-            <tr>
-              <th>Device</th>
-              <th>Location</th>
-              <th>IP</th>
-              <th>Last Login</th>
-              <th>Actions</th>
-            </tr>
-            <tr>
-              <td>Chrome</td>
-              <td>Germany</td>
-              <td>12341234</td>
-              <td>12.12.2021</td>
-              <td><button>Logout</button></td>
-            </tr>
-          </table>
+          <p>Coming Soon!</p>
 
           <div class="flex end">
             <button>Logout all devices</button>

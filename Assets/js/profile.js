@@ -54,12 +54,17 @@ LoginManager.isLoggedIn().then(async (e) => {
   //   document.getElementById("ca_apple").classList.add("connected");
 
   if (user['2fa'] && user['2faType'] == 'App') document.getElementById('cp_2fa').classList.remove('d-none');
+
+  if (user['2fa']) 
+    document.getElementById('2fa_enable').checked = true;
+  else
+    document.getElementById('2fa_disnable').checked = true;
 });
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 
-document.getElementsByTagName('input').forEach((element) => {
+Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
 });
 
@@ -94,12 +99,11 @@ async function savePersonalInformation() {
 }
 
 async function changePassword() {
-  //move to /user/password
-
   const pw = document.getElementById('newPassword1').value;
   const rpw = document.getElementById('newPassword2').value;
+  const oldPw = document.getElementById('oldPassword').value;
 
-  const error = validatePw(pw, rpw);
+  const error = validatePw(oldPw, pw, rpw);
 
   if (error) {
     document.getElementById('newPassword1').value = '';
@@ -107,6 +111,8 @@ async function changePassword() {
 
     document.getElementById('newPassword1').classList.add('invalid');
     document.getElementById('newPassword2').classList.add('invalid');
+
+    alert(error);
     return;
   }
 
@@ -118,9 +124,9 @@ async function changePassword() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      OldPassword: document.getElementById('oldPassword').value,
+      OldPassword: oldPw,
       Email: document.getElementById('cp_email').value,
-      Password: document.getElementById('newPassword1').value,
+      Password: pw,
       TwoFaToken: currentUser['2fa'] ? document.getElementById('cp_2fa').value : null,
     }),
   });
@@ -137,10 +143,12 @@ async function changePassword() {
     return;
   }
 
+  LoginManager.deleteCookie("token");
+  LoginManager.deleteCookie("refreshToken");
   window.location.href = 'https://login.netdb.at/?redirect=' + encodeURIComponent(window.location.href);
 }
 
-function validatePw(pw, rpw) {
+function validatePw(oldPw, pw, rpw) {
   if (pw.length < 8) return 'The password has to be at least 8 characters long';
 
   if (!isUpperCase(pw)) return 'The password has to contain at least one uppercase letter';
@@ -150,6 +158,8 @@ function validatePw(pw, rpw) {
   if (!isNumber(pw)) return 'The password has to contain at least one number';
 
   if (pw != rpw) return 'Passwords do not match';
+
+  if (pw == oldPw) return 'The new password cannot be the same as the old one';
 }
 
 function isUpperCase(str) {
