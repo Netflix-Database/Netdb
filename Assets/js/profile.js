@@ -53,6 +53,10 @@ LoginManager.isLoggedIn().then(async (e) => {
   // if (user.appleId !== null)
   //   document.getElementById("ca_apple").classList.add("connected");
 
+  Array.from(document.getElementsByClassName('connected')).forEach((element) => {
+    element.addEventListener('click', disconnectAccount);
+  });
+
   if (user['2fa'] && user['2faType'] == 'App') document.getElementById('cp_2fa').classList.remove('d-none');
 
   if (user['2fa']) 
@@ -172,4 +176,23 @@ function isLowerCase(str) {
 
 function isNumber(str) {
   return /[0-9]/.test(str);
+}
+
+async function disconnectAccount(e) {
+  const element = e.target.closest('h1');
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/unlink/' + element.dataset.type, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + LoginManager.getCookie("token"),
+    }
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at';
+    return;
+  }
+
+  element.classList.remove('connected');
 }

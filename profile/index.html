@@ -60,7 +60,7 @@
 
         <div style="position: absolute; bottom: 2em;">
           <div style="margin-top: 2em;">Logout</div>
-          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;">Delete Account</div>
+          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone">Delete Account</a></div>
         </div>
       </div>
       <div class="settings-container" style="padding-top: 3em;">
@@ -97,7 +97,7 @@
           <h1>Connected Accounts</h1>
 
           <div class="connected-accounts">
-            <h1 id="ca_spotify" class="item connected">
+            <h1 id="ca_spotify" class="item" data-type="spotify">
               <span>
                 <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
               </span>
@@ -112,33 +112,37 @@
                 <h1>Disconnect</h1>
               </span>
             </h1>
-            <h1 id="ca_twitch" class="item">
+            <h1 id="ca_twitch" class="item" data-type="twitch">
               <span>
                 <img src="https://brand.twitch.tv/assets/logos/svg/wordmark-extruded/black.svg" alt="Twitch">
               </span>
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
+                <a href="https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://api.login.netdb.at/link/twitch&response_type=code&scope=user_read">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                </a>
               </span>
               <span>
                 <h1>Disconnect</h1>
               </span>
             </h1>
-            <h1 id="ca_discord" class="item">
+            <h1 id="ca_discord" class="item" data-type="discord">
               <span>
                 <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0b544a3e3c7c05753bcd_full_logo_white_RGB.png" alt="Discord">
               </span>
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
+                <a href="https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://api.login.netdb.at/link/discord&response_type=code&scope=identify%20email">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                </a>
               </span>
               <span>
                 <h1>Disconnect</h1>
               </span>
             </h1>
-            <h1 id="ca_google" class="item">
+            <h1 id="ca_google" class="item" data-type="google">
               <span>
                 <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png" alt="Google">
               </span>
@@ -151,7 +155,7 @@
                 <h1>Disconnect</h1>
               </span>
             </h1>
-            <h1 id="ca_apple" class="item">
+            <h1 id="ca_apple" class="item" data-type="apple">
               <span>
                 <img style="filter: invert(1);" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apple_logo_icon_168588.png" alt="Apple">
               </span>
@@ -200,6 +204,12 @@
         </div>
         <div id="ssoCredentials" class="item">
           <h1>Single Sign On Credentials</h1>
+
+          <p>Coming Soon!</p>
+        </div>
+
+        <div id="dangerZone" class="item">
+          <h1>Danger Zone</h1>
 
           <p>Coming Soon!</p>
         </div>
