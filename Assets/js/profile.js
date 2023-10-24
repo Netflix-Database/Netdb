@@ -2,7 +2,7 @@ var currentUser;
 
 LoginManager.isLoggedIn().then(async (e) => {
   if (!e) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -16,7 +16,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -40,7 +40,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   if (user.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
 
-  if (user.sporifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
+  if (user.spotifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
 
   if (user.twitchId !== null) document.getElementById('ca_twitch').classList.add('connected');
 
@@ -90,7 +90,7 @@ async function savePersonalInformation() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -136,7 +136,7 @@ async function changePassword() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -149,7 +149,7 @@ async function changePassword() {
 
   LoginManager.deleteCookie("token");
   LoginManager.deleteCookie("refreshToken");
-  window.location.href = 'https://login.netdb.at/?redirect=' + encodeURIComponent(window.location.href);
+  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
 }
 
 function validatePw(oldPw, pw, rpw) {
@@ -190,7 +190,7 @@ async function disconnectAccount(e) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 

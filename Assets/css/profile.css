@@ -212,3 +212,8 @@ button:active {
   align-items: center;
   gap: .5em;
 }
+
+.dangerZone {
+  outline: 2px solid #510c0c;
+  background-color: #261b1b;
+}
