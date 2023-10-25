@@ -1,3 +1,27 @@
+const languages = [
+  { key: 'en-us', name: 'English' },
+  { key: 'de-at', name: 'German' },
+  { key: 'fr-fr', name: 'French' },
+  { key: 'it-it', name: 'Italian' },
+  { key: 'es-es', name: 'Spanish' },
+  { key: 'pl-pl', name: 'Polish' },
+  { key: 'nl-nl', name: 'Dutch' },
+  { key: 'pt-pt', name: 'Portuguese' },
+  { key: 'ru-ru', name: 'Russian' },
+  { key: 'tr-tr', name: 'Turkish' }
+];
+const countries = [
+  { key: 'at', name: 'Austria' },
+  { key: 'de', name: 'Germany' },
+  { key: 'ch', name: 'Switzerland' },
+  { key: 'us', name: 'United States' },
+  { key: 'gb', name: 'United Kingdom' },
+  { key: 'fr', name: 'France' },
+  { key: 'it', name: 'Italy' },
+  { key: 'es', name: 'Spain' },
+  { key: 'pl', name: 'Poland' },
+  { key: 'nl', name: 'Netherlands' }
+];
 var currentUser;
 
 LoginManager.isLoggedIn().then(async (e) => {
@@ -7,6 +31,34 @@ LoginManager.isLoggedIn().then(async (e) => {
   }
 
   const token = LoginManager.getCookie('token');
+
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('action')) {
+    const action = urlParams.get('action');
+
+    switch (action) {
+      case "link": {
+        const provider = urlParams.get('type');
+        const code = urlParams.get('code');
+
+        const req = await fetch('https://api.login.netdb.at/link/' + provider + "?code=" + code, {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (req.status == 401) {
+          window.location.href = 'https://login.netdb.at';
+          return;
+        }
+
+        //show account linked msg        
+      }
+    }
+  }
 
   const req = await fetch('https://api.login.netdb.at/user', {
     method: 'GET',
@@ -35,8 +87,8 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('lastname').value = user.lastname;
   document.getElementById('pi_email').value = user.email;
   document.getElementById('cp_email').value = user.email;
-  document.getElementById('country').value = user.country;
-  document.getElementById('preferredlang').value = user.preferredLang;
+  document.getElementById('country').dataset.key = user.country;
+  document.getElementById('preferredlang').dataset.key = user.preferredLang;
 
   if (user.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
 
@@ -59,6 +111,9 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('2fa_enable').checked = true;
   else
     document.getElementById('2fa_disnable').checked = true;
+
+  initSearchbar(countries, "country_search");
+  initSearchbar(languages, "language_search");
 });
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
@@ -67,6 +122,64 @@ document.getElementById('cp_save').addEventListener('click', changePassword);
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
 });
+
+function initSearchbar(data, id) {
+  let searchbar = document.getElementById(id);
+  let inputBox = searchbar.querySelector("input");
+
+  if (inputBox.dataset.key)
+    inputBox.value = data.find((e) => e.key == inputBox.dataset.key).name;
+
+  showSuggestions(data, searchbar);
+
+  inputBox.addEventListener("keyup", (e) => filterSearch(e.target.value, data, searchbar));
+  inputBox.addEventListener("focus", () => searchbar.querySelector('.autocom-box').classList.add("active"));
+  searchbar.addEventListener("focusout", (e) => {
+    setTimeout(() => {
+      searchbar.querySelector('.autocom-box').classList.remove("active");
+    }, 100);
+  });
+
+  inputBox.onkeydown = (e) => {
+    if (e.key == "Enter") {
+      searchbar.querySelector('input').value = document.querySelector('.autocom-box h1').innerText;
+      searchbar.querySelector('input').dataset.key = document.querySelector('.autocom-box h1').dataset.key;
+    }
+  };
+}
+
+function filterSearch(userData, data, searchbar) {
+  const suggestions = [];
+
+  for (var i = 0; i < data.length; i++) suggestions.push(data[i]);
+
+  const emptyArray = suggestions.filter((data) => data.name.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()));
+
+  showSuggestions(emptyArray, searchbar);
+}
+
+function showSuggestions(list, searchbar) {
+  list = list.map((data) => {
+    return (data = '<h1 data-key="' + data.key + '">' + data.name + '</h1>');
+  });
+
+  let listData;
+  if (!list.length) {
+    // const userValue = searchbar.querySelector('input').value;
+    // listData = '<h1>' + userValue + '</h1>';
+  } else {
+    listData = list.join('');
+  }
+
+  searchbar.querySelector('.autocom-box').innerHTML = listData;
+
+  const allList = searchbar.querySelector('.autocom-box').querySelectorAll('h1');
+  for (let i = 0; i < allList.length; i++)
+    allList[i].addEventListener('click', (e) => {
+      searchbar.querySelector('input').value = e.target.innerText;
+      searchbar.querySelector('input').dataset.key = e.target.dataset.key;
+    });
+}
 
 async function savePersonalInformation() {
   await LoginManager.validateToken();

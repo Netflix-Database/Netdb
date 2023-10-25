@@ -73,8 +73,14 @@
             <input type="text" id="lastname" placeholder="Lastname">
           </div>
           <div class="input-group">
-            <input type="text" id="country" placeholder="Country">
-            <input type="text" id="preferredlang" placeholder="Preferred Language">
+            <div id="country_search" class="searchbar">
+              <input id="country" type="search" placeholder="Country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none" data-key="de">
+              <div class="autocom-box"></div>
+            </div>
+            <div id="language_search" class="searchbar">
+              <input id="preferredlang" type="search" placeholder="Preferred Language" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
+              <div class="autocom-box"></div>
+            </div>
           </div>
 
           <div class="flex end">
@@ -102,7 +108,7 @@
                 <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
               </span>
               <span>
-                <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://api.netdb.at/link/spotify&scope=user-read-private%20user-read-email">
+                <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://new.netdb.at/profile?action=link&type=spotify&scope=user-read-private%20user-read-email">
                   <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                   </svg>
