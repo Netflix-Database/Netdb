@@ -246,3 +246,7 @@ button:active {
 .searchbar .autocom-box h1:hover {
   background-color: #4d4d4d;
 }
+.dangerZone {
+  outline: 2px solid #510c0c;
+  background-color: #261b1b !important;
+}

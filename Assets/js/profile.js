@@ -26,7 +26,7 @@ var currentUser;
 
 LoginManager.isLoggedIn().then(async (e) => {
   if (!e) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -68,7 +68,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -92,7 +92,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   if (user.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
 
-  if (user.sporifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
+  if (user.spotifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
 
   if (user.twitchId !== null) document.getElementById('ca_twitch').classList.add('connected');
 
@@ -104,6 +104,10 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   // if (user.appleId !== null)
   //   document.getElementById("ca_apple").classList.add("connected");
+
+  Array.from(document.getElementsByClassName('connected')).forEach((element) => {
+    element.addEventListener('click', disconnectAccount);
+  });
 
   if (user['2fa'] && user['2faType'] == 'App') document.getElementById('cp_2fa').classList.remove('d-none');
 
@@ -199,7 +203,7 @@ async function savePersonalInformation() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -245,7 +249,7 @@ async function changePassword() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at';
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
 
@@ -258,7 +262,7 @@ async function changePassword() {
 
   LoginManager.deleteCookie("token");
   LoginManager.deleteCookie("refreshToken");
-  window.location.href = 'https://login.netdb.at/?redirect=' + encodeURIComponent(window.location.href);
+  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
 }
 
 function validatePw(oldPw, pw, rpw) {
@@ -285,4 +289,23 @@ function isLowerCase(str) {
 
 function isNumber(str) {
   return /[0-9]/.test(str);
+}
+
+async function disconnectAccount(e) {
+  const element = e.target.closest('h1');
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/unlink/' + element.dataset.type, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + LoginManager.getCookie("token"),
+    }
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  element.classList.remove('connected');
 }
