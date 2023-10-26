@@ -47,9 +47,11 @@ LoginManager.isLoggedIn().then(async (e) => {
     });
 
     if (req.status == 401) {
-      window.location.href = 'https://login.netdb.at';
+      window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
       return;
     }
+
+    localStorage.removeItem('linkType');
 
     //show account linked msg
   }
@@ -121,6 +123,7 @@ document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAc
 document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts("discord"));
 document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
 document.getElementById('ca_apple_link').addEventListener('click', () => LinkAccounts("apple"));
+document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
 
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
