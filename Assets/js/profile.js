@@ -116,11 +116,11 @@ LoginManager.isLoggedIn().then(async (e) => {
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
-document.getElementById('ca_spotify_link').addEventListener('click', LinkAccounts("spotify"));
-document.getElementById('ca_twitch_link').addEventListener('click', LinkAccounts("twitch"));
-document.getElementById('ca_discord_link').addEventListener('click', LinkAccounts("discord"));
-document.getElementById('ca_google_link').addEventListener('click', LinkAccounts("google"));
-document.getElementById('ca_apple_link').addEventListener('click', LinkAccounts("apple"));
+document.getElementById('ca_spotify_link').addEventListener('click', () => LinkAccounts("spotify"));
+document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts("twitch"));
+document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts("discord"));
+document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
+document.getElementById('ca_apple_link').addEventListener('click', () => LinkAccounts("apple"));
 
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
