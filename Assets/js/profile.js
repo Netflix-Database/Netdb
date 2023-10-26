@@ -81,8 +81,8 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('lastname').value = user.lastname;
   document.getElementById('pi_email').value = user.email;
   document.getElementById('cp_email').value = user.email;
-  document.getElementById('country').dataset.key = user.dataset.key;
-  document.getElementById('preferredlang').dataset.key = user.dataset.key;
+  document.getElementById('country').dataset.key = user.country;
+  document.getElementById('preferredlang').dataset.key = user.preferredLang;
 
   if (user.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
 
@@ -132,12 +132,15 @@ function LinkAccounts(type) {
   switch (type) {
     case "spotify": {
       window.location.href = "https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://new.netdb.at/profile&scope=user-read-private%20user-read-email";
+      break;
     }
     case "discord": {
       window.location.href = "https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=identify%20email";
+      break;
     }
     case "twitch": {
       window.location.href = "https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=user_read";
+      break;
     }
     case "github": {
     }
@@ -217,8 +220,8 @@ async function savePersonalInformation() {
     body: JSON.stringify({
       firstname: document.getElementById('firstname').value,
       lastname: document.getElementById('lastname').value,
-      country: document.getElementById('country').value,
-      preferredLang: document.getElementById('preferredlang').value,
+      country: document.getElementById('country').dataset.key,
+      preferredLang: document.getElementById('preferredlang').dataset.key,
       username: document.getElementById('username').value,
     }),
   });
