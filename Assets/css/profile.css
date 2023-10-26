@@ -186,6 +186,10 @@ button:active {
   background-color: black;
 }
 
+.connected-accounts h1:nth-child(6) {
+  background-color: black;
+}
+
 .connected-accounts .item > span:nth-child(3) {
   display: none;
 }

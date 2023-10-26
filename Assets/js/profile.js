@@ -52,6 +52,9 @@ LoginManager.isLoggedIn().then(async (e) => {
     }
 
     localStorage.removeItem('linkType');
+    urlParams.delete('code');
+
+    window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
 
     //show account linked msg
   }
@@ -319,7 +322,7 @@ function isNumber(str) {
 }
 
 async function disconnectAccount(e) {
-  const element = e.target.closest('h1');
+  const element = e.target.closest('[data-type]');
 
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/unlink/' + element.dataset.type, {
