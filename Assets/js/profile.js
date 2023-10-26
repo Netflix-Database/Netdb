@@ -34,30 +34,24 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   const urlParams = new URLSearchParams(window.location.search);
   
-  if (urlParams.has('action')) {
-    const action = urlParams.get('action');
+  if (urlParams.has('code')) {
+    const code = urlParams.get('code');
+    const provider = localStorage.getItem('linkType');
 
-    switch (action) {
-      case "link": {
-        const provider = urlParams.get('type');
-        const code = urlParams.get('code');
+    const req = await fetch('https://api.login.netdb.at/link/' + provider + '?code=' + code, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
 
-        const req = await fetch('https://api.login.netdb.at/link/' + provider + "?code=" + code, {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-          }
-        });
-
-        if (req.status == 401) {
-          window.location.href = 'https://login.netdb.at';
-          return;
-        }
-
-        //show account linked msg        
-      }
+    if (req.status == 401) {
+      window.location.href = 'https://login.netdb.at';
+      return;
     }
+
+    //show account linked msg
   }
 
   const req = await fetch('https://api.login.netdb.at/user', {
@@ -87,8 +81,8 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('lastname').value = user.lastname;
   document.getElementById('pi_email').value = user.email;
   document.getElementById('cp_email').value = user.email;
-  document.getElementById('country').dataset.key = user.country;
-  document.getElementById('preferredlang').dataset.key = user.preferredLang;
+  document.getElementById('country').dataset.key = user.dataset.key;
+  document.getElementById('preferredlang').dataset.key = user.dataset.key;
 
   if (user.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
 
@@ -122,10 +116,37 @@ LoginManager.isLoggedIn().then(async (e) => {
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
+document.getElementById('ca_spotify_link').addEventListener('click', LinkAccounts("spotify"));
+document.getElementById('ca_twitch_link').addEventListener('click', LinkAccounts("twitch"));
+document.getElementById('ca_discord_link').addEventListener('click', LinkAccounts("discord"));
+document.getElementById('ca_google_link').addEventListener('click', LinkAccounts("google"));
+document.getElementById('ca_apple_link').addEventListener('click', LinkAccounts("apple"));
 
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
 });
+
+function LinkAccounts(type) {
+  localStorage.setItem("linkType", type);
+
+  switch (type) {
+    case "spotify": {
+      window.location.href = "https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://new.netdb.at/profile&scope=user-read-private%20user-read-email";
+    }
+    case "discord": {
+      window.location.href = "https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=identify%20email";
+    }
+    case "twitch": {
+      window.location.href = "https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=user_read";
+    }
+    case "github": {
+    }
+    case "google": {
+    }
+    case "apple": {
+    }
+  }
+}
 
 function initSearchbar(data, id) {
   let searchbar = document.getElementById(id);

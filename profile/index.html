@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <meta name="description" content="Netdb is an unofficial API for all movies and shows provided by Netflix">
   <meta name="keywords" content="Netflix, API, Netdb">
   <meta name="author" content="Yannick Fuereder">
-  <meta name="theme-color" content="#fc0303">  
+  <meta name="theme-color" content="#fc0303">
   <meta name="google" value="notranslate">
 
   <title>Netdb | Profile</title>
@@ -39,188 +40,182 @@
   <script src="../Assets/js/profile.js" defer></script>
 
 </head>
-  
-  <body>
-    <div class="container">
-      <div class="sidebar">
-        <h1>Account Management</h1>
-        <ul>
-          <h2>General</h2>
-          <li><a href="#personalInformation">Personal Information</a></li>
-          <li><a href="#password">Password</a></li>
-          <li><a href="#connectedAccounts">Connected Accounts</a></li>
-          <h2>Security</h2>
-          <li><a href="#2fa">Two Factor Authentication</a></li>
-          <li><a href="#myDevices">My Devices</a></li>
-          <li><a href="#thirdPartyApps">Third Party Apps</a></li>
-          <h2>Developer</h2>
-          <li><a href="#apiKeys">Api Keys</a></li>
-          <li><a href="#ssoCredentials">Sso Credentials</a></li>
-        </ul>
 
-        <div style="position: absolute; bottom: 2em;">
-          <div style="margin-top: 2em;">Logout</div>
-          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
-        </div>
-      </div>
-      <div class="settings-container" style="padding-top: 3em;">
-        <div id="personalInformation" class="item">
-          <h1>Personal Information</h1>
-          <input type="text" id="pi_email" disabled placeholder="Email">
-          <input type="text" id="username" placeholder="Username">
-          <div class="input-group">
-            <input type="text" id="firstname" placeholder="Firstname">
-            <input type="text" id="lastname" placeholder="Lastname">
-          </div>
-          <div class="input-group">
-            <div id="country_search" class="searchbar">
-              <input id="country" type="search" placeholder="Country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none" data-key="de">
-              <div class="autocom-box"></div>
-            </div>
-            <div id="language_search" class="searchbar">
-              <input id="preferredlang" type="search" placeholder="Preferred Language" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
-              <div class="autocom-box"></div>
-            </div>
-          </div>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h1>Account Management</h1>
+      <ul>
+        <h2>General</h2>
+        <li><a href="#personalInformation">Personal Information</a></li>
+        <li><a href="#password">Password</a></li>
+        <li><a href="#connectedAccounts">Connected Accounts</a></li>
+        <h2>Security</h2>
+        <li><a href="#2fa">Two Factor Authentication</a></li>
+        <li><a href="#myDevices">My Devices</a></li>
+        <li><a href="#thirdPartyApps">Third Party Apps</a></li>
+        <h2>Developer</h2>
+        <li><a href="#apiKeys">Api Keys</a></li>
+        <li><a href="#ssoCredentials">Sso Credentials</a></li>
+      </ul>
 
-          <div class="flex end">
-            <button id="pi_save">Save</button>
-          </div>
-        </div>
-        <div id="password" class="item">
-          <h1>Password</h1>
-          <input type="text" id="cp_email" placeholder="Email" disabled>
-          <input id="oldPassword" type="password" placeholder="Old Password">
-          <input id="newPassword1" type="password" placeholder="New Password">
-          <input id="newPassword2" type="password" placeholder="Repeat Password">
-          <input id="cp_2fa" class="d-none" type="text" placeholder="2fa Token">
-
-          <div class="flex end">
-            <button id="cp_save">Save</button>
-          </div>
-        </div>
-        <div id="connectedAccounts" class="item">
-          <h1>Connected Accounts</h1>
-
-          <div class="connected-accounts">
-            <h1 id="ca_spotify" class="item" data-type="spotify">
-              <span>
-                <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
-              </span>
-              <span>
-                <a href="https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://new.netdb.at/profile?action=link&type=spotify&scope=user-read-private%20user-read-email">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-                </a>
-              </span>
-              <span>
-                <h1>Disconnect</h1>
-              </span>
-            </h1>
-            <h1 id="ca_twitch" class="item" data-type="twitch">
-              <span>
-                <img src="https://brand.twitch.tv/assets/logos/svg/wordmark-extruded/black.svg" alt="Twitch">
-              </span>
-              <span>
-                <a href="https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://api.login.netdb.at/link/twitch&response_type=code&scope=user_read">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-                </a>
-              </span>
-              <span>
-                <h1>Disconnect</h1>
-              </span>
-            </h1>
-            <h1 id="ca_discord" class="item" data-type="discord">
-              <span>
-                <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0b544a3e3c7c05753bcd_full_logo_white_RGB.png" alt="Discord">
-              </span>
-              <span>
-                <a href="https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://api.login.netdb.at/link/discord&response_type=code&scope=identify%20email">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-                </a>
-              </span>
-              <span>
-                <h1>Disconnect</h1>
-              </span>
-            </h1>
-            <h1 id="ca_google" class="item" data-type="google">
-              <span>
-                <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png" alt="Google">
-              </span>
-              <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-              </span>
-              <span>
-                <h1>Disconnect</h1>
-              </span>
-            </h1>
-            <h1 id="ca_apple" class="item" data-type="apple">
-              <span>
-                <img style="filter: invert(1);" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apple_logo_icon_168588.png" alt="Apple">
-              </span>
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-              </span>
-              <span>
-                <h1>Disconnect</h1>
-              </span>
-            </h1>
-          </div>
-          
-        </div>
-        <div id="2fa" class="item">
-          <h1>Two Factor Authentication</h1>
-
-            <div class="flex">
-              <input id="2fa_enable" type="checkbox">
-              <label for="2fa_enable">Enable</label>
-            </div>
-            <div class="flex">
-              <input id="2fa_disable" type="checkbox">
-              <label for="2fa_disable">Disable</label>
-            </div>
-        </div>
-        <div id="myDevices" class="item">
-          <h1>My Devices</h1>
-
-          <p>Coming Soon!</p>
-
-          <div class="flex end">
-            <button>Logout all devices</button>
-          </div>
-        </div>
-        <div id="thirdPartyApps" class="item">
-          <h1>Third Party Apps</h1>
-
-          <p>No third party apps connected</p>
-        </div>
-        <div id="apiKeys" class="item">
-          <h1>Api Keys</h1>
-
-          <p>Coming Soon!</p>
-        </div>
-        <div id="ssoCredentials" class="item">
-          <h1>Single Sign On Credentials</h1>
-
-          <p>Coming Soon!</p>
-        </div>
-
-        <div id="dangerZone" class="item dangerZone">
-          <h1>Danger Zone</h1>
-
-          <p>Coming Soon!</p>
-        </div>
+      <div style="position: absolute; bottom: 2em;">
+        <div style="margin-top: 2em;">Logout</div>
+        <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
       </div>
     </div>
-  </body>
-  
-  </html>
+    <div class="settings-container" style="padding-top: 3em;">
+      <div id="personalInformation" class="item">
+        <h1>Personal Information</h1>
+        <input type="text" id="pi_email" disabled placeholder="Email">
+        <input type="text" id="username" placeholder="Username">
+        <div class="input-group">
+          <input type="text" id="firstname" placeholder="Firstname">
+          <input type="text" id="lastname" placeholder="Lastname">
+        </div>
+        <div class="input-group">
+          <div id="country_search" class="searchbar">
+            <input id="country" type="search" placeholder="Country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none" data-key="de">
+            <div class="autocom-box"></div>
+          </div>
+          <div id="language_search" class="searchbar">
+            <input id="preferredlang" type="search" placeholder="Preferred Language" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
+            <div class="autocom-box"></div>
+          </div>
+        </div>
+
+        <div class="flex end">
+          <button id="pi_save">Save</button>
+        </div>
+      </div>
+      <div id="password" class="item">
+        <h1>Password</h1>
+        <input type="text" id="cp_email" placeholder="Email" disabled>
+        <input id="oldPassword" type="password" placeholder="Old Password">
+        <input id="newPassword1" type="password" placeholder="New Password">
+        <input id="newPassword2" type="password" placeholder="Repeat Password">
+        <input id="cp_2fa" class="d-none" type="text" placeholder="2fa Token">
+
+        <div class="flex end">
+          <button id="cp_save">Save</button>
+        </div>
+      </div>
+      <div id="connectedAccounts" class="item">
+        <h1>Connected Accounts</h1>
+
+        <div class="connected-accounts">
+          <h1 id="ca_spotify" class="item" data-type="spotify">
+            <span>
+              <img src="https://die-zoellner.de/wp-content/uploads/2019/04/spotify-logo-white-rgb.png" alt="Spotify">
+            </span>
+            <span id="ca_spotify_link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+              </svg>
+            </span>
+            <span>
+              <h1>Disconnect</h1>
+            </span>
+          </h1>
+          <h1 id="ca_twitch" class="item" data-type="twitch">
+            <span>
+              <img src="https://brand.twitch.tv/assets/logos/svg/wordmark-extruded/black.svg" alt="Twitch">
+            </span>
+            <span id="ca_twitch_link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+              </svg>
+            </span>
+            <span>
+              <h1>Disconnect</h1>
+            </span>
+          </h1>
+          <h1 id="ca_discord" class="item" data-type="discord">
+            <span>
+              <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0b544a3e3c7c05753bcd_full_logo_white_RGB.png" alt="Discord">
+            </span>
+            <span id="ca_discord_link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+              </svg>
+            </span>
+            <span>
+              <h1>Disconnect</h1>
+            </span>
+          </h1>
+          <h1 id="ca_google" class="item" data-type="google">
+            <span>
+              <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png" alt="Google">
+            </span>
+            <span id="ca_google_link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+              </svg>
+            </span>
+            <span>
+              <h1>Disconnect</h1>
+            </span>
+          </h1>
+          <h1 id="ca_apple" class="item" data-type="apple">
+            <span>
+              <img style="filter: invert(1);" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apple_logo_icon_168588.png" alt="Apple">
+            </span>
+            <span id="ca_apple_link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="white" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+              </svg>
+            </span>
+            <span>
+              <h1>Disconnect</h1>
+            </span>
+          </h1>
+        </div>
+
+      </div>
+      <div id="2fa" class="item">
+        <h1>Two Factor Authentication</h1>
+
+        <div class="flex">
+          <input id="2fa_enable" type="checkbox">
+          <label for="2fa_enable">Enable</label>
+        </div>
+        <div class="flex">
+          <input id="2fa_disable" type="checkbox">
+          <label for="2fa_disable">Disable</label>
+        </div>
+      </div>
+      <div id="myDevices" class="item">
+        <h1>My Devices</h1>
+
+        <p>Coming Soon!</p>
+
+        <div class="flex end">
+          <button>Logout all devices</button>
+        </div>
+      </div>
+      <div id="thirdPartyApps" class="item">
+        <h1>Third Party Apps</h1>
+
+        <p>No third party apps connected</p>
+      </div>
+      <div id="apiKeys" class="item">
+        <h1>Api Keys</h1>
+
+        <p>Coming Soon!</p>
+      </div>
+      <div id="ssoCredentials" class="item">
+        <h1>Single Sign On Credentials</h1>
+
+        <p>Coming Soon!</p>
+      </div>
+
+      <div id="dangerZone" class="item dangerZone">
+        <h1>Danger Zone</h1>
+
+        <p>Coming Soon!</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
