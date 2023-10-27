@@ -119,7 +119,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   initSearchbar(languages, "language_search");
 
   user.api_keys.forEach((key) => {
-    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.client_id, "*************"));
+    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key, "*************"));
   });
 });
 
@@ -145,6 +145,8 @@ function createApiKeyRow(client_id, client_secret) {
   const td = document.createElement('td');
   const deleteBtn = document.createElement('button');
   const regenBtn = document.createElement('button');
+  deleteBtn.innerText = 'Delete';
+  regenBtn.innerText = 'Regenerate';
 
   deleteBtn.addEventListener('click', () => deleteApiKey(client_id));
   regenBtn.addEventListener('click', () => regenerateApiKey(client_id));
@@ -177,7 +179,7 @@ async function createApiKey() {
     return;
   }
 
-  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.client_id, res.client_secret));
+  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId, res.data.clientSecret));
 }
 
 async function regenerateApiKey(clientId) {
@@ -186,7 +188,6 @@ async function regenerateApiKey(clientId) {
     method: 'PUT',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
     },
     body: "\"" + clientId + "\"",
   });
