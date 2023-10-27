@@ -164,6 +164,7 @@ async function createApiKey() {
     method: 'GET',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
     },
   });
 
@@ -185,9 +186,10 @@ async function createApiKey() {
 async function regenerateApiKey(clientId) {
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/user/apikey', {
-    method: 'PUT',
+    method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
     },
     body: "\"" + clientId + "\"",
   });
