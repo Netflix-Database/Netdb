@@ -118,7 +118,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   initSearchbar(countries, "country_search");
   initSearchbar(languages, "language_search");
 
-  user.apiKeys.forEach((key) => {
+  user.api_keys.forEach((key) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.client_id, "*************"));
   });
 });
@@ -172,7 +172,7 @@ async function createApiKey() {
 
   const res = await req.json();
 
-  if (res.statusCode != 200) {
+  if (res.statusCode != 203) {
     console.log(res);
     return;
   }
