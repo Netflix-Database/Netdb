@@ -52,6 +52,7 @@ li a {
   padding: 1em;
   margin: 1em 0;
   box-shadow: 0 0 1em rgba(0, 0, 0, .2);
+  overflow: hidden;
 }
 
 .settings-container > .item > h1 {
@@ -205,6 +206,7 @@ button:active {
 .flex {
   display: flex;
   align-items: center;
+  margin-top: .5em;
 }
 
 .flex.end {
@@ -250,7 +252,42 @@ button:active {
 .searchbar .autocom-box h1:hover {
   background-color: #4d4d4d;
 }
+
 .dangerZone {
   outline: 2px solid #510c0c;
   background-color: #261b1b !important;
+}
+
+td, th {
+  border: none;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #222;}
+
+tr:hover {background-color: 222;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #111;
+  color: white;
+}
+
+.apiKeysTable {
+  width: 100%; 
+  table-layout: fixed; 
+  border-collapse: collapse; 
+  border-radius: .5em; 
+  overflow: hidden;
+}
+
+.apiKeysTable td:nth-child(3) {
+  display: flex;
+  gap: 1em;
+}
+
+.apiKeysTable td:nth-child(3) button {
+  padding: .8em;
 }

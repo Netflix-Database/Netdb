@@ -60,7 +60,7 @@
       </ul>
 
       <div style="position: absolute; bottom: 2em;">
-        <div style="margin-top: 2em;">Logout</div>
+        <div id="logout" style="margin-top: 2em;">Logout</div>
         <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
       </div>
     </div>
@@ -214,7 +214,16 @@
       <div id="apiKeys" class="item">
         <h1>Api Keys</h1>
 
-        <p>Coming Soon!</p>
+        <table id="apiKeysTable" class="apiKeysTable">
+          <tr>
+            <th>Key</th>
+            <th>Secret</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+        <div class="flex end">
+          <button id="createApiKey">Create new</button>
+        </div>
       </div>
       <div id="ssoCredentials" class="item">
         <h1>Single Sign On Credentials</h1>

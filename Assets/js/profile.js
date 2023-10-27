@@ -117,6 +117,10 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   initSearchbar(countries, "country_search");
   initSearchbar(languages, "language_search");
+
+  user.apiKeys.forEach((key) => {
+    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.client_id, "*************"));
+  });
 });
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
@@ -127,10 +131,98 @@ document.getElementById('ca_discord_link').addEventListener('click', () => LinkA
 document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
 document.getElementById('ca_apple_link').addEventListener('click', () => LinkAccounts("apple"));
 document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
+document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
+document.getElementById('createApiKey').addEventListener('click', createApiKey);
 
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
 });
+
+function createApiKeyRow(client_id, client_secret) {
+  const row = document.createElement('tr');
+  row.id = client_id;
+  row.innerHTML = '<td>' + client_id + '</td><td>' + client_secret + '</td>';
+  const td = document.createElement('td');
+  const deleteBtn = document.createElement('button');
+  const regenBtn = document.createElement('button');
+
+  deleteBtn.addEventListener('click', () => deleteApiKey(client_id));
+  regenBtn.addEventListener('click', () => regenerateApiKey(client_id));
+
+  td.appendChild(regenBtn);
+  td.appendChild(deleteBtn);
+  row.appendChild(td);
+
+  return row;
+}
+
+async function createApiKey() {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/apikey', {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+    },
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
+
+  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.client_id, res.client_secret));
+}
+
+async function regenerateApiKey(clientId) {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/apikey', {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: "\"" + clientId + "\"",
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
+
+  document.getElementById(clientId).children[1].innerText = res.client_secret;
+}
+
+async function deleteApiKey(clientId) {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/apikey', {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+    },
+    body: "\"" + clientId + "\"",
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  document.getElementById(clientId).remove();
+}
 
 function LinkAccounts(type) {
   localStorage.setItem("linkType", type);
