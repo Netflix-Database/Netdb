@@ -206,7 +206,7 @@ async function regenerateApiKey(clientId) {
     return;
   }
 
-  document.getElementById(clientId).children[1].innerText = res.client_secret;
+  document.getElementById(clientId).children[1].innerText = res.data.clientSecret;
 }
 
 async function deleteApiKey(clientId) {
@@ -215,6 +215,7 @@ async function deleteApiKey(clientId) {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
     },
     body: "\"" + clientId + "\"",
   });
