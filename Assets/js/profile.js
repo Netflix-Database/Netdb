@@ -267,7 +267,7 @@ function initSearchbar(data, id) {
   searchbar.addEventListener("focusout", (e) => {
     setTimeout(() => {
       searchbar.querySelector('.autocom-box').classList.remove("active");
-    }, 100);
+    }, 500);
   });
 
   inputBox.onkeydown = (e) => {
