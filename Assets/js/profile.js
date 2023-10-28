@@ -95,14 +95,11 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   if (user.twitchId !== null) document.getElementById('ca_twitch').classList.add('connected');
 
-  // if (user.githubId !== null)
-  //   document.getElementById("ca_github").classList.add("connected");
+  if (user.githubId !== null)
+    document.getElementById("ca_github").classList.add("connected");
 
-  // if (user.googleId !== null)
-  //   document.getElementById("ca_google").classList.add("connected");
-
-  // if (user.appleId !== null)
-  //   document.getElementById("ca_apple").classList.add("connected");
+  if (user.googleId !== null)
+    document.getElementById("ca_google").classList.add("connected");
 
   Array.from(document.getElementsByClassName('connected')).forEach((element) => {
     element.addEventListener('click', disconnectAccount);
@@ -129,7 +126,6 @@ document.getElementById('ca_spotify_link').addEventListener('click', () => LinkA
 document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts("twitch"));
 document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts("discord"));
 document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
-document.getElementById('ca_apple_link').addEventListener('click', () => LinkAccounts("apple"));
 document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
 document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
@@ -245,10 +241,12 @@ function LinkAccounts(type) {
       break;
     }
     case "github": {
+      window.location.href = "https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805";
+      break;
     }
     case "google": {
-    }
-    case "apple": {
+      window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://new.netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com";
+      break;
     }
   }
 }
@@ -267,7 +265,7 @@ function initSearchbar(data, id) {
   searchbar.addEventListener("focusout", (e) => {
     setTimeout(() => {
       searchbar.querySelector('.autocom-box').classList.remove("active");
-    }, 500);
+    }, 200);
   });
 
   inputBox.onkeydown = (e) => {
