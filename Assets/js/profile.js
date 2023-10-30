@@ -8,8 +8,38 @@ const languages = [
   { key: 'nl-nl', name: 'Dutch' },
   { key: 'pt-pt', name: 'Portuguese' },
   { key: 'ru-ru', name: 'Russian' },
-  { key: 'tr-tr', name: 'Turkish' }
+  { key: 'tr-tr', name: 'Turkish' },
+  { key: 'zh-cn', name: 'Chinese' },
+  { key: 'ja-jp', name: 'Japanese' },
+  { key: 'ko-kr', name: 'Korean' },
+  { key: 'ar-sa', name: 'Arabic' },
+  { key: 'hi-in', name: 'Hindi' },
+  { key: 'no-no', name: 'Norwegian' },
+  { key: 'sv-se', name: 'Swedish' },
+  { key: 'fi-fi', name: 'Finnish' },
+  { key: 'da-dk', name: 'Danish' },
+  { key: 'cs-cz', name: 'Czech' },
+  { key: 'hu-hu', name: 'Hungarian' },
+  { key: 'el-gr', name: 'Greek' },
+  { key: 'th-th', name: 'Thai' },
+  { key: 'id-id', name: 'Indonesian' },
+  { key: 'ro-ro', name: 'Romanian' },
+  { key: 'sk-sk', name: 'Slovak' },
+  { key: 'uk-ua', name: 'Ukrainian' },
+  { key: 'bg-bg', name: 'Bulgarian' },
+  { key: 'hr-hr', name: 'Croatian' },
+  { key: 'ca-es', name: 'Catalan' },
+  { key: 'et-ee', name: 'Estonian' },
+  { key: 'fa-ir', name: 'Persian' },
+  { key: 'he-il', name: 'Hebrew' },
+  { key: 'is-is', name: 'Icelandic' },
+  { key: 'lt-lt', name: 'Lithuanian' },
+  { key: 'lv-lv', name: 'Latvian' },
+  { key: 'sr-rs', name: 'Serbian' },
+  { key: 'sl-si', name: 'Slovenian' },
+  { key: 'vi-vn', name: 'Vietnamese' },
 ];
+
 const countries = [
   { key: 'at', name: 'Austria' },
   { key: 'de', name: 'Germany' },
@@ -20,7 +50,16 @@ const countries = [
   { key: 'it', name: 'Italy' },
   { key: 'es', name: 'Spain' },
   { key: 'pl', name: 'Poland' },
-  { key: 'nl', name: 'Netherlands' }
+  { key: 'nl', name: 'Netherlands' },
+  { key: 'pt', name: 'Portugal' },
+  { key: 'ru', name: 'Russia' },
+  { key: 'tr', name: 'Turkey' },
+  { key: 'cn', name: 'China' },
+  { key: 'jp', name: 'Japan' },
+  { key: 'kr', name: 'Korea' },
+  { key: 'ar', name: 'Argentina' },
+  { key: 'au', name: 'Australia' },
+  { key: 'be', name: 'Belgium' },
 ];
 var currentUser;
 
@@ -56,7 +95,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
     window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
 
-    //show account linked msg
+    alert("Account successfully linked!");
   }
 
   const req = await fetch('https://api.login.netdb.at/user', {
@@ -129,10 +168,26 @@ document.getElementById('ca_google_link').addEventListener('click', () => LinkAc
 document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
 document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
+document.getElementById('deleteAccount').addEventListener('click', (e) => doubleClickButton(e, deleteAccount));
 
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
 });
+
+function doubleClickButton(e, func) {
+  if (e.target.dataset.clicked == 'true') {
+    func();
+    return;
+  }
+
+  e.target.dataset.clicked = 'true';
+  e.target.innerText = 'Confirm';
+
+  setTimeout(() => {
+    e.target.dataset.clicked = 'false';
+    e.target.innerText = 'Delete Account';
+  }, 3000);
+}
 
 function createApiKeyRow(client_id, client_secret) {
   const row = document.createElement('tr');
@@ -281,7 +336,15 @@ function filterSearch(userData, data, searchbar) {
 
   for (var i = 0; i < data.length; i++) suggestions.push(data[i]);
 
-  const emptyArray = suggestions.filter((data) => data.name.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()));
+  let emptyArray = suggestions.filter((data) => data.name.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()));
+
+  emptyArray.sort((a, b) => {
+    if (a.name < b.name) return -1;
+
+    if (a.name > b.name) return 1;
+
+    return 0;
+  });
 
   showSuggestions(emptyArray, searchbar);
 }
@@ -432,4 +495,23 @@ async function disconnectAccount(e) {
   }
 
   element.classList.remove('connected');
+}
+
+async function deleteAccount() {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user', {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + LoginManager.getCookie("token"),
+    }
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  LoginManager.deleteCookie("token");
+  LoginManager.deleteCookie("refreshToken");
+  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
 }
