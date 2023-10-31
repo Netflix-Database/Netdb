@@ -150,7 +150,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   if (user['2fa']) 
     document.getElementById('2fa_enable').checked = true;
   else
-    document.getElementById('2fa_disnable').checked = true;
+    document.getElementById('2fa_disable').checked = true;
 
   initSearchbar(countries, "country_search");
   initSearchbar(languages, "language_search");
@@ -504,6 +504,7 @@ async function deleteAccount() {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + LoginManager.getCookie("token"),
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       Password: document.getElementById('deleteAccountPassword').value,
