@@ -145,6 +145,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   });
 
   if (user['2fa'] && user['2faType'] == 'App') document.getElementById('cp_2fa').classList.remove('d-none');
+  if (user['2fa'] && user['2faType'] == 'App') document.getElementById('deleteAccount2fa').classList.remove('d-none');
 
   if (user['2fa']) 
     document.getElementById('2fa_enable').checked = true;
@@ -168,15 +169,15 @@ document.getElementById('ca_google_link').addEventListener('click', () => LinkAc
 document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
 document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
-document.getElementById('deleteAccount').addEventListener('click', (e) => doubleClickButton(e, deleteAccount));
+document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
 
 Array.from(document.getElementsByTagName('input')).forEach((element) => {
   element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
 });
 
-function doubleClickButton(e, func) {
+async function doubleClickButton(e, func) {
   if (e.target.dataset.clicked == 'true') {
-    func();
+    await func();
     return;
   }
 
@@ -503,7 +504,11 @@ async function deleteAccount() {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + LoginManager.getCookie("token"),
-    }
+    },
+    body: JSON.stringify({
+      Password: document.getElementById('deleteAccountPassword').value,
+      TwoFaToken: currentUser['2fa'] ? document.getElementById('deleteAccount2fa').value : null
+    })
   });
 
   if (req.status == 401) {
