@@ -343,3 +343,24 @@ th {
   margin-right: 0; 
   margin-left: auto;
 }
+
+.thirdPartyApps-container {
+  display: flex;
+  width: 100%;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.thirdPartyApps-container > div {
+  background-color: #111;
+  padding: 1em;
+  border-radius: .5em;
+  width: 100%;
+  display: flex;
+}
+
+.thirdPartyApps-container > div > img {
+  border-radius: 1em;
+  height: 4em;
+  object-fit: contain;
+}

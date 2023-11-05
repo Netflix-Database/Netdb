@@ -191,7 +191,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   user.trusted_sso_clients.forEach((client) => {
     const row = document.createElement('div');
     const img = document.createElement('img');
-    img.src = client.icon;
+    img.src = client.logo;
     img.alt = client.name;
     img.title = client.name;
     row.appendChild(img);
@@ -213,7 +213,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 });
 
 function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret) {
-  const item = document.getElementById('ssoClientsContainer').getElementsByTagName('template')[0].content.cloneNode(true);
+  const item = document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content.cloneNode(true);
 
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
