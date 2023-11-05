@@ -170,10 +170,12 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key, "*************"));
   });
 
+  if(user.trusted_sso_clients.length > 0)
   document.getElementById('thirdPartyAppsContainer').innerHTML = '';
 
   user.trusted_sso_clients.forEach((client) => {
     const row = document.createElement('div');
+    row.id = "trusted_" + client.id;
     const img = document.createElement('img');
     img.src = client.logo;
     img.alt = client.name;
@@ -189,10 +191,11 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('thirdPartyAppsContainer').appendChild(row);
   });
 
+  if(user.sso_clients.length > 0)
   document.getElementById('ssoClientsContainer').innerHTML = '';
 
   user.sso_clients.forEach((client) => {
-    document.getElementById('ssoClientsContainer').append(createSSOClient(client.logo, client.name, client.url, client.id, client.secret));
+    document.getElementById('ssoClientsContainer').append(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects));
   });
 
   Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
@@ -235,13 +238,13 @@ async function deleteTrustedSsoClient(clientId) {
     return;
   }
 
-  document.getElementById(clientId).remove();
-
+  document.getElementById("trusted_" + clientId).remove();
 }
 
-function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret) {
+function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects) {
   const item = document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content.cloneNode(true);
 
+  item.id = "sso_" + clientId;
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
   item.querySelector('img').title = clientName;
@@ -255,8 +258,134 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   content.querySelector('#sso_clientSecret').value = clientSecret;
   content.querySelector('#sso_logoUrl').value = logoUrl;
   content.querySelector('#sso_websiteUrl').value = websiteUrl;
+  content.querySelector('#sso_name').value = clientName;
+  content.querySelector('#sso_save').addEventListener('click', async () => await saveSSOClient(clientId));
+  content.querySelector('#sso_addRedirect').addEventListener('click', async () => await addSSORedirect(clientId));
+
+  const redirectsContainer = content.querySelector('#sso_redirects');
+
+  redirects.forEach((redirect) => {
+    const redirectItem = document.createElement('div');
+    redirectItem.id = "sso_redirect_" + redirect.id;
+
+    const url = document.createElement('input');
+    url.type = 'text';
+    url.value = redirect.url;
+    url.disabled = true;
+    redirectItem.appendChild(url);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', async () => await deleteSSORedirect(clientId, redirect.id));
+    redirectItem.appendChild(deleteBtn);
+
+    redirectsContainer.appendChild(redirectItem);
+  });
 
   return item;
+}
+
+async function deleteSSORedirect(clientId, redirectId) {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/sso/redirects', {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      clientId: clientId,
+      redirectId: redirectId,
+    }),
+  });
+
+  if (req.status == 401) {	
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);	
+    return;	
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
+
+  document.getElementById("sso_redirect_" + redirectId).remove();
+}
+
+async function addSSORedirect(clientId) {
+  const item = document.getElementById("sso_" + clientId);
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/sso/redirects', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      clientId: clientId,
+      url: item.querySelector('#sso_redirectUrl').value,
+    }),
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
+
+  const redirect = document.createElement('div');
+  redirect.id = "sso_redirect_" + res.data.id;
+  redirect.classList.add('sso-redirect');
+  const url = document.createElement('input');
+  url.type = 'text';
+  url.value = res.data.url;
+  url.disabled = true;
+  redirect.appendChild(url);
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'Delete';
+  deleteBtn.addEventListener('click', async () => await deleteSSORedirect(clientId, res.data.id));
+  redirect.appendChild(deleteBtn);
+  item.querySelector('#sso_redirects').appendChild(redirect);
+}
+
+async function saveSSOClient(clientId) {
+  const item = document.getElementById("sso_" + clientId);
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/sso', {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      clientId: clientId,
+      logoUrl: item.querySelector('#sso_logoUrl').value,
+      url: item.querySelector('#sso_websiteUrl').value,
+      name: item.querySelector('#sso_name').value,
+    }),
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
 }
 
 async function doubleClickButton(e, func) {
