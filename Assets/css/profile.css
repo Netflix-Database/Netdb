@@ -345,6 +345,12 @@ th {
   margin-left: auto;
 }
 
+.ssoRedirects > div{
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
 .thirdPartyApps-container {
   display: flex;
   width: 100%;

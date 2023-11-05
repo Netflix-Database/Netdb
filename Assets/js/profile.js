@@ -327,7 +327,7 @@ async function addSSORedirect(clientId) {
     },
     body: JSON.stringify({
       clientId: clientId,
-      url: item.querySelector('#sso_redirectUrl').value,
+      url: item.querySelector('#sso_addRedirect').value,
     }),
   });
 
@@ -345,7 +345,6 @@ async function addSSORedirect(clientId) {
 
   const redirect = document.createElement('div');
   redirect.id = "sso_redirect_" + res.data.id;
-  redirect.classList.add('sso-redirect');
   const url = document.createElement('input');
   url.type = 'text';
   url.value = res.data.url;
