@@ -357,10 +357,21 @@ th {
   border-radius: .5em;
   width: 100%;
   display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 .thirdPartyApps-container > div > img {
   border-radius: 1em;
   height: 4em;
   object-fit: contain;
+}
+
+.thirdPartyApps-container > div > button {
+  margin-left: auto;
+}
+
+.thirdPartyApps-container > div > h1 {
+  font-size: 1.5em;
+  margin: 0;
 }

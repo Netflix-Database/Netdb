@@ -224,10 +224,10 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   // item.querySelector('button').addEventListener('click', () => deleteSSOClient(clientId));
 
   const content = item.querySelector('.collapsible-content');
-  content.getElementById('sso_clientId').value = clientId;
-  content.getElementById('sso_clientSecret').value = clientSecret;
-  content.getElementById('sso_logoUrl').value = logoUrl;
-  content.getElementById('sso_websiteUrl').value = websiteUrl;
+  content.querySelector('#sso_clientId').value = clientId;
+  content.querySelector('#sso_clientSecret').value = clientSecret;
+  content.querySelector('#sso_logoUrl').value = logoUrl;
+  content.querySelector('#sso_websiteUrl').value = websiteUrl;
 
   return item;
 }
