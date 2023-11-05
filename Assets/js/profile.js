@@ -354,7 +354,9 @@ async function addSSORedirect(clientId) {
   deleteBtn.innerText = 'Delete';
   deleteBtn.addEventListener('click', async () => await deleteSSORedirect(clientId, res.data.id));
   redirect.appendChild(deleteBtn);
-  item.querySelector('#sso_redirects').appendChild(redirect);
+
+  console.log(redirect);
+  document.getElementById("sso_" + clientId).querySelector('#sso_redirects').appendChild(redirect);
 }
 
 async function saveSSOClient(clientId) {
