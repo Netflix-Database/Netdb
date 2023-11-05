@@ -74,22 +74,6 @@ document.getElementById('ca_github_link').addEventListener('click', () => LinkAc
 document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
 document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
 
-Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
-  element.addEventListener("click", function() {
-    this.classList.toggle("active");
-
-    if (this.nextElementSibling.style.maxHeight)
-    this.nextElementSibling.style.maxHeight = null;
-    else
-    this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + "px";
-
-  });
-});
-
-Array.from(document.getElementsByTagName('input')).forEach((element) => {
-  element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
-});
-
 LoginManager.isLoggedIn().then(async (e) => {
   if (!e) {
     window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
@@ -200,7 +184,7 @@ LoginManager.isLoggedIn().then(async (e) => {
     row.appendChild(name);
     const deleteBtn = document.createElement('button');
     deleteBtn.innerText = 'Delete';
-    deleteBtn.addEventListener('click', () => deleteTrustedSsoClient(client.id));
+    deleteBtn.addEventListener('click', async () => await deleteTrustedSsoClient(client.id));
     row.appendChild(deleteBtn);
     document.getElementById('thirdPartyAppsContainer').appendChild(row);
   });
@@ -210,7 +194,50 @@ LoginManager.isLoggedIn().then(async (e) => {
   user.sso_clients.forEach((client) => {
     document.getElementById('ssoClientsContainer').append(createSSOClient(client.logo, client.name, client.url, client.id, client.secret));
   });
+
+  Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
+    element.addEventListener("click", function() {
+      this.classList.toggle("active");
+  
+      if (this.nextElementSibling.style.maxHeight)
+      this.nextElementSibling.style.maxHeight = null;
+      else
+      this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + "px";
+  
+    });
+  });
+  
+  Array.from(document.getElementsByTagName('input')).forEach((element) => {
+    element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
+  });
 });
+
+async function deleteTrustedSsoClient(clientId) {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/oauth/untrust', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: "\"" + clientId + "\"",
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
+
+  document.getElementById(clientId).remove();
+
+}
 
 function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret) {
   const item = document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content.cloneNode(true);
