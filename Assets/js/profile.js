@@ -244,7 +244,7 @@ async function deleteTrustedSsoClient(clientId) {
 function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects) {
   const item = document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content.cloneNode(true);
 
-  item.id = "sso_" + clientId;
+  item.setAttribute('id', 'sso_' + clientId)
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
   item.querySelector('img').title = clientName;
