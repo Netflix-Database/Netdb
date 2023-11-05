@@ -91,7 +91,7 @@ Array.from(document.getElementsByTagName('input')).forEach((element) => {
 });
 
 LoginManager.isLoggedIn().then(async (e) => {
-  if (e) {
+  if (!e) {
     window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
