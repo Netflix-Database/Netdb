@@ -195,7 +195,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('ssoClientsContainer').innerHTML = '';
 
   user.sso_clients.forEach((client) => {
-    document.getElementById('ssoClientsContainer').append(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects));
+    document.getElementById('ssoClientsContainer').appendChild(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects));
   });
 
   Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
@@ -244,8 +244,6 @@ async function deleteTrustedSsoClient(clientId) {
 function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects) {
   const item = document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content.cloneNode(true);
 
-  console.log(item);
-
   item.id = 'sso_' + clientId;
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
@@ -283,8 +281,6 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
     redirectsContainer.appendChild(redirectItem);
   });
-
-  console.log(item);
 
   return item;
 }
