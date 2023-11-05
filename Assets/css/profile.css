@@ -322,6 +322,7 @@ th {
   padding: 1em;
   border-radius: .5em;
   width: 100%;
+  cursor: pointer;
 }
 
 .ssoClients > div > .collapsible {
