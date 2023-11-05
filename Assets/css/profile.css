@@ -9,6 +9,10 @@ body {
   display: none;
 }
 
+.rounded {
+  border-radius: 50%;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -293,4 +297,49 @@ th {
 
 .apiKeysTable td:nth-child(3) button {
   padding: .8em;
+}
+
+.collapsible-content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.collapsible-content > div:nth-child(1) {
+  padding-top: 18px;
+}
+
+.ssoClients {
+  display: flex;
+  width: 100%;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.ssoClients > div {
+  background-color: #111;
+  padding: 1em;
+  border-radius: .5em;
+  width: 100%;
+}
+
+.ssoClients > div > .collapsible {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.ssoClients > div > .collapsible h1 {
+  font-size: 1.5em;
+}
+
+.ssoClients > div > .collapsible img {
+  height: 4em;
+  object-fit: contain;
+}
+
+.ssoClients > div > .collapsible a {
+  margin-right: 0; 
+  margin-left: auto;
 }

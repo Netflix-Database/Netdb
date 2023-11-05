@@ -63,8 +63,35 @@ const countries = [
 ];
 var currentUser;
 
+document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
+document.getElementById('cp_save').addEventListener('click', changePassword);
+document.getElementById('createApiKey').addEventListener('click', createApiKey);
+document.getElementById('ca_spotify_link').addEventListener('click', () => LinkAccounts("spotify"));
+document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts("twitch"));
+document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts("discord"));
+document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
+document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
+document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
+document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
+
+Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
+  element.addEventListener("click", function() {
+    this.classList.toggle("active");
+
+    if (this.nextElementSibling.style.maxHeight)
+    this.nextElementSibling.style.maxHeight = null;
+    else
+    this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + "px";
+
+  });
+});
+
+Array.from(document.getElementsByTagName('input')).forEach((element) => {
+  element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
+});
+
 LoginManager.isLoggedIn().then(async (e) => {
-  if (!e) {
+  if (e) {
     window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
     return;
   }
@@ -158,22 +185,52 @@ LoginManager.isLoggedIn().then(async (e) => {
   user.api_keys.forEach((key) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key, "*************"));
   });
+
+  document.getElementById('thirdPartyAppsContainer').innerHTML = '';
+
+  user.trusted_sso_clients.forEach((client) => {
+    const row = document.createElement('div');
+    const img = document.createElement('img');
+    img.src = client.icon;
+    img.alt = client.name;
+    img.title = client.name;
+    row.appendChild(img);
+    const name = document.createElement('h1');
+    name.innerText = client.name;
+    row.appendChild(name);
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', () => deleteTrustedSsoClient(client.id));
+    row.appendChild(deleteBtn);
+    document.getElementById('thirdPartyAppsContainer').appendChild(row);
+  });
+
+  document.getElementById('ssoClientsContainer').innerHTML = '';
+
+  user.sso_clients.forEach((client) => {
+    document.getElementById('ssoClientsContainer').append(createSSOClient(client.logo, client.name, client.url, client.id, client.secret));
+  });
 });
 
-document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
-document.getElementById('cp_save').addEventListener('click', changePassword);
-document.getElementById('ca_spotify_link').addEventListener('click', () => LinkAccounts("spotify"));
-document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts("twitch"));
-document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts("discord"));
-document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
-document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
-document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
-document.getElementById('createApiKey').addEventListener('click', createApiKey);
-document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
+function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret) {
+  const item = document.getElementById('ssoClientsContainer').getElementsByTagName('template')[0].content.cloneNode(true);
 
-Array.from(document.getElementsByTagName('input')).forEach((element) => {
-  element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
-});
+  item.querySelector('img').src = logoUrl;
+  item.querySelector('img').alt = clientName;
+  item.querySelector('img').title = clientName;
+  item.querySelector('h1').innerText = clientName;
+  item.querySelector('a').href = websiteUrl;
+  item.querySelector('a').innerText = websiteUrl;
+  // item.querySelector('button').addEventListener('click', () => deleteSSOClient(clientId));
+
+  const content = item.querySelector('.collapsible-content');
+  content.getElementById('sso_clientId').value = clientId;
+  content.getElementById('sso_clientSecret').value = clientSecret;
+  content.getElementById('sso_logoUrl').value = logoUrl;
+  content.getElementById('sso_websiteUrl').value = websiteUrl;
+
+  return item;
+}
 
 async function doubleClickButton(e, func) {
   if (e.target.dataset.clicked == 'true') {
@@ -311,7 +368,7 @@ function initSearchbar(data, id) {
   let searchbar = document.getElementById(id);
   let inputBox = searchbar.querySelector("input");
 
-  if (inputBox.dataset.key)
+  if (inputBox.dataset.key && inputBox.dataset.key != "null")
     inputBox.value = data.find((e) => e.key == inputBox.dataset.key).name;
 
   showSuggestions(data, searchbar);
@@ -517,7 +574,7 @@ async function deleteAccount() {
     return;
   }
 
-  LoginManager.deleteCookie("token");
-  LoginManager.deleteCookie("refreshToken");
+  LoginManager.deleteCookie('token', '/', '.netdb.at');
+  LoginManager.deleteCookie('refreshToken', '/', '.netdb.at');
   window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
 }

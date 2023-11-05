@@ -60,7 +60,7 @@
       </ul>
 
       <div style="position: absolute; bottom: 2em;">
-        <div id="logout" style="margin-top: 2em;">Logout</div>
+        <div id="logout" style="margin-top: 2em; cursor: pointer;">Logout</div>
         <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
       </div>
     </div>
@@ -196,7 +196,9 @@
       <div id="thirdPartyApps" class="item">
         <h1>Third Party Apps</h1>
 
-        <p>No third party apps connected</p>
+        <div id="thirdPartyAppsContainer" class="thirdPartyApps-container">
+          <p>No third party apps connected!</p>
+        </div>
       </div>
       <div id="apiKeys" class="item">
         <h1>Api Keys</h1>
@@ -214,8 +216,50 @@
       </div>
       <div id="ssoCredentials" class="item">
         <h1>Single Sign On Credentials</h1>
+        <div id="ssoClientsContainer" class="ssoClients">
+          <template>
+            <div>
+              <div class="collapsible">
+                <img src="" alt="" class="rounded">
+                <h1></h1>
+                <a href=""></a>
+              </div>
+              <div class="collapsible-content">
+                <div class="input-group">
+                  <div style="display:inline-block;width: 50%;">
+                    <label for="sso_clientId">Client Id</label>
+                    <input id="sso_clientId" type="text" disabled>
+                  </div>
+                  <div style="display:inline-block;width: 50%;">
+                    <label for="sso_clientSecret">Client Secret</label>
+                    <input id="sso_clientSecret" type="text" disabled>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <div style="display:inline-block;width: 50%;">
+                    <label for="sso_logoUrl">Logo Url</label>
+                    <input id="sso_logoUrl" type="text" disabled>
+                  </div>
+                  <div style="display:inline-block;width: 50%;">
+                    <label for="sso_websiteUrl">Website Url</label>
+                    <input id="sso_websiteUrl" type="text" disabled>
+                  </div>
+                </div>
+                <p>Redirects</p>
+                <div>
+                  <div style="display: flex;">
+                    <input type="text" disabled value="https://netdb.at">
+                    <button>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
 
-        <p>Coming Soon!</p>
+        <div class="flex end">
+          <button id="createSsoCredentials">Create new</button>
+        </div>
       </div>
 
       <div id="dangerZone" class="item dangerZone">
