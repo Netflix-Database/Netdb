@@ -327,7 +327,7 @@ async function addSSORedirect(clientId) {
     },
     body: JSON.stringify({
       clientId: clientId,
-      url: item.querySelector('#sso_addRedirect').value,
+      url: item.querySelector('#sso_addRedirect').previousElementSibling.value,
     }),
   });
 
@@ -338,7 +338,7 @@ async function addSSORedirect(clientId) {
 
   const res = await req.json();
 
-  if (res.statusCode != 200) {
+  if (res.statusCode != 203) {
     console.log(res);
     return;
   }
