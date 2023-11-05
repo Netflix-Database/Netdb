@@ -244,7 +244,9 @@ async function deleteTrustedSsoClient(clientId) {
 function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects) {
   const item = document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content.cloneNode(true);
 
-  item.setAttribute('id', 'sso_' + clientId)
+  console.log(item);
+
+  item.id = 'sso_' + clientId;
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
   item.querySelector('img').title = clientName;
@@ -281,6 +283,8 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
     redirectsContainer.appendChild(redirectItem);
   });
+
+  console.log(item);
 
   return item;
 }
