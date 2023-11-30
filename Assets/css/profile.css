@@ -45,6 +45,10 @@ li a {
   text-decoration: none;
 }
 
+h4, h5 {
+  margin: 0;
+}
+
 .settings-container {
   width: 100%;
   overflow: hidden;
@@ -118,6 +122,38 @@ button:active {
   background-color: #393939;
 }
 
+button[disabled] {
+  background-color: #222;
+  color: #4d4d4d;
+  cursor: pointer;
+}
+
+select {
+  padding: 1em;
+  margin: .5em 0;
+  background-color: #393939;
+  border-radius: .2em;
+  color: #fff;
+  outline: none;
+  border: none;
+  outline: 2px solid transparent;
+  transition: all .2s ease-in-out;
+}
+
+select:focus {
+  outline: 2px solid white;
+}
+
+select:hover {
+  background-color: #4d4d4d;
+}
+
+select[disabled] {
+  background-color: #222;
+  color: #4d4d4d;
+  cursor: pointer;
+}
+
 .connected-accounts {
   display: flex;
   gap: 1em;
@@ -187,7 +223,6 @@ button:active {
 
 .connected-accounts h1:nth-child(4) {
   background-color: white;
-  color: black;
 }
 
 .connected-accounts h1:nth-child(5) {
@@ -214,6 +249,7 @@ button:active {
   display: flex;
   align-items: center;
   margin-top: .5em;
+  gap: .5em;
 }
 
 .flex.end {
@@ -290,13 +326,18 @@ th {
   overflow: hidden;
 }
 
-.apiKeysTable td:nth-child(3) {
+.apiKeysTable td:nth-child(2) {
   display: flex;
   gap: 1em;
 }
 
-.apiKeysTable td:nth-child(3) button {
+.apiKeysTable td:nth-child(2) button {
   padding: .8em;
+}
+
+.apiKeysTable td {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .collapsible-content {
@@ -304,6 +345,7 @@ th {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+  overflow-y: auto;
 }
 
 .collapsible-content > div:nth-child(1) {
@@ -343,6 +385,11 @@ th {
 .ssoClients > div > .collapsible a {
   margin-right: 0; 
   margin-left: auto;
+}
+
+.ssoClients a {
+  color: #fff;
+  text-decoration: none;
 }
 
 .ssoRedirects > div{

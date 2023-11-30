@@ -1,3 +1,5 @@
+import { createDialog, initDialog } from './dialog.js';
+
 const languages = [
   { key: 'en-us', name: 'English' },
   { key: 'de-at', name: 'German' },
@@ -63,16 +65,18 @@ const countries = [
 ];
 var currentUser;
 
+initDialog();
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
-document.getElementById('ca_spotify_link').addEventListener('click', () => LinkAccounts("spotify"));
-document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts("twitch"));
-document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts("discord"));
-document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts("google"));
-document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts("github"));
+document.getElementById('ca_spotify_link').addEventListener('click', () => LinkAccounts('spotify'));
+document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts('twitch'));
+document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts('discord'));
+document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts('google'));
+document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts('github'));
 document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
 document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
+document.getElementById('createSsoCredentials').addEventListener('click', async () => await createSsoCredentials());
 
 LoginManager.isLoggedIn().then(async (e) => {
   if (!e) {
@@ -83,30 +87,11 @@ LoginManager.isLoggedIn().then(async (e) => {
   const token = LoginManager.getCookie('token');
 
   const urlParams = new URLSearchParams(window.location.search);
-  
+
   if (urlParams.has('code')) {
     const code = urlParams.get('code');
-    const provider = localStorage.getItem('linkType');
-
-    const req = await fetch('https://api.login.netdb.at/link/' + provider + '?code=' + code, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (req.status == 401) {
-      window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
-      return;
-    }
-
-    localStorage.removeItem('linkType');
-    urlParams.delete('code');
-
-    window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
-
-    alert("Account successfully linked!");
+    
+    LinkAccount(code);
   }
 
   const req = await fetch('https://api.login.netdb.at/user', {
@@ -145,37 +130,38 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   if (user.twitchId !== null) document.getElementById('ca_twitch').classList.add('connected');
 
-  if (user.githubId !== null)
-    document.getElementById("ca_github").classList.add("connected");
+  if (user.githubId !== null) document.getElementById('ca_github').classList.add('connected');
 
-  if (user.googleId !== null)
-    document.getElementById("ca_google").classList.add("connected");
+  if (user.googleId !== null) document.getElementById('ca_google').classList.add('connected');
 
   Array.from(document.getElementsByClassName('connected')).forEach((element) => {
     element.addEventListener('click', disconnectAccount);
   });
 
   if (user['2fa'] && user['2faType'] == 'App') document.getElementById('cp_2fa').classList.remove('d-none');
-  if (user['2fa'] && user['2faType'] == 'App') document.getElementById('deleteAccount2fa').classList.remove('d-none');
 
-  if (user['2fa']) 
-    document.getElementById('2fa_enable').checked = true;
-  else
-    document.getElementById('2fa_disable').checked = true;
+  if (user['2fa']) {
+    document.getElementById('2fa_status').innerText = 'Enabled';
+    document.getElementById('2fa_type').value = user['2faType'] == 'App' ? 0 : user['2faType'] == 'Mail' ? 1 : 2;
+    document.getElementById('2fa_type').disabled = true;
+    document.getElementById('2fa_enable').innerText = 'Disable';
+    document.getElementById('2fa_enable').addEventListener('click', disable2fa);
+  } else {
+    document.getElementById('2fa_enable').addEventListener('click', enable2fa);
+  }
 
-  initSearchbar(countries, "country_search");
-  initSearchbar(languages, "language_search");
+  initSearchbar(countries, 'country_search');
+  initSearchbar(languages, 'language_search');
 
   user.api_keys.forEach((key) => {
-    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key, "*************"));
+    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key, '*************'));
   });
 
-  if(user.trusted_sso_clients.length > 0)
-  document.getElementById('thirdPartyAppsContainer').innerHTML = '';
+  if (user.trusted_sso_clients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
 
   user.trusted_sso_clients.forEach((client) => {
     const row = document.createElement('div');
-    row.id = "trusted_" + client.id;
+    row.id = 'trusted_' + client.id;
     const img = document.createElement('img');
     img.src = client.logo;
     img.alt = client.name;
@@ -191,29 +177,57 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('thirdPartyAppsContainer').appendChild(row);
   });
 
-  if(user.sso_clients.length > 0)
-  document.getElementById('ssoClientsContainer').innerHTML = '';
+  if (user.sso_clients.length > 0) document.getElementById('ssoClientsContainer').innerHTML = '';
 
   user.sso_clients.forEach((client) => {
     document.getElementById('ssoClientsContainer').appendChild(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects));
   });
 
   Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
-    element.addEventListener("click", function() {
-      this.classList.toggle("active");
-  
-      if (this.nextElementSibling.style.maxHeight)
-      this.nextElementSibling.style.maxHeight = null;
-      else
-      this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + "px";
-  
+    element.addEventListener('click', function () {
+      this.classList.toggle('active');
+
+      if (this.nextElementSibling.style.maxHeight) this.nextElementSibling.style.maxHeight = null;
+      else this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 'px';
     });
   });
-  
+
   Array.from(document.getElementsByTagName('input')).forEach((element) => {
     element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
   });
 });
+
+async function LinkAccount(code) {
+  const provider = localStorage.getItem('linkType');
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/link/' + provider + '?code=' + code, {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    createDialog('Error', 'An error occured while linking your account!', 'error');
+    return;
+  }
+
+  localStorage.removeItem('linkType');
+  urlParams.delete('code');
+
+  window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+
+  createDialog('Success', 'Account successfully linked!', 'info');
+}
 
 async function deleteTrustedSsoClient(clientId) {
   await LoginManager.validateToken();
@@ -223,7 +237,7 @@ async function deleteTrustedSsoClient(clientId) {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
-    body: "\"" + clientId + "\"",
+    body: '"' + clientId + '"',
   });
 
   if (req.status == 401) {
@@ -238,7 +252,80 @@ async function deleteTrustedSsoClient(clientId) {
     return;
   }
 
-  document.getElementById("trusted_" + clientId).remove();
+  document.getElementById('trusted_' + clientId).remove();
+
+  const container = document.getElementById('thirdPartyAppsContainer');
+  container.innerHTML = '<p>No third party apps connected!</p>';
+}
+
+async function createSsoCredentials() {
+  document
+    .getElementById('createSSODialog')
+    .querySelectorAll('input')
+    .forEach((element) => {
+      element.value = '';
+    });
+
+  document.getElementById('createSSODialog').show();
+
+  const canceled = await new Promise((resolve) => {
+    document.getElementById('createSSODialog').addEventListener(
+      'onHide',
+      (e) => {
+        if (e.detail.reason == 'canceled') {
+          resolve(false);
+          return;
+        }
+
+        resolve(true);
+      },
+      { once: true }
+    );
+  });
+
+  if (!canceled) return;
+
+  const name = document.getElementById('c_sso_name').value;
+  const websiteUrl = document.getElementById('c_sso_url').value;
+  const logoUrl = document.getElementById('c_sso_logoUrl').value;
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/sso', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: name,
+      url: websiteUrl,
+      logoUrl: logoUrl,
+    }),
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (req.status != 200 || res.statusCode != 203) {
+    createDialog('Error', 'An error occured while creating the SSO credentials!', 'error');
+    return;
+  }
+
+  if (document.getElementById('ssoClientsContainer').children[0].tagName == 'P') document.getElementById('ssoClientsContainer').innerHTML = '';
+
+  const item = createSSOClient(logoUrl, name, websiteUrl, res.data.clientId, res.data.clientSecret, []);
+  document.getElementById('ssoClientsContainer').appendChild(item);
+
+  item.children[0].addEventListener('click', function () {
+    item.classList.toggle('active');
+
+    if (item.children[0].nextElementSibling.style.maxHeight) item.children[0].nextElementSibling.style.maxHeight = null;
+    else item.children[0].nextElementSibling.style.maxHeight = item.children[0].nextElementSibling.scrollHeight + 'px';
+  });
 }
 
 function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects) {
@@ -252,7 +339,6 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   item.querySelector('h1').innerText = clientName;
   item.querySelector('a').href = websiteUrl;
   item.querySelector('a').innerText = websiteUrl;
-  // item.querySelector('button').addEventListener('click', () => deleteSSOClient(clientId));
 
   const content = item.querySelector('.collapsible-content');
   content.querySelector('#sso_clientId').value = clientId;
@@ -261,13 +347,14 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   content.querySelector('#sso_websiteUrl').value = websiteUrl;
   content.querySelector('#sso_name').value = clientName;
   content.querySelector('#sso_save').addEventListener('click', async () => await saveSSOClient(clientId));
+  item.querySelector('#sso_delete').addEventListener('click', async () => await deleteSSOClient(clientId));
   content.querySelector('#sso_addRedirect').addEventListener('click', async () => await addSSORedirect(clientId));
 
   const redirectsContainer = content.querySelector('#sso_redirects');
 
   redirects.forEach((redirect) => {
     const redirectItem = document.createElement('div');
-    redirectItem.id = "sso_redirect_" + redirect.id;
+    redirectItem.id = 'sso_redirect_' + redirect.id;
 
     const url = document.createElement('input');
     url.type = 'text';
@@ -286,6 +373,32 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   return item;
 }
 
+async function deleteSSOClient(clientId) {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/user/sso', {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: '"' + clientId + '"',
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (req.status != 200 || res.statusCode != 200) {
+    createDialog('Error', 'An error occured while deleting the SSO credentials!', 'error');
+    return;
+  }
+
+  document.getElementById('sso_' + clientId).remove();
+}
+
 async function deleteSSORedirect(clientId, redirectId) {
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/user/sso/redirects', {
@@ -300,9 +413,9 @@ async function deleteSSORedirect(clientId, redirectId) {
     }),
   });
 
-  if (req.status == 401) {	
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);	
-    return;	
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
   }
 
   const res = await req.json();
@@ -312,11 +425,14 @@ async function deleteSSORedirect(clientId, redirectId) {
     return;
   }
 
-  document.getElementById("sso_redirect_" + redirectId).remove();
+  document.getElementById('sso_redirect_' + redirectId).remove();
 }
 
 async function addSSORedirect(clientId) {
-  const item = document.getElementById("sso_" + clientId);
+  const item = document.getElementById('sso_' + clientId);
+  const redirects = item.querySelector('#sso_redirects');
+
+  //TODO: add button feedback
 
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/user/sso/redirects', {
@@ -343,8 +459,10 @@ async function addSSORedirect(clientId) {
     return;
   }
 
+  item.querySelector('#sso_addRedirect').previousElementSibling.value = '';
+
   const redirect = document.createElement('div');
-  redirect.id = "sso_redirect_" + res.data.id;
+  redirect.id = 'sso_redirect_' + res.data.id;
   const url = document.createElement('input');
   url.type = 'text';
   url.value = res.data.url;
@@ -355,12 +473,16 @@ async function addSSORedirect(clientId) {
   deleteBtn.addEventListener('click', async () => await deleteSSORedirect(clientId, res.data.id));
   redirect.appendChild(deleteBtn);
 
-  console.log(redirect);
-  document.getElementById("sso_" + clientId).querySelector('#sso_redirects').appendChild(redirect);
+  if (redirects.children.length > 1) {
+    redirects.insertBefore(redirect, redirects.children[1]);
+    return;
+  }
+
+  redirects.append(redirect);
 }
 
 async function saveSSOClient(clientId) {
-  const item = document.getElementById("sso_" + clientId);
+  const item = document.getElementById('sso_' + clientId);
 
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/user/sso', {
@@ -405,10 +527,10 @@ async function doubleClickButton(e, func) {
   }, 3000);
 }
 
-function createApiKeyRow(client_id, client_secret) {
+function createApiKeyRow(client_id) {
   const row = document.createElement('tr');
   row.id = client_id;
-  row.innerHTML = '<td>' + client_id + '</td><td>' + client_secret + '</td>';
+  row.innerHTML = '<td>' + client_id + '</td>';
   const td = document.createElement('td');
   const deleteBtn = document.createElement('button');
   const regenBtn = document.createElement('button');
@@ -447,7 +569,11 @@ async function createApiKey() {
     return;
   }
 
-  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId, res.data.clientSecret));
+  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId));
+
+  //TODO: Dialog
+  alert('Successfully created API key! Please save it now, as it will not be shown again!');
+  alert(res.data.clientSecret);
 }
 
 async function regenerateApiKey(clientId) {
@@ -458,7 +584,7 @@ async function regenerateApiKey(clientId) {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
-    body: "\"" + clientId + "\"",
+    body: '"' + clientId + '"',
   });
 
   if (req.status == 401) {
@@ -473,7 +599,9 @@ async function regenerateApiKey(clientId) {
     return;
   }
 
-  document.getElementById(clientId).children[1].innerText = res.data.clientSecret;
+  //TODO: Dialog
+  alert('Successfully regenerated API key! Please save it now, as it will not be shown again!');
+  alert(res.data.clientSecret);
 }
 
 async function deleteApiKey(clientId) {
@@ -484,7 +612,7 @@ async function deleteApiKey(clientId) {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
-    body: "\"" + clientId + "\"",
+    body: '"' + clientId + '"',
   });
 
   if (req.status == 401) {
@@ -496,27 +624,28 @@ async function deleteApiKey(clientId) {
 }
 
 function LinkAccounts(type) {
-  localStorage.setItem("linkType", type);
+  localStorage.setItem('linkType', type);
 
   switch (type) {
-    case "spotify": {
-      window.location.href = "https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://new.netdb.at/profile&scope=user-read-private%20user-read-email";
+    case 'spotify': {
+      window.location.href = 'https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://new.netdb.at/profile&scope=user-read-private%20user-read-email';
       break;
     }
-    case "discord": {
-      window.location.href = "https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=identify%20email";
+    case 'discord': {
+      window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=identify%20email';
       break;
     }
-    case "twitch": {
-      window.location.href = "https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=user_read";
+    case 'twitch': {
+      window.location.href = 'https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://new.netdb.at/profile&response_type=code&scope=user_read';
       break;
     }
-    case "github": {
-      window.location.href = "https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805";
+    case 'github': {
+      window.location.href = 'https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805';
       break;
     }
-    case "google": {
-      window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://new.netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com";
+    case 'google': {
+      window.location.href =
+        'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://new.netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com';
       break;
     }
   }
@@ -524,25 +653,28 @@ function LinkAccounts(type) {
 
 function initSearchbar(data, id) {
   let searchbar = document.getElementById(id);
-  let inputBox = searchbar.querySelector("input");
+  let inputBox = searchbar.querySelector('input');
 
-  if (inputBox.dataset.key && inputBox.dataset.key != "null")
-    inputBox.value = data.find((e) => e.key == inputBox.dataset.key).name;
+  try {
+    if (inputBox.dataset.key && inputBox.dataset.key != 'null') inputBox.value = data.find((e) => e.key == inputBox.dataset.key).name;
+  } catch (e) {
+    console.log(e);
+  }
 
   showSuggestions(data, searchbar);
 
-  inputBox.addEventListener("keyup", (e) => filterSearch(e.target.value, data, searchbar));
-  inputBox.addEventListener("focus", () => searchbar.querySelector('.autocom-box').classList.add("active"));
-  searchbar.addEventListener("focusout", (e) => {
+  inputBox.addEventListener('keyup', (e) => filterSearch(e.target.value, data, searchbar));
+  inputBox.addEventListener('focus', () => searchbar.querySelector('.autocom-box').classList.add('active'));
+  searchbar.addEventListener('focusout', (e) => {
     setTimeout(() => {
-      searchbar.querySelector('.autocom-box').classList.remove("active");
-    }, 200);
+      searchbar.querySelector('.autocom-box').classList.remove('active');
+    }, 300);
   });
 
   inputBox.onkeydown = (e) => {
-    if (e.key == "Enter") {
-      searchbar.querySelector('input').value = document.querySelector('.autocom-box h1').innerText;
-      searchbar.querySelector('input').dataset.key = document.querySelector('.autocom-box h1').dataset.key;
+    if (e.key == 'Enter') {
+      searchbar.querySelector('input').value = searchbar.querySelector('.autocom-box h1').innerText;
+      searchbar.querySelector('input').dataset.key = searchbar.querySelector('.autocom-box h1').dataset.key;
     }
   };
 }
@@ -570,7 +702,7 @@ function showSuggestions(list, searchbar) {
     return (data = '<h1 data-key="' + data.key + '">' + data.name + '</h1>');
   });
 
-  let listData;
+  let listData = '';
   if (!list.length) {
     // const userValue = searchbar.querySelector('input').value;
     // listData = '<h1>' + userValue + '</h1>';
@@ -663,12 +795,14 @@ async function changePassword() {
     return;
   }
 
-  LoginManager.deleteCookie("token");
-  LoginManager.deleteCookie("refreshToken");
+  LoginManager.deleteCookie('token');
+  LoginManager.deleteCookie('refreshToken');
   window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
 }
 
 function validatePw(oldPw, pw, rpw) {
+  if (pw == null || rpw == null) return 'Please fill out all fields';
+
   if (pw.length < 8) return 'The password has to be at least 8 characters long';
 
   if (!isUpperCase(pw)) return 'The password has to contain at least one uppercase letter';
@@ -699,10 +833,10 @@ async function disconnectAccount(e) {
 
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/unlink/' + element.dataset.type, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Authorization: "Bearer " + LoginManager.getCookie("token"),
-    }
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+    },
   });
 
   if (req.status == 401) {
@@ -714,17 +848,21 @@ async function disconnectAccount(e) {
 }
 
 async function deleteAccount() {
+  const creds = await getCreds(true);
+
+  if (!creds) return;
+
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/user', {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      Authorization: "Bearer " + LoginManager.getCookie("token"),
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      Password: document.getElementById('deleteAccountPassword').value,
-      TwoFaToken: currentUser['2fa'] ? document.getElementById('deleteAccount2fa').value : null
-    })
+      Password: creds.password,
+      TwoFaToken: creds.mfaToken,
+    }),
   });
 
   if (req.status == 401) {
@@ -735,4 +873,201 @@ async function deleteAccount() {
   LoginManager.deleteCookie('token', '/', '.netdb.at');
   LoginManager.deleteCookie('refreshToken', '/', '.netdb.at');
   window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+}
+
+async function enable2fa() {
+  const mfaType = document.getElementById('2fa_type').value;
+
+  if (mfaType == 2) {
+    alert('Select a valid 2FA type!');
+    return;
+  }
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/2fa/activate', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: mfaType == 0 ? '"app"' : mfaType == 1 ? '"mail"' : null,
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  if (req.status != 200) {
+    createDialog('Error', 'An error occured while enabling 2FA!', 'error');
+    return;
+  }
+
+  const res = await req.json();
+
+  if (mfaType == 0) { //App
+    const qr = res.data.qrCodeSetupImageUrl;
+    const secret = res.data.manualEntryKey;
+
+    document.getElementById('authenticatorDialog').querySelector('img').src = qr;
+    document.getElementById('authenticatorDialog').querySelector('h1').innerText = secret;
+    document.getElementById('authenticatorDialog').show();
+
+    const canceled = await new Promise((resolve) => {
+      document.getElementById('authenticatorDialog').addEventListener(
+        'onHide',
+        (e) => {
+          if (e.detail.reason == 'canceled') {
+            resolve(false);
+            return;
+          }
+  
+          resolve(true);
+        },
+        { once: true }
+      );
+    });
+  
+    if (!canceled) return false;
+  }
+
+  await verify2fa();
+}
+
+async function verify2fa() {
+  const creds = await getCreds(true, false, true);
+
+  if (!creds) return;
+
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/2fa/verify', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      MFAToken: creds.mfaToken,
+      Password: creds.password,
+    }),
+});
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return false;
+  }
+
+  if (req.status != 200) {
+    createDialog('Error', 'An error occured while verifying 2FA!', 'error');
+    return false;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    createDialog('Error', 'An error occured while verifying 2FA!', 'error');
+    return false;
+  }
+
+  createDialog('Success', '2FA successfully enabled!', 'info');
+}
+
+async function disable2fa() {
+  const creds = await getCreds(true);
+
+  if (!creds) return;
+
+  const success = await disableMfaRequest(creds.password, creds.mfaToken);
+
+  if (!success) {
+    const mfaToken = await getCreds(true, true);
+
+    if (!mfaToken) return;
+
+    await disableMfaRequest(creds.password, mfaToken.mfaToken);
+  }
+}
+
+async function disableMfaRequest(password, mfaToken) {
+  await LoginManager.validateToken();
+  const req = await fetch('https://api.login.netdb.at/2fa/deactivate', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      Password: password,
+      MFAToken: mfaToken,
+    }),
+  });
+
+  if (req.status == 401) {
+    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    return;
+  }
+
+  const res = await req.json();
+
+  if (res.statusCode == 409)
+    return false;
+
+  if (req.status != 200 || res.statusCode != 200)
+    createDialog('Error', 'An error occured while disabling 2FA!', 'error');
+
+  return true;
+}
+
+async function getCreds(mfa = false, mfaOnly = false, forceMfa = false) {
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('2faInput').value = '';
+
+  if ((mfa && (currentUser['2fa'] == "App" || mfaOnly)) || forceMfa) document.getElementById('2faInput').classList.remove('d-none');
+  else document.getElementById('2faInput').classList.add('d-none');
+
+  if (mfaOnly) document.getElementById('passwordInput').classList.add('d-none');
+  else document.getElementById('passwordInput').classList.remove('d-none');
+
+  document.getElementById('passwordDialog').show();
+
+  const res = await new Promise((resolve) => {
+    document.getElementById('passwordDialog').addEventListener(
+      'onHide',
+      (e) => {
+        if (e.detail.reason == 'canceled') {
+          resolve(false);
+          return;
+        }
+
+        resolve(true);
+      },
+      { once: true }
+    );
+  });
+
+  if (!res) return false;
+
+  const pw = document.getElementById('passwordInput').classList.contains('d-none') ? null : document.getElementById('passwordInput').value;
+  const mfaToken = document.getElementById('2faInput').classList.contains('d-none') ? null : document.getElementById('2faInput').value;
+
+  if (pw != null && validatePw(null, pw, pw)) {
+    createDialog('Invalid password', 'The password you entered is invalid!', 'error');
+    return false;
+  }
+  if (mfaToken != null && !validateMfaToken(mfaToken)) {
+    createDialog('Invalid 2FA token', 'The 2FA token you entered is invalid!', 'error');
+    return false;
+  }
+
+  return {
+    password: pw,
+    mfaToken: mfaToken,
+  };
+}
+
+function validateMfaToken(token) {
+  if (token.length != 6) return false;
+  if (!isNumber(token)) return false;
+
+  return true;
 }

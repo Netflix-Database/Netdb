@@ -37,8 +37,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
   <script src="https://assets.netdb.at/login/js/lm/LoginManager.portable.js" allowUnauthorized></script>
   <link rel="stylesheet" href="../Assets/css/profile.css">
-  <script src="../Assets/js/profile.js" defer></script>
-
+  <link rel="stylesheet" href="../Assets/css/dialog.css">
+  <script type="module" src="../Assets/js/profile.js" defer></script>
 </head>
 
 <body>
@@ -57,12 +57,11 @@
         <h2>Developer</h2>
         <li><a href="#apiKeys">Api Keys</a></li>
         <li><a href="#ssoCredentials">Sso Credentials</a></li>
+        <li>
+          <div id="logout" style="margin-top: 2em; cursor: pointer;">Logout</div>
+          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
+        </li>
       </ul>
-
-      <div style="position: absolute; bottom: 2em;">
-        <div id="logout" style="margin-top: 2em; cursor: pointer;">Logout</div>
-        <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
-      </div>
     </div>
     <div class="settings-container" style="padding-top: 3em;">
       <div id="personalInformation" class="item">
@@ -75,7 +74,7 @@
         </div>
         <div class="input-group">
           <div id="country_search" class="searchbar">
-            <input id="country" type="search" placeholder="Country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none" data-key="de">
+            <input id="country" type="search" placeholder="Country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
             <div class="autocom-box"></div>
           </div>
           <div id="language_search" class="searchbar">
@@ -174,14 +173,21 @@
       </div>
       <div id="2fa" class="item">
         <h1>Two Factor Authentication</h1>
-
         <div class="flex">
-          <input id="2fa_enable" type="checkbox">
-          <label for="2fa_enable">Enable</label>
+          <h4>Status:</h4>
+          <h4 id="2fa_status">Disabled</h5>
         </div>
         <div class="flex">
-          <input id="2fa_disable" type="checkbox">
-          <label for="2fa_disable">Disable</label>
+          <h4>Type:</h4>
+          <select name="Type" id="2fa_type">
+            <option value="0">Authenticator</option>
+            <option value="1">Email</option>
+            <option value="2">Please select a type</option>
+          </select>
+        </div>
+
+        <div class="flex end">
+          <Button id="2fa_enable">Enable</Button>
         </div>
       </div>
       <div id="myDevices" class="item">
@@ -205,7 +211,6 @@
         <table id="apiKeysTable" class="apiKeysTable">
           <tr>
             <th>Key</th>
-            <th>Secret</th>
             <th>Actions</th>
           </tr>
         </table>
@@ -258,6 +263,7 @@
                 </div>
               </div>
               <div class="flex end">
+                <button id="sso_delete">Delete</button>
                 <button id="sso_save">Save</button>
               </div>
 
@@ -280,14 +286,31 @@
           <b>Warning:</b> Deleting your account is irreversible. All your data will be deleted and cannot be restored.
         </p>
 
-        <div id="deleteAccountCreds">
-          <input id="deleteAccountPassword" type="password" placeholder="Password">
-          <input id="deleteAccount2fa" type="text" placeholder="2fa Token" class="d-none">
-        </div>
-
         <button id="deleteAccount">Delete Account</button>
       </div>
     </div>
+  </div>
+  <button target-dialog target="passwordDialog" style="display: none;"></button>
+  <button target-dialog target="authenticatorDialog" style="display: none;"></button>
+  <button target-dialog target="createSSODialog" style="display: none;"></button>
+  <div id="passwordDialog" class="custom-dialog">
+    <input id="passwordInput" placeholder="Password" type="password">
+    <input id="2faInput" placeholder="MFA Token" type="text">
+
+    <Button type="submit">Confirm</Button>
+  </div>
+  <div id="authenticatorDialog" class="custom-dialog">
+    <img src="" alt="Qr Code">
+    <h1></h1>
+
+    <Button type="submit">Confirm</Button>
+  </div>
+  <div id="createSSODialog" class="custom-dialog">
+    <input id="c_sso_name" type="text" placeholder="Name">
+    <input id="c_sso_url" type="text" placeholder="Url">
+    <input id="c_sso_logoUrl" type="text" placeholder="LogoUrl">
+
+    <Button type="submit">Confirm</Button>
   </div>
 </body>
 
