@@ -1,14 +1,10 @@
 <br />
 <p align="center">
   <a href="https://netdb.at">
-    <img src="https://assets.netdb.at/logo/Netdb_red_1920x512.png" alt="Logo" width="480" height="270">
+    <img src="https://assets.netdb.at/logo/Netdb_red_1920x512.png" alt="Logo" width="600">
   </a>
 
-  <h3 align="center">Netdb</h3>
-
   <p align="center">
-    <br />
-    <br />
     <a href="https://netdb.at">View Page</a>
     ·
     <a href="https://github.com/YannickFuereder/Netdb.at/issues">Report Bug</a>
@@ -16,8 +12,6 @@
     <a href="https://github.com/YannickFuereder/Netdb.at/issues">Request Feature</a>
   </p>
 </p>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
