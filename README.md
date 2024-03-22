@@ -1,15 +1,12 @@
 <br />
 <p align="center">
   <a href="https://netdb.at">
-    <img src="images/netdb_Logo_medium.png" alt="Logo" width="480" height="270">
+    <img src="https://assets.netdb.at/logo/Netdb_red_1920x512.png" alt="Logo" width="480" height="270">
   </a>
 
   <h3 align="center">Netdb</h3>
 
   <p align="center">
-    An unofficial Netflix API
-    <br />
-    <a href="https://netdb.at/docs"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://netdb.at">View Page</a>
@@ -33,7 +30,6 @@
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -45,7 +41,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Netdb is an unofficial Netflix API.
+Netdb is a collection of useful services, apps, and connectors that puts your workflow to the next level.
 
 ### Built With
 * [Javascript](https://www.javascript.com)
@@ -66,7 +62,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-support@netdb.ga
+support@netdb.at
 
 Project Link: [https://github.com/Netflix-Database/Netdb](https://github.com/Netflix-Database/Netdb)
 
@@ -74,3 +70,4 @@ Project Link: [https://github.com/Netflix-Database/Netdb](https://github.com/Net
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
+[Anime JS](https://animejs.com/)
