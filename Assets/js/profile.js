@@ -74,7 +74,10 @@ document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAc
 document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts('discord'));
 document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts('google'));
 document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts('github'));
-document.getElementById('logout').addEventListener('click', () => LoginManager.logout());
+document.getElementById('logout').addEventListener('click', async () => {
+  await LoginManager.logout();
+  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+});
 document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
 document.getElementById('createSsoCredentials').addEventListener('click', async () => await createSsoCredentials());
 
@@ -599,11 +602,12 @@ function createApiKeyRow(client_id) {
 async function createApiKey() {
   await LoginManager.validateToken();
   const req = await fetch('https://api.login.netdb.at/user/apikey', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
+    body: "admin"
   });
 
   if (req.status == 401) {
