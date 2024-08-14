@@ -304,7 +304,9 @@ async function deleteTrustedSsoClient(clientId) {
   document.getElementById('trusted_' + clientId).remove();
 
   const container = document.getElementById('thirdPartyAppsContainer');
-  container.innerHTML = '<p>No third party apps connected!</p>';
+
+  if (container.children.length == 0)
+    container.innerHTML = '<p>No third party apps connected!</p>';
 }
 
 async function createSsoCredentials() {
