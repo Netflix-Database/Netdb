@@ -76,14 +76,14 @@ document.getElementById('ca_google_link').addEventListener('click', () => LinkAc
 document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts('github'));
 document.getElementById('logout').addEventListener('click', async () => {
   await LoginManager.logout();
-  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+  window.location.href = LoginManager.buildLoginUrl(window.location.href);
 });
 document.getElementById('deleteAccount').addEventListener('click', async (e) => await doubleClickButton(e, deleteAccount));
 document.getElementById('createSsoCredentials').addEventListener('click', async () => await createSsoCredentials());
 
 LoginManager.isLoggedIn().then(async (e) => {
   if (!e && import.meta.env.MODE !== 'development') {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -141,26 +141,88 @@ LoginManager.isLoggedIn().then(async (e) => {
 
     currentUser = user;
   } else {
-    const req = await fetch('https://api.login.netdb.at/user', {
+    const userReq = await fetch(`https://api.login.${LoginManager.domain}/user`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + token,
       },
     });
 
-    if (req.status == 401) {
-      window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    if (userReq.status == 401) {
+      window.location.href = LoginManager.buildLoginUrl(window.location.href);
       return;
     }
 
-    const res = await req.json();
+    const userResponse = await userReq.json();
 
-    if (res.statusCode != 200) {
-      console.log(res);
+    if (userResponse.statusCode != 200) {
+      console.log(userResponse);
       return;
     }
 
-    const user = res.data;
+    const apiKeyReq = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+
+    if (apiKeyReq.status == 401) {
+      window.location.href = LoginManager.buildLoginUrl(window.location.href);
+      return;
+    }
+
+    const apiKeyResponse = await apiKeyReq.json();
+
+    if (apiKeyResponse.statusCode != 200) {
+      console.log(apiKeyResponse);
+      return;
+    }
+
+    const SSOreq = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+
+    if (SSOreq.status == 401) {
+      window.location.href = LoginManager.buildLoginUrl(window.location.href);
+      return;
+    }
+
+    const SSOResponse = await SSOreq.json();
+
+    if (SSOResponse.statusCode != 200) {
+      console.log(SSOreq);
+      return;
+    }
+
+    const trustedClientsReq = await fetch(`https://api.login.${LoginManager.domain}/oauth/trust`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+
+    if (trustedClientsReq.status == 401) {
+      window.location.href = LoginManager.buildLoginUrl(window.location.href);
+      return;
+    }
+
+    const trustedClientsResponse = await trustedClientsReq.json();
+
+    if (trustedClientsResponse.statusCode != 200) {
+      console.log(SSOreq);
+      return;
+    }
+
+    const user = {
+      ...userResponse.data,
+      api_keys: apiKeyResponse.data,
+      trusted_sso_clients: trustedClientsResponse.data,
+      sso_clients: SSOResponse.data,
+    };
     currentUser = user;
   }
 
@@ -249,7 +311,7 @@ async function LinkAccount(code) {
   const provider = localStorage.getItem('linkType');
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/link/' + provider + '?code=' + code, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/link/` + provider + '?code=' + code, {
     method: 'GET',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -258,7 +320,7 @@ async function LinkAccount(code) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -280,7 +342,7 @@ async function LinkAccount(code) {
 
 async function deleteTrustedSsoClient(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/oauth/untrust', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/oauth/untrust`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -290,7 +352,7 @@ async function deleteTrustedSsoClient(clientId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -341,7 +403,7 @@ async function createSsoCredentials() {
   const logoUrl = document.getElementById('c_sso_logoUrl').value;
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/sso', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -355,7 +417,7 @@ async function createSsoCredentials() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -426,7 +488,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
 async function deleteSSOClient(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/sso', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -436,7 +498,7 @@ async function deleteSSOClient(clientId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -452,7 +514,7 @@ async function deleteSSOClient(clientId) {
 
 async function deleteSSORedirect(clientId, redirectId) {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/sso/redirects', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso/redirects`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -465,7 +527,7 @@ async function deleteSSORedirect(clientId, redirectId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -486,7 +548,7 @@ async function addSSORedirect(clientId) {
   //TODO: add button feedback
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/sso/redirects', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso/redirects`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -499,7 +561,7 @@ async function addSSORedirect(clientId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -536,7 +598,7 @@ async function saveSSOClient(clientId) {
   const item = document.getElementById('sso_' + clientId);
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/sso', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
     method: 'PUT',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -551,7 +613,7 @@ async function saveSSOClient(clientId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -603,7 +665,7 @@ function createApiKeyRow(client_id) {
 
 async function createApiKey() {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/apikey', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -613,7 +675,7 @@ async function createApiKey() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -632,7 +694,7 @@ async function createApiKey() {
 
 async function regenerateApiKey(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/apikey', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -642,7 +704,7 @@ async function regenerateApiKey(clientId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -659,7 +721,7 @@ async function regenerateApiKey(clientId) {
 
 async function deleteApiKey(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user/apikey', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -669,7 +731,7 @@ async function deleteApiKey(clientId) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -783,7 +845,7 @@ function showSuggestions(list, searchbar) {
 
 async function savePersonalInformation() {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
     method: 'PUT',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -799,7 +861,7 @@ async function savePersonalInformation() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -841,7 +903,7 @@ async function changePassword() {
   }
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/resetpassword', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/resetpassword`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -856,7 +918,7 @@ async function changePassword() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -869,7 +931,7 @@ async function changePassword() {
 
   LoginManager.deleteCookie('token');
   LoginManager.deleteCookie('refreshToken');
-  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+  window.location.href = LoginManager.buildLoginUrl(window.location.href);
 }
 
 function validatePw(oldPw, pw, rpw) {
@@ -904,7 +966,7 @@ async function disconnectAccount(e) {
   const element = e.target.closest('[data-type]');
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/unlink/' + element.dataset.type, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/unlink/` + element.dataset.type, {
     method: 'GET',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -912,7 +974,7 @@ async function disconnectAccount(e) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -925,7 +987,7 @@ async function deleteAccount() {
   if (!creds) return;
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/user', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -938,7 +1000,7 @@ async function deleteAccount() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -949,9 +1011,9 @@ async function deleteAccount() {
     return;
   }
 
-  LoginManager.deleteCookie('token', '/', '.netdb.at');
-  LoginManager.deleteCookie('refreshToken', '/', '.netdb.at');
-  window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+  LoginManager.deleteCookie('token', '/', '.' + LoginManager.domain);
+  LoginManager.deleteCookie('refreshToken', '/', '.' + LoginManager.domain);
+  window.location.href = LoginManager.buildLoginUrl(window.location.href);
 }
 
 async function enable2fa() {
@@ -963,7 +1025,7 @@ async function enable2fa() {
   }
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/2fa/activate', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/activate`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -973,7 +1035,7 @@ async function enable2fa() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
@@ -1020,7 +1082,7 @@ async function verify2fa() {
   if (!creds) return;
 
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/2fa/verify', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/verify`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -1033,7 +1095,7 @@ async function verify2fa() {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return false;
   }
 
@@ -1070,7 +1132,7 @@ async function disable2fa() {
 
 async function disableMfaRequest(password, mfaToken) {
   await LoginManager.validateToken();
-  const req = await fetch('https://api.login.netdb.at/2fa/deactivate', {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/deactivate`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -1083,7 +1145,7 @@ async function disableMfaRequest(password, mfaToken) {
   });
 
   if (req.status == 401) {
-    window.location.href = 'https://login.netdb.at?redirect=' + encodeURIComponent(window.location.href);
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
 
