@@ -1,4 +1,5 @@
 import { createDialog, initDialog } from './dialog';
+import { initLocalization } from './util/localization';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -65,6 +66,7 @@ const countries = [
 ];
 var currentUser;
 
+initLocalization();
 initDialog();
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
@@ -264,7 +266,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   initSearchbar(languages, 'language_search');
 
   currentUser.api_keys.forEach((key) => {
-    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key, '*************'));
+    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.clientId, key.scope));
   });
 
   if (currentUser.trusted_sso_clients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
@@ -643,10 +645,10 @@ async function doubleClickButton(e, func) {
   }, 3000);
 }
 
-function createApiKeyRow(client_id) {
+function createApiKeyRow(client_id, scope) {
   const row = document.createElement('tr');
   row.id = client_id;
-  row.innerHTML = '<td>' + client_id + '</td>';
+  row.innerHTML = `<td>${client_id}</td><td>${scope}</td>`;
   const td = document.createElement('td');
   const deleteBtn = document.createElement('button');
   const regenBtn = document.createElement('button');
@@ -687,7 +689,7 @@ async function createApiKey() {
     return;
   }
 
-  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId));
+  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId, res.data.scope));
 
   createDialog('Success', 'Successfully created API key! Please save it now, as it will not be shown again! ' + res.data.clientSecret, 'info');
 }
@@ -788,10 +790,8 @@ function initSearchbar(data, id) {
 
   inputBox.addEventListener('keyup', (e) => filterSearch(e.target.value, data, searchbar));
   inputBox.addEventListener('focus', () => searchbar.querySelector('.autocom-box').classList.add('active'));
-  searchbar.addEventListener('focusout', (e) => {
-    setTimeout(() => {
-      searchbar.querySelector('.autocom-box').classList.remove('active');
-    }, 300);
+  window.addEventListener('click', (e) => {
+    if (!searchbar.contains(e.target)) searchbar.querySelector('.autocom-box').classList.remove('active');
   });
 
   inputBox.onkeydown = (e) => {
@@ -840,6 +840,7 @@ function showSuggestions(list, searchbar) {
     allList[i].addEventListener('click', (e) => {
       searchbar.querySelector('input').value = e.target.innerText;
       searchbar.querySelector('input').dataset.key = e.target.dataset.key;
+      searchbar.querySelector('.autocom-box').classList.remove('active');
     });
 }
 
