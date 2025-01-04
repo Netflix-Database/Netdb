@@ -30,6 +30,12 @@ body {
   position: relative;
 }
 
+.sidebar > a {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+}
+
 ul {
   list-style: none;
   padding: 0;

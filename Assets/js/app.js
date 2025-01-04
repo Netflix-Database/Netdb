@@ -1,4 +1,7 @@
 import anime from 'animejs';
+import { initLocalization } from './util/localization';
+
+initLocalization();
 
 LoginManager.isLoggedIn().then(async (e) => {
   if (e) {
