@@ -29,7 +29,7 @@ export function initSearchbar(data, id) {
     }
 
     if (e.key == 'ArrowDown') {
-      const currentFocus = searchbar.querySelector('.autocom-box h1.focus');
+      let currentFocus = searchbar.querySelector('.autocom-box h1.focus');
 
       if (currentFocus) currentFocus.classList.remove('focus');
 
@@ -42,7 +42,7 @@ export function initSearchbar(data, id) {
     }
 
     if (e.key == 'ArrowUp') {
-      const currentFocus = searchbar.querySelector('.autocom-box h1.focus');
+      let currentFocus = searchbar.querySelector('.autocom-box h1.focus');
 
       if (currentFocus) currentFocus.classList.remove('focus');
 

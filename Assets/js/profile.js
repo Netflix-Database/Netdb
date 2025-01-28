@@ -2,6 +2,13 @@ import { initSearchbar } from './autocomplete';
 import { createDialog, initDialog } from './dialog';
 import { initLocalization } from './util/localization';
 import { isNumber, validatePw } from './util/validation';
+import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
+import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
+import { deactivate as deactivateMfaReq } from './data/auth/2fa/deactivate';
+import { verify as verifyMfaReq } from './data/auth/2fa/verify';
+import { activate as activateMfaReq } from './data/auth/2fa/activate';
+import { changePassword as changePasswordReq } from './data/auth/changePassword';
+import { saveClient as saveClientReq } from './data/auth/oauth/saveClient';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -183,7 +190,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
-    const SSOreq = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
+    const SSOreq = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + token,
@@ -407,7 +414,7 @@ async function createSsoCredentials() {
   const logoUrl = document.getElementById('c_sso_logoUrl').value;
 
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -492,7 +499,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
 async function deleteSSOClient(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -518,7 +525,7 @@ async function deleteSSOClient(clientId) {
 
 async function deleteSSORedirect(clientId, redirectId) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso/redirects`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth/redirects`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -552,7 +559,7 @@ async function addSSORedirect(clientId) {
   //TODO: add button feedback
 
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso/redirects`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth/redirects`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
@@ -600,27 +607,7 @@ async function addSSORedirect(clientId) {
 
 async function saveSSOClient(clientId) {
   const item = document.getElementById('sso_' + clientId);
-
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/sso`, {
-    method: 'PUT',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      clientId: clientId,
-      logoUrl: item.querySelector('#sso_logoUrl').value,
-      url: item.querySelector('#sso_websiteUrl').value,
-      name: item.querySelector('#sso_name').value,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await saveClientReq(clientId, item.querySelector('#sso_logoUrl').value, item.querySelector('#sso_websiteUrl').value, item.querySelector('#sso_name').value);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -675,7 +662,7 @@ async function createApiKey() {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ scopes: "admin" })
+    body: '"admin"'
   });
 
   if (req.status == 401) {
@@ -823,6 +810,7 @@ async function changePassword() {
   const pw = document.getElementById('newPassword1').value;
   const rpw = document.getElementById('newPassword2').value;
   const oldPw = document.getElementById('oldPassword').value;
+  const email = document.getElementById('cp_email').value;
 
   const error = validatePw(oldPw, pw, rpw);
 
@@ -837,26 +825,7 @@ async function changePassword() {
     return;
   }
 
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/resetpassword`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      OldPassword: oldPw,
-      Email: document.getElementById('cp_email').value,
-      Password: pw,
-      TwoFaToken: currentUser['2fa'] ? document.getElementById('cp_2fa').value : null,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await changePasswordReq(oldPw, email, pw, currentUser['2fa'] ? document.getElementById('cp_2fa').value : null);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -872,18 +841,7 @@ async function changePassword() {
 async function disconnectAccount(e) {
   const element = e.target.closest('[data-type]');
 
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/unlink/` + element.dataset.type, {
-    method: 'GET',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-    },
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
+  await unlinkSocialAccountReq(element.dataset.type);
 
   element.classList.remove('connected');
 }
@@ -893,23 +851,7 @@ async function deleteAccount() {
 
   if (!creds) return;
 
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      Password: creds.password,
-      TwoFaToken: creds.mfaToken,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
+  const req = await deleteAccountReq(creds.password, creds.mfaToken);
 
   const data = await req.json();
 
@@ -931,20 +873,7 @@ async function enable2fa() {
     return;
   }
 
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/activate`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: mfaType == 0 ? '"app"' : mfaType == 1 ? '"mail"' : null,
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
+  const req = await activateMfaReq(mfaType == 0 ? '"app"' : mfaType == 1 ? '"mail"' : null);
 
   if (req.status != 200) {
     createDialog('Error', 'An error occured while enabling 2FA!', 'error');
@@ -953,8 +882,7 @@ async function enable2fa() {
 
   const res = await req.json();
 
-  if (mfaType == 0) {
-    //App
+  if (mfaType == 0) { //App
     const qr = res.data.qrCodeSetupImageUrl;
     const secret = res.data.manualEntryKey;
 
@@ -988,23 +916,7 @@ async function verify2fa() {
 
   if (!creds) return;
 
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/verify`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      MFAToken: creds.mfaToken,
-      Password: creds.password,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return false;
-  }
+  const req = await verifyMfaReq(creds.password, creds.mfaToken);
 
   if (req.status != 200) {
     createDialog('Error', 'An error occured while verifying 2FA!', 'error');
@@ -1026,43 +938,26 @@ async function disable2fa() {
 
   if (!creds) return;
 
-  const success = await disableMfaRequest(creds.password, creds.mfaToken);
+  let req = await deactivateMfaReq(creds.password, creds.mfaToken);
+  const res = await req.json();
 
-  if (!success) {
+  if (req.status != 200 || res.statusCode != 200) {
+    createDialog('Error', 'An error occured while disabling 2FA!', 'error');
+    return;
+  }
+
+  if (!res.statusCode == 409) {
     const mfaToken = await getCreds(true, true);
 
     if (!mfaToken) return;
 
-    await disableMfaRequest(creds.password, mfaToken.mfaToken);
+    req = await disableMfaRequest(creds.password, mfaToken.mfaToken);
+
+    if (req.status != 200 || res.statusCode != 200) {
+      createDialog('Error', 'An error occured while disabling 2FA!', 'error');
+      return;
+    }
   }
-}
-
-async function disableMfaRequest(password, mfaToken) {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/deactivate`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      Password: password,
-      MFAToken: mfaToken,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
-  const res = await req.json();
-
-  if (res.statusCode == 409) return false;
-
-  if (req.status != 200 || res.statusCode != 200) createDialog('Error', 'An error occured while disabling 2FA!', 'error');
-
-  return true;
 }
 
 async function getCreds(mfa = false, mfaOnly = false, forceMfa = false) {
