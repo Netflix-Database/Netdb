@@ -296,6 +296,11 @@ select[disabled] {
   cursor: pointer;
   font-size: 1em;
   padding: 1em;
+  margin: 0;
+}
+
+.searchbar .autocom-box h1.focus {
+  background-color: #4d4d4d;
 }
 
 .searchbar .autocom-box h1:hover {

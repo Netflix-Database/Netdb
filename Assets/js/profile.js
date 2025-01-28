@@ -1,5 +1,7 @@
+import { initSearchbar } from './autocomplete';
 import { createDialog, initDialog } from './dialog';
 import { initLocalization } from './util/localization';
+import { isNumber, validatePw } from './util/validation';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -41,6 +43,7 @@ const languages = [
   { key: 'sr-rs', name: 'Serbian' },
   { key: 'sl-si', name: 'Slovenian' },
   { key: 'vi-vn', name: 'Vietnamese' },
+  { key: 'xx-ms', name: 'Wingdings' },
 ];
 
 const countries = [
@@ -90,7 +93,6 @@ LoginManager.isLoggedIn().then(async (e) => {
   }
 
   const token = LoginManager.getCookie('token');
-
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('code')) {
@@ -673,7 +675,7 @@ async function createApiKey() {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
-    body: "admin"
+    body: JSON.stringify({ scopes: "admin" })
   });
 
   if (req.status == 401) {
@@ -776,74 +778,6 @@ function LinkAccounts(type) {
   }
 }
 
-function initSearchbar(data, id) {
-  let searchbar = document.getElementById(id);
-  let inputBox = searchbar.querySelector('input');
-
-  try {
-    if (inputBox.dataset.key && inputBox.dataset.key != 'null') inputBox.value = data.find((e) => e.key == inputBox.dataset.key).name;
-  } catch (e) {
-    console.log(e);
-  }
-
-  showSuggestions(data, searchbar);
-
-  inputBox.addEventListener('keyup', (e) => filterSearch(e.target.value, data, searchbar));
-  inputBox.addEventListener('focus', () => searchbar.querySelector('.autocom-box').classList.add('active'));
-  window.addEventListener('click', (e) => {
-    if (!searchbar.contains(e.target)) searchbar.querySelector('.autocom-box').classList.remove('active');
-  });
-
-  inputBox.onkeydown = (e) => {
-    if (e.key == 'Enter') {
-      searchbar.querySelector('input').value = searchbar.querySelector('.autocom-box h1').innerText;
-      searchbar.querySelector('input').dataset.key = searchbar.querySelector('.autocom-box h1').dataset.key;
-    }
-  };
-}
-
-function filterSearch(userData, data, searchbar) {
-  const suggestions = [];
-
-  for (var i = 0; i < data.length; i++) suggestions.push(data[i]);
-
-  let emptyArray = suggestions.filter((data) => data.name.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()));
-
-  emptyArray.sort((a, b) => {
-    if (a.name < b.name) return -1;
-
-    if (a.name > b.name) return 1;
-
-    return 0;
-  });
-
-  showSuggestions(emptyArray, searchbar);
-}
-
-function showSuggestions(list, searchbar) {
-  list = list.map((data) => {
-    return (data = '<h1 data-key="' + data.key + '">' + data.name + '</h1>');
-  });
-
-  let listData = '';
-  if (!list.length) {
-    // const userValue = searchbar.querySelector('input').value;
-    // listData = '<h1>' + userValue + '</h1>';
-  } else {
-    listData = list.join('');
-  }
-
-  searchbar.querySelector('.autocom-box').innerHTML = listData;
-
-  const allList = searchbar.querySelector('.autocom-box').querySelectorAll('h1');
-  for (let i = 0; i < allList.length; i++)
-    allList[i].addEventListener('click', (e) => {
-      searchbar.querySelector('input').value = e.target.innerText;
-      searchbar.querySelector('input').dataset.key = e.target.dataset.key;
-      searchbar.querySelector('.autocom-box').classList.remove('active');
-    });
-}
-
 async function savePersonalInformation() {
   await LoginManager.validateToken();
   const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
@@ -933,34 +867,6 @@ async function changePassword() {
   LoginManager.deleteCookie('token');
   LoginManager.deleteCookie('refreshToken');
   window.location.href = LoginManager.buildLoginUrl(window.location.href);
-}
-
-function validatePw(oldPw, pw, rpw) {
-  if (pw == null || rpw == null) return 'Please fill out all fields';
-
-  if (pw.length < 8) return 'The password has to be at least 8 characters long';
-
-  if (!isUpperCase(pw)) return 'The password has to contain at least one uppercase letter';
-
-  if (!isLowerCase(pw)) return 'The password has to contain at least one lowercase letter';
-
-  if (!isNumber(pw)) return 'The password has to contain at least one number';
-
-  if (pw != rpw) return 'Passwords do not match';
-
-  if (pw == oldPw) return 'The new password cannot be the same as the old one';
-}
-
-function isUpperCase(str) {
-  return /[A-Z]/.test(str);
-}
-
-function isLowerCase(str) {
-  return /[a-z]/.test(str);
-}
-
-function isNumber(str) {
-  return /[0-9]/.test(str);
 }
 
 async function disconnectAccount(e) {
