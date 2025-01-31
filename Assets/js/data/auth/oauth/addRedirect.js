@@ -1,14 +1,14 @@
-export async function deleteAccount(password, mfaToken) {
+export async function addRedirect(clientId, url) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
-    method: 'DELETE',
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth/redirects`, {
+    method: 'POST',
     headers: {
       'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      Password: password,
-      TwoFaToken: mfaToken,
+      clientId: clientId,
+      url: url,
     }),
   });
 

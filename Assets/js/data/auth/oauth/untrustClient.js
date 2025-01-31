@@ -1,10 +1,12 @@
-export async function unlinkSocialAccount(provider) {
+export async function untrustClient(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/unlink/` + provider, {
-    method: 'GET',
+  const req = await fetch(`https://api.login.${LoginManager.domain}/oauth/untrust`, {
+    method: 'POST',
     headers: {
       'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
+      'Content-Type': 'application/json',
     },
+    body: '"' + clientId + '"',
   });
 
   if (req.status == 401) {

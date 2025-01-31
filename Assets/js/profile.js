@@ -1,7 +1,7 @@
 import { initSearchbar } from './autocomplete';
 import { createDialog, initDialog } from './dialog';
 import { initLocalization } from './util/localization';
-import { isNumber, validatePw } from './util/validation';
+import { validateMfaToken, validatePw } from './util/validation';
 import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
 import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
 import { deactivate as deactivateMfaReq } from './data/auth/2fa/deactivate';
@@ -9,6 +9,21 @@ import { verify as verifyMfaReq } from './data/auth/2fa/verify';
 import { activate as activateMfaReq } from './data/auth/2fa/activate';
 import { changePassword as changePasswordReq } from './data/auth/changePassword';
 import { saveClient as saveClientReq } from './data/auth/oauth/saveClient';
+import { getUser } from './data/auth/getUser';
+import { getApiKeys } from './data/auth/getApiKeys';
+import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
+import { getScopes } from './data/auth/getScopes';
+import { saveUser } from './data/auth/saveUser';
+import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
+import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateApiKey';
+import { addRedirect } from './data/auth/oauth/addRedirect';
+import { deleteRedirect } from './data/auth/oauth/deleteRedirect';
+import { deleteClient } from './data/auth/oauth/deleteClient';
+import { createClient } from './data/auth/oauth/createClient';
+import { getClients } from './data/auth/oauth/getClients';
+import { getTrustedClients } from './data/auth/oauth/getTrustedClients';
+import { untrustClient } from './data/auth/oauth/untrustClient';
+import { linkSocialAccount } from './data/auth/linkSocialAccount';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -124,7 +139,10 @@ LoginManager.isLoggedIn().then(async (e) => {
       '2fa': false,
       '2faType': 'App',
       api_keys: [
-        "1234567890"
+        {
+          clientId: "1234567890",
+          scope: "admin"
+        }
       ],
       trusted_sso_clients: [
         {
@@ -152,18 +170,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
     currentUser = user;
   } else {
-    const userReq = await fetch(`https://api.login.${LoginManager.domain}/user`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-
-    if (userReq.status == 401) {
-      window.location.href = LoginManager.buildLoginUrl(window.location.href);
-      return;
-    }
-
+    const userReq = await getUser();
     const userResponse = await userReq.json();
 
     if (userResponse.statusCode != 200) {
@@ -171,18 +178,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
-    const apiKeyReq = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-
-    if (apiKeyReq.status == 401) {
-      window.location.href = LoginManager.buildLoginUrl(window.location.href);
-      return;
-    }
-
+    const apiKeyReq = await getApiKeys();
     const apiKeyResponse = await apiKeyReq.json();
 
     if (apiKeyResponse.statusCode != 200) {
@@ -190,18 +186,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
-    const SSOreq = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-
-    if (SSOreq.status == 401) {
-      window.location.href = LoginManager.buildLoginUrl(window.location.href);
-      return;
-    }
-
+    const SSOreq = await getClients();
     const SSOResponse = await SSOreq.json();
 
     if (SSOResponse.statusCode != 200) {
@@ -209,18 +194,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
-    const trustedClientsReq = await fetch(`https://api.login.${LoginManager.domain}/oauth/trust`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-
-    if (trustedClientsReq.status == 401) {
-      window.location.href = LoginManager.buildLoginUrl(window.location.href);
-      return;
-    }
-
+    const trustedClientsReq = await getTrustedClients();
     const trustedClientsResponse = await trustedClientsReq.json();
 
     if (trustedClientsResponse.statusCode != 200) {
@@ -301,7 +275,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   if (currentUser.sso_clients.length > 0) document.getElementById('ssoClientsContainer').innerHTML = '';
 
   currentUser.sso_clients.forEach((client) => {
-    document.getElementById('ssoClientsContainer').appendChild(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects));
+    document.getElementById('ssoClientsContainer').appendChild(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects, client.audiences));
   });
 
   Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
@@ -320,21 +294,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
 async function LinkAccount(code) {
   const provider = localStorage.getItem('linkType');
-
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/link/` + provider + '?code=' + code, {
-    method: 'GET',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await linkSocialAccount(provider, code);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -352,21 +312,7 @@ async function LinkAccount(code) {
 }
 
 async function deleteTrustedSsoClient(clientId) {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/oauth/untrust`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: '"' + clientId + '"',
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await untrustClient(clientId);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -412,26 +358,7 @@ async function createSsoCredentials() {
   const name = document.getElementById('c_sso_name').value;
   const websiteUrl = document.getElementById('c_sso_url').value;
   const logoUrl = document.getElementById('c_sso_logoUrl').value;
-
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: name,
-      url: websiteUrl,
-      logoUrl: logoUrl,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await createClient(name, websiteUrl, logoUrl);
   const res = await req.json();
 
   if (req.status != 200 || res.statusCode != 203) {
@@ -441,7 +368,7 @@ async function createSsoCredentials() {
 
   if (document.getElementById('ssoClientsContainer').children[0].tagName == 'P') document.getElementById('ssoClientsContainer').innerHTML = '';
 
-  const item = createSSOClient(logoUrl, name, websiteUrl, res.data.clientId, res.data.clientSecret, []);
+  const item = createSSOClient(logoUrl, name, websiteUrl, res.data.clientId, res.data.clientSecret, [], []);
   document.getElementById('ssoClientsContainer').appendChild(item);
 
   item.children[0].addEventListener('click', function () {
@@ -452,7 +379,7 @@ async function createSsoCredentials() {
   });
 }
 
-function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects) {
+function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret, redirects, audiences) {
   const template = document.importNode(document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content, true);
   const item = template.querySelector('div');
 
@@ -473,6 +400,28 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   content.querySelector('#sso_save').addEventListener('click', async () => await saveSSOClient(clientId));
   item.querySelector('#sso_delete').addEventListener('click', async () => await deleteSSOClient(clientId));
   content.querySelector('#sso_addRedirect').addEventListener('click', async () => await addSSORedirect(clientId));
+  content.querySelector('#sso_addAudience').addEventListener('click', async () => await addAudience(clientId));
+
+
+  const audiencesContainer = content.querySelector('#sso_audiences');
+
+  audiences.forEach((audience) => {
+    const audienceItem = document.createElement('div');
+    audienceItem.id = 'sso_audience_' + audience.id;
+
+    const audienceInput = document.createElement('input');
+    audienceInput.type = 'text';
+    audienceInput.value = audience.audience;
+    audienceInput.disabled = true;
+    audienceItem.appendChild(audienceInput);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', async () => await deleteAudience(clientId, audience.id));
+    audienceItem.appendChild(deleteBtn);
+
+    audiencesContainer.appendChild(audienceItem);
+  });
 
   const redirectsContainer = content.querySelector('#sso_redirects');
 
@@ -498,21 +447,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 }
 
 async function deleteSSOClient(clientId) {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: '"' + clientId + '"',
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await deleteClient(clientId);
   const res = await req.json();
 
   if (req.status != 200 || res.statusCode != 200) {
@@ -524,24 +459,7 @@ async function deleteSSOClient(clientId) {
 }
 
 async function deleteSSORedirect(clientId, redirectId) {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth/redirects`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      clientId: clientId,
-      redirectId: redirectId,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await deleteRedirect(clientId, redirectId);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -558,24 +476,7 @@ async function addSSORedirect(clientId) {
 
   //TODO: add button feedback
 
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth/redirects`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      clientId: clientId,
-      url: item.querySelector('#sso_addRedirect').previousElementSibling.value,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await addRedirect(clientId, item.querySelector('#sso_addRedirect').previousElementSibling.value);
   const res = await req.json();
 
   if (res.statusCode != 203) {
@@ -655,21 +556,51 @@ function createApiKeyRow(client_id, scope) {
 }
 
 async function createApiKey() {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: '"admin"'
+  document.getElementById('scope').value = '';
+  document.getElementById('apiKeyDialog').show();
+
+  const dialogRes = await new Promise((resolve) => {
+    document.getElementById('apiKeyDialog').addEventListener(
+      'onHide',
+      (e) => {
+        if (e.detail.reason == 'canceled') {
+          resolve(false);
+          return;
+        }
+
+        resolve(true);
+      },
+      { once: true }
+    );
   });
 
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
+  if (!dialogRes) return false;
+
+  const scope = document.getElementById('scope').value;
+  const availableScopes = await getScopes();
+
+  if (scope.length == 0) {
+    createDialog('Error', 'Please fill out all fields!', 'error');
     return;
   }
 
+  const inputScopes = input.split(' ');
+  for (const inputScope of inputScopes) {
+    const [category, scopeValue] = inputScope.split(':');
+    const categoryScopes = availableScopes.find(sc => sc.category === category);
+    if (!categoryScopes) {
+      createDialog('Error', `Invalid category: ${category}`, 'error');
+      return false;
+    }
+
+    const scopeExists = categoryScopes.scopes.some(sc => sc.value == scopeValue);
+    if (!scopeExists) {
+      createDialog('Error', `Invalid scope value: ${scopeValue} for category: ${category}`, 'error');
+      return false;
+    }
+  }
+
+  const req = await createApiKeyReq(scope);
   const res = await req.json();
 
   if (res.statusCode != 203) {
@@ -684,21 +615,7 @@ async function createApiKey() {
 }
 
 async function regenerateApiKey(clientId) {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: '"' + clientId + '"',
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await regenerateApiKeyReq(clientId);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -711,21 +628,7 @@ async function regenerateApiKey(clientId) {
 }
 
 async function deleteApiKey(clientId) {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: '"' + clientId + '"',
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await deleteApiKeyReq(clientId);
   const data = await req.json();
 
   if (data.statusCode != 200) {
@@ -766,27 +669,7 @@ function LinkAccounts(type) {
 }
 
 async function savePersonalInformation() {
-  await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
-    method: 'PUT',
-    headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      firstname: document.getElementById('firstname').value,
-      lastname: document.getElementById('lastname').value,
-      country: document.getElementById('country').dataset.key,
-      preferredLang: document.getElementById('preferredlang').dataset.key,
-      username: document.getElementById('username').value,
-    }),
-  });
-
-  if (req.status == 401) {
-    window.location.href = LoginManager.buildLoginUrl(window.location.href);
-    return;
-  }
-
+  const req = await saveUser(document.getElementById('firstname').value, document.getElementById('lastname').value, document.getElementById('country').dataset.key, document.getElementById('preferredlang').dataset.key, document.getElementById('username').value);
   const res = await req.json();
 
   if (res.statusCode != 200) {
@@ -1005,11 +888,4 @@ async function getCreds(mfa = false, mfaOnly = false, forceMfa = false) {
     password: pw,
     mfaToken: mfaToken,
   };
-}
-
-function validateMfaToken(token) {
-  if (token.length != 6) return false;
-  if (!isNumber(token)) return false;
-
-  return true;
 }

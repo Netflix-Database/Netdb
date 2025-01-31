@@ -3,7 +3,7 @@ export async function saveClient(clientId, logoUrl, url, name) {
   const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
     method: 'PUT',
     headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

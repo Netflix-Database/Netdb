@@ -303,6 +303,14 @@
                 <button id="sso_save">Save</button>
               </div>
 
+              <p>Audiences</p>
+              <div id="sso_audiences" class="ssoAudiences">
+                <div>
+                  <input type="text">
+                  <button id="sso_addAudience">Add</button>
+                </div>
+              </div>
+              
               <p>Redirects</p>
               <div id="sso_redirects" class="ssoRedirects">
                 <div>
@@ -329,6 +337,14 @@
   <button target-dialog target="passwordDialog" style="display: none;"></button>
   <button target-dialog target="authenticatorDialog" style="display: none;"></button>
   <button target-dialog target="createSSODialog" style="display: none;"></button>
+  <button target-dialog target="apiKeyDialog" style="display: none;"></button>
+  <div id="apiKeyDialog" class="custom-dialog">
+    <input id="scope" placeholder="Scope" type="text">
+
+    <div class="flex end">
+      <Button type="submit">Create</Button>
+    </div>
+  </div>
   <div id="passwordDialog" class="custom-dialog">
     <input id="passwordInput" placeholder="Password" type="password">
     <input id="2faInput" placeholder="MFA Token" type="text">

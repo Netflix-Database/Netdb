@@ -1,14 +1,17 @@
-export async function deleteAccount(password, mfaToken) {
+export async function saveUser(firstname, lastname, country, preferredLang, username) {
   await LoginManager.validateToken();
   const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
-    method: 'DELETE',
+    method: 'PUT',
     headers: {
       'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      Password: password,
-      TwoFaToken: mfaToken,
+      firstname: firstname,
+      lastname: lastname,
+      country: country,
+      preferredLang: preferredLang,
+      username: username,
     }),
   });
 

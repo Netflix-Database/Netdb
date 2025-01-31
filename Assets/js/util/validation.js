@@ -25,3 +25,10 @@ export function validatePw(oldPw, pw, rpw) {
 
   if (pw == oldPw) return 'The new password cannot be the same as the old one';
 }
+
+export function validateMfaToken(token) {
+  if (token.length != 6) return false;
+  if (!isNumber(token)) return false;
+
+  return true;
+}
