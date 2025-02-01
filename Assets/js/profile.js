@@ -24,6 +24,8 @@ import { getClients } from './data/auth/oauth/getClients';
 import { getTrustedClients } from './data/auth/oauth/getTrustedClients';
 import { untrustClient } from './data/auth/oauth/untrustClient';
 import { linkSocialAccount } from './data/auth/linkSocialAccount';
+import { deleteAudience as deleteAudienceReq } from './data/auth/oauth/deleteAudience';
+import { addAudience as addAudienceReq } from './data/auth/oauth/addAudience';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -458,6 +460,18 @@ async function deleteSSOClient(clientId) {
   document.getElementById('sso_' + clientId).remove();
 }
 
+async function deleteAudience(clientId, audienceId) {
+  const req = await deleteAudienceReq(clientId, audienceId);
+  const res = await req.json();
+
+  if (res.statusCode != 200) {
+    console.log(res);
+    return;
+  }
+
+  document.getElementById('sso_audience_' + redirectId).remove();
+}
+
 async function deleteSSORedirect(clientId, redirectId) {
   const req = await deleteRedirect(clientId, redirectId);
   const res = await req.json();
@@ -468,6 +482,42 @@ async function deleteSSORedirect(clientId, redirectId) {
   }
 
   document.getElementById('sso_redirect_' + redirectId).remove();
+}
+
+async function addAudience(clientId) {
+  const item = document.getElementById('sso_' + clientId);
+  const redirects = item.querySelector('#sso_audiences');
+
+  //TODO: add button feedback
+
+  const req = await addAudienceReq(clientId, item.querySelector('#sso_addAudience').previousElementSibling.value);
+  const res = await req.json();
+
+  if (res.statusCode != 203) {
+    console.log(res);
+    return;
+  }
+
+  item.querySelector('#sso_addAudience').previousElementSibling.value = '';
+
+  const redirect = document.createElement('div');
+  redirect.id = 'sso_audience_' + res.data.id;
+  const url = document.createElement('input');
+  url.type = 'text';
+  url.value = res.data.url;
+  url.disabled = true;
+  redirect.appendChild(url);
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'Delete';
+  deleteBtn.addEventListener('click', async () => await deleteAudienceReq(clientId, res.data.id));
+  redirect.appendChild(deleteBtn);
+
+  if (redirects.children.length > 1) {
+    redirects.insertBefore(redirect, redirects.children[1]);
+    return;
+  }
+
+  redirects.append(redirect);
 }
 
 async function addSSORedirect(clientId) {

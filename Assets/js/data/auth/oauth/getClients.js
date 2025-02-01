@@ -3,7 +3,7 @@ export async function getClients() {
   const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
     },
   });
 
