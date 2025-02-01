@@ -160,6 +160,7 @@ LoginManager.isLoggedIn().then(async (e) => {
           logo: 'https://via.placeholder.com/150',
           url: 'https://example.com',
           secret: '1234567890',
+          audiences: [],
           redirects: [
             {
               id: '1234567890',
@@ -413,7 +414,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
     const audienceInput = document.createElement('input');
     audienceInput.type = 'text';
-    audienceInput.value = audience.audience;
+    audienceInput.value = audience.url;
     audienceInput.disabled = true;
     audienceItem.appendChild(audienceInput);
 
@@ -469,7 +470,7 @@ async function deleteAudience(clientId, audienceId) {
     return;
   }
 
-  document.getElementById('sso_audience_' + redirectId).remove();
+  document.getElementById('sso_audience_' + audienceId).remove();
 }
 
 async function deleteSSORedirect(clientId, redirectId) {
