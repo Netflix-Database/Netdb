@@ -6,7 +6,7 @@ export async function createApiKey(scope) {
       'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
       'Content-Type': 'application/json',
     },
-    body: scope,
+    body: `"${scope}"`,
   });
 
   if (req.status == 401) {
