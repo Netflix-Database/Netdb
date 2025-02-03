@@ -628,14 +628,16 @@ async function createApiKey() {
   if (!dialogRes) return false;
 
   const scope = document.getElementById('scope').value;
-  const availableScopes = await getScopes();
 
   if (scope.length == 0) {
     createDialog('Error', 'Please fill out all fields!', 'error');
     return;
   }
 
-  const inputScopes = document.getElementById('scope').value.split(' ');
+  const scopeReq = await getScopes();
+  const availableScopes = await scopeReq.json();
+  const inputScopes = scope.split(' ');
+  
   for (const inputScope of inputScopes) {
     const [category, scopeValue] = inputScope.split(':');
     const categoryScopes = availableScopes.find(sc => sc.category === category);
