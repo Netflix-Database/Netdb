@@ -635,7 +635,7 @@ async function createApiKey() {
     return;
   }
 
-  const inputScopes = input.split(' ');
+  const inputScopes = document.getElementById('scope').value.split(' ');
   for (const inputScope of inputScopes) {
     const [category, scopeValue] = inputScope.split(':');
     const categoryScopes = availableScopes.find(sc => sc.category === category);
