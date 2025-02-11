@@ -8,7 +8,7 @@ export async function createPasskey() {
 
   await LoginManager.validateToken();
   const optionsReq = await fetch(`https://api.login.${LoginManager.domain}/passkey/options`, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
     },
