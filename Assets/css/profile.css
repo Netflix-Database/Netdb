@@ -455,3 +455,17 @@ a {
   color: #fff;
   text-decoration: none;
 }
+
+.passkeys > div {
+  background-color: #111;
+  padding: 1em;
+  border-radius: .5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+
+.passkeys > div h1, .passkeys > div p {
+  margin: 0;
+}

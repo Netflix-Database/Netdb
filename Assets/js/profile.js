@@ -26,6 +26,9 @@ import { untrustClient } from './data/auth/oauth/untrustClient';
 import { linkSocialAccount } from './data/auth/linkSocialAccount';
 import { deleteAudience as deleteAudienceReq } from './data/auth/oauth/deleteAudience';
 import { addAudience as addAudienceReq } from './data/auth/oauth/addAudience';
+import { getPasskeys } from './data/auth/passkeys/getPasskeys';
+import { deletePasskey } from './data/auth/passkeys/deletePasskey';
+import { createPasskey } from './data/auth/passkeys/createPasskey';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -98,11 +101,11 @@ initDialog();
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
-document.getElementById('ca_spotify_link').addEventListener('click', () => LinkAccounts('spotify'));
-document.getElementById('ca_twitch_link').addEventListener('click', () => LinkAccounts('twitch'));
-document.getElementById('ca_discord_link').addEventListener('click', () => LinkAccounts('discord'));
-document.getElementById('ca_google_link').addEventListener('click', () => LinkAccounts('google'));
-document.getElementById('ca_github_link').addEventListener('click', () => LinkAccounts('github'));
+document.getElementById('ca_spotify_link').addEventListener('click', () => linkAccounts('spotify'));
+document.getElementById('ca_twitch_link').addEventListener('click', () => linkAccounts('twitch'));
+document.getElementById('ca_discord_link').addEventListener('click', () => linkAccounts('discord'));
+document.getElementById('ca_google_link').addEventListener('click', () => linkAccounts('google'));
+document.getElementById('ca_github_link').addEventListener('click', () => linkAccounts('github'));
 document.getElementById('logout').addEventListener('click', async () => {
   await LoginManager.logout();
   window.location.href = LoginManager.buildLoginUrl(window.location.href);
@@ -122,7 +125,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   if (urlParams.has('code')) {
     const code = urlParams.get('code');
 
-    LinkAccount(code);
+    linkAccount(code);
   }
 
   if (import.meta.env.MODE === 'development') {
@@ -152,6 +155,14 @@ LoginManager.isLoggedIn().then(async (e) => {
           name: 'TestClient',
           logo: 'https://via.placeholder.com/150',
         },
+      ],
+      passkeys: [
+        {
+          id: "test",
+          lastLogin: new Date().getTime(),
+          name: "iCloud-Schlüsselbund",
+          createdAt: new Date().getTime()
+        }
       ],
       sso_clients: [
         {
@@ -205,11 +216,20 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
+    const passkeysReq = await getPasskeys();
+    const passkeysResponse = await passkeysReq.json();
+
+    if (passkeysResponse.statusCode != 200) {
+      console.log(passkeysResponse);
+      return;
+    }
+
     const user = {
       ...userResponse.data,
       api_keys: apiKeyResponse.data,
       trusted_sso_clients: trustedClientsResponse.data,
       sso_clients: SSOResponse.data,
+      passkeys: passkeysResponse.data
     };
     currentUser = user;
   }
@@ -293,9 +313,48 @@ LoginManager.isLoggedIn().then(async (e) => {
   Array.from(document.getElementsByTagName('input')).forEach((element) => {
     element.addEventListener('keyup', (e) => e.target.classList.remove('invalid'));
   });
+
+  buildPasskeys(currentUser.passkeys);
 });
 
-async function LinkAccount(code) {
+async function buildPasskeys(keys) {
+  const container = document.getElementById('passkeysTable');
+  container.innerHTML = '';
+
+  keys.forEach((key) => {
+    const item = document.createElement('div');
+    item.classList.add('passkey');
+
+    const itemText = document.createElement('div');
+
+    const keyElement = document.createElement('h1');
+    keyElement.innerText = key.name;
+    itemText.appendChild(keyElement);
+
+    const lastLogin = document.createElement('p');
+    lastLogin.innerText = 'Last login: ' + new Date(key.lastLogin).toLocaleString();
+    itemText.appendChild(lastLogin);
+
+    const createdAt = document.createElement('p');
+    createdAt.innerText = 'Created at: ' + new Date(key.createdAt).toLocaleString();
+    itemText.appendChild(createdAt);
+
+    item.appendChild(itemText);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', async () => await deletePasskey(key.id));
+    item.appendChild(deleteBtn);
+
+    container.appendChild(item);
+  });
+
+  if (keys.length == 0) container.innerHTML = '<p>No passkeys found!</p>';
+
+  document.getElementById('createPasskey').onclick = async () => await createPasskey();
+}
+
+async function linkAccount(code) {
   const provider = localStorage.getItem('linkType');
   const req = await linkSocialAccount(provider, code);
   const res = await req.json();
@@ -693,7 +752,7 @@ async function deleteApiKey(clientId) {
   document.getElementById(clientId).remove();
 }
 
-function LinkAccounts(type) {
+function linkAccounts(type) {
   localStorage.setItem('linkType', type);
 
   switch (type) {
