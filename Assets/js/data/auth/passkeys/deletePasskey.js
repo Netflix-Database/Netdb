@@ -1,6 +1,6 @@
 export async function deletePasskey(id) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/passkeys`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/passkey`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + LoginManager.getCookie('token'),
