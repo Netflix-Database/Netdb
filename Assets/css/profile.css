@@ -464,6 +464,7 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 1em;
+  margin-bottom: 1em;
 }
 
 .passkeys > div h1, .passkeys > div p {

@@ -12,12 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "animejs": "^3.2.2",
-    "i18next": "^24.2.0",
-    "i18next-browser-languagedetector": "^8.0.2",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.4",
     "i18next-chained-backend": "^4.6.2",
     "i18next-resources-to-backend": "^1.2.1"
   },
   "devDependencies": {
-    "vite": "^6.0.2"
+    "vite": "^6.2.3"
   }
 }

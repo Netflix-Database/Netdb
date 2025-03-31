@@ -1,34 +1,34 @@
 import { initSearchbar } from './autocomplete';
+import { activate as activateMfaReq } from './data/auth/2fa/activate';
+import { deactivate as deactivateMfaReq } from './data/auth/2fa/deactivate';
+import { verify as verifyMfaReq } from './data/auth/2fa/verify';
+import { changePassword as changePasswordReq } from './data/auth/changePassword';
+import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
+import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
+import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
+import { getApiKeys } from './data/auth/getApiKeys';
+import { getScopes } from './data/auth/getScopes';
+import { getUser } from './data/auth/getUser';
+import { linkSocialAccount } from './data/auth/linkSocialAccount';
+import { addAudience as addAudienceReq } from './data/auth/oauth/addAudience';
+import { addRedirect } from './data/auth/oauth/addRedirect';
+import { createClient } from './data/auth/oauth/createClient';
+import { deleteAudience as deleteAudienceReq } from './data/auth/oauth/deleteAudience';
+import { deleteClient } from './data/auth/oauth/deleteClient';
+import { deleteRedirect } from './data/auth/oauth/deleteRedirect';
+import { getClients } from './data/auth/oauth/getClients';
+import { getTrustedClients } from './data/auth/oauth/getTrustedClients';
+import { saveClient as saveClientReq } from './data/auth/oauth/saveClient';
+import { untrustClient } from './data/auth/oauth/untrustClient';
+import { createPasskey as createPasskeyReq } from './data/auth/passkeys/createPasskey';
+import { deletePasskey as deletePasskeyReq } from './data/auth/passkeys/deletePasskey';
+import { getPasskeys } from './data/auth/passkeys/getPasskeys';
+import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateApiKey';
+import { saveUser } from './data/auth/saveUser';
+import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
 import { createDialog, initDialog } from './dialog';
 import { initLocalization } from './util/localization';
 import { validateMfaToken, validatePw } from './util/validation';
-import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
-import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
-import { deactivate as deactivateMfaReq } from './data/auth/2fa/deactivate';
-import { verify as verifyMfaReq } from './data/auth/2fa/verify';
-import { activate as activateMfaReq } from './data/auth/2fa/activate';
-import { changePassword as changePasswordReq } from './data/auth/changePassword';
-import { saveClient as saveClientReq } from './data/auth/oauth/saveClient';
-import { getUser } from './data/auth/getUser';
-import { getApiKeys } from './data/auth/getApiKeys';
-import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
-import { getScopes } from './data/auth/getScopes';
-import { saveUser } from './data/auth/saveUser';
-import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
-import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateApiKey';
-import { addRedirect } from './data/auth/oauth/addRedirect';
-import { deleteRedirect } from './data/auth/oauth/deleteRedirect';
-import { deleteClient } from './data/auth/oauth/deleteClient';
-import { createClient } from './data/auth/oauth/createClient';
-import { getClients } from './data/auth/oauth/getClients';
-import { getTrustedClients } from './data/auth/oauth/getTrustedClients';
-import { untrustClient } from './data/auth/oauth/untrustClient';
-import { linkSocialAccount } from './data/auth/linkSocialAccount';
-import { deleteAudience as deleteAudienceReq } from './data/auth/oauth/deleteAudience';
-import { addAudience as addAudienceReq } from './data/auth/oauth/addAudience';
-import { getPasskeys } from './data/auth/passkeys/getPasskeys';
-import { deletePasskey } from './data/auth/passkeys/deletePasskey';
-import { createPasskey } from './data/auth/passkeys/createPasskey';
 
 const languages = [
   { key: 'en-us', name: 'English' },
@@ -324,6 +324,7 @@ async function buildPasskeys(keys) {
   keys.forEach((key) => {
     const item = document.createElement('div');
     item.classList.add('passkey');
+    item.id = 'passkey_' + key.id;
 
     const itemText = document.createElement('div');
 
@@ -352,6 +353,22 @@ async function buildPasskeys(keys) {
   if (keys.length == 0) container.innerHTML = '<p>No passkeys found!</p>';
 
   document.getElementById('createPasskey').onclick = async () => await createPasskey();
+}
+
+async function deletePasskey(id) {
+  const req = await deletePasskeyReq(id);
+
+  document.getElementById('passkey_' + id).remove();
+
+  const container = document.getElementById('passkeysTable');
+
+  if (container.children.length == 0) container.innerHTML = '<p>No passkeys found!</p>';
+}
+
+async function createPasskey() {
+  const req = await createPasskeyReq();
+  
+  //TODO: add to list
 }
 
 async function linkAccount(code) {
