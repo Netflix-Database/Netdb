@@ -722,8 +722,7 @@ async function createApiKey() {
       return false;
     }
 
-    const scopeExists = categoryScopes.scopes.some(sc => sc.value == scopeValue);
-    if (!scopeExists) {
+    if (!parseInt(scopeValue) > 0) {
       createDialog('Error', `Invalid scope value: ${scopeValue} for category: ${category}`, 'error');
       return false;
     }
