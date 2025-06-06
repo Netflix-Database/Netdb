@@ -62,10 +62,7 @@ export function initDialog(element = undefined) {
       return;
     }
 
-    const onShowEvent = dialog.getAttribute('onShow');
-    if (onShowEvent !== undefined) dialog.addEventListener('onShow', () => eval(onShowEvent));
-
-    submitButton.addEventListener('click', (event) => {
+    submitButton.addEventListener('click', () => {
       dialog.hide();
     });
 
@@ -79,7 +76,7 @@ export function initDialog(element = undefined) {
         window.addEventListener(
           'click',
           function _listener(e) {
-            if (e.target.closest('#' + dialog.id) === null) {
+            if (e.target.closest(`#${  dialog.id}`) === null) {
               dialog.classList.remove('visible');
               dialog.dispatchEvent(new CustomEvent('onHide'));
               window.removeEventListener('click', _listener, true);
@@ -104,12 +101,12 @@ export function initDialog(element = undefined) {
 
       Array.from(container.querySelectorAll('.dialog')).forEach((dialog) => {
         dialog.classList.remove('visible');
-        dialog.dispatchEvent(new CustomEvent('onHide', { detail: { reason: 'canceled' }}));
+        dialog.dispatchEvent(new CustomEvent('onHide', { detail: { reason: 'canceled' } }));
       });
-  
+
       Array.from(document.querySelectorAll('.custom-dialog.visible')).forEach((dialog) => {
         dialog.classList.remove('visible');
-        dialog.dispatchEvent(new CustomEvent('onHide', { detail: { reason: 'canceled' }}));
+        dialog.dispatchEvent(new CustomEvent('onHide', { detail: { reason: 'canceled' } }));
       });
     }
   });

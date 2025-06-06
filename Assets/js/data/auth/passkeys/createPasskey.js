@@ -2,7 +2,7 @@ import { createCreds, isWebAuthnPossible } from '../../../util/webauthn';
 
 export async function createPasskey() {
   if (!isWebAuthnPossible()) {
-    console.log('WebAuthn is not supported');
+    console.warn('WebAuthn is not supported');
     return;
   }
 
@@ -10,11 +10,11 @@ export async function createPasskey() {
   const optionsReq = await fetch(`https://api.login.${LoginManager.domain}/passkey/options`, {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
     },
   });
 
-  if (optionsReq.status == 401) {
+  if (optionsReq.status === 401) {
     window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
@@ -25,13 +25,13 @@ export async function createPasskey() {
   const createReq = await fetch(`https://api.login.${LoginManager.domain}/passkey/createCredentials`, {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(creds),
   });
 
-  if (createReq.status == 401) {
+  if (createReq.status === 401) {
     window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }

@@ -1,10 +1,9 @@
-export async function linkSocialAccount(provider, code) {
+export async function deleteDevice(id) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/link/${provider}?code=${code}`, {
-    method: 'GET',
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/device/${id}`, {
+    method: 'DELETE',
     headers: {
       Authorization: `Bearer ${LoginManager.getCookie('token')}`,
-      'Content-Type': 'application/json',
     },
   });
 

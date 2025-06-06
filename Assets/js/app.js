@@ -16,22 +16,22 @@ LoginManager.isLoggedIn().then(async (e) => {
   }
 });
 
-var lineDrawing = anime({
+anime({
   targets: '.logo path',
   strokeDashoffset: [anime.setDashoffset, 0],
   easing: 'easeInOutCubic',
   duration: 1500,
-  begin: function (anim) {
+  begin: function () {
     document.querySelector('path').setAttribute('stroke', 'black');
     document.querySelector('path').setAttribute('fill', 'none');
   },
-  complete: function (anim) {
+  complete: function () {
     document.querySelector('path').setAttribute('fill', 'yellow');
   },
   autoplay: true,
 });
 
-var border = anime({
+anime({
   targets: '.stroke',
   duration: 1500,
   delay: 1000,
@@ -40,7 +40,7 @@ var border = anime({
   easing: 'easeInOutQuad',
 });
 
-var white = anime({
+anime({
   targets: '.st0',
   duration: 1500,
   delay: 800,
@@ -49,7 +49,7 @@ var white = anime({
   easing: 'easeInOutQuad',
 });
 
-var startColor = anime({
+anime({
   targets: '#startColor',
   duration: 1500,
   delay: 800,
@@ -58,7 +58,7 @@ var startColor = anime({
   easing: 'easeInOutQuad',
 });
 
-var endColor = anime({
+anime({
   targets: '#endColor',
   duration: 1500,
   delay: 800,
@@ -71,16 +71,16 @@ setColors();
 setInterval(setColors, 5000 * (4 - 1));
 
 function setColors() {
-  setTimeout(function () {
+  setTimeout(() => {
     changeColor('#e29c25', '#db7220');
 
-    setTimeout(function () {
+    setTimeout(() => {
       changeColor('#63a0d9', '#394f6b');
 
-      setTimeout(function () {
+      setTimeout(() => {
         changeColor('#444', '#111');
 
-        setTimeout(function () {
+        setTimeout(() => {
           changeColor('#fd1414', '#7c0d00');
         }, 5000);
       }, 5000);
@@ -89,7 +89,7 @@ function setColors() {
 }
 
 function changeColor(startColor, endColor) {
-  var white = anime({
+  anime({
     targets: '.st0',
     duration: 1500,
     delay: 1000,
@@ -98,7 +98,7 @@ function changeColor(startColor, endColor) {
     easing: 'easeInOutQuad',
   });
 
-  var startColor = anime({
+  anime({
     targets: '#startColor',
     duration: 1500,
     delay: 1000,
@@ -107,7 +107,7 @@ function changeColor(startColor, endColor) {
     easing: 'easeInOutQuad',
   });
 
-  var endColor = anime({
+  anime({
     targets: '#endColor',
     duration: 1500,
     delay: 1000,

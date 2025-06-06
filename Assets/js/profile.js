@@ -7,6 +7,7 @@ import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
 import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
 import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
 import { getApiKeys } from './data/auth/getApiKeys';
+import { getDevices } from './data/auth/getDevices';
 import { getScopes } from './data/auth/getScopes';
 import { getUser } from './data/auth/getUser';
 import { linkSocialAccount } from './data/auth/linkSocialAccount';
@@ -94,7 +95,7 @@ const countries = [
   { key: 'au', name: 'Australia' },
   { key: 'be', name: 'Belgium' },
 ];
-var currentUser;
+let currentUser;
 
 initLocalization();
 initDialog();
@@ -119,7 +120,6 @@ LoginManager.isLoggedIn().then(async (e) => {
     return;
   }
 
-  const token = LoginManager.getCookie('token');
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('code')) {
@@ -145,8 +145,8 @@ LoginManager.isLoggedIn().then(async (e) => {
       '2faType': 'App',
       api_keys: [
         {
-          clientId: "1234567890",
-          scope: "admin"
+          clientId: '1234567890',
+          scope: 'admin'
         }
       ],
       trusted_sso_clients: [
@@ -158,9 +158,9 @@ LoginManager.isLoggedIn().then(async (e) => {
       ],
       passkeys: [
         {
-          id: "test",
+          id: 'test',
           lastLogin: new Date().getTime(),
-          name: "iCloud-Schlüsselbund",
+          name: 'iCloud-Schlüsselbund',
           createdAt: new Date().getTime()
         }
       ],
@@ -187,40 +187,48 @@ LoginManager.isLoggedIn().then(async (e) => {
     const userReq = await getUser();
     const userResponse = await userReq.json();
 
-    if (userResponse.statusCode != 200) {
-      console.log(userResponse);
+    if (userResponse.statusCode !== 200) {
+      console.error(userResponse);
       return;
     }
 
     const apiKeyReq = await getApiKeys();
     const apiKeyResponse = await apiKeyReq.json();
 
-    if (apiKeyResponse.statusCode != 200) {
-      console.log(apiKeyResponse);
+    if (apiKeyResponse.statusCode !== 200) {
+      console.error(apiKeyResponse);
       return;
     }
 
     const SSOreq = await getClients();
     const SSOResponse = await SSOreq.json();
 
-    if (SSOResponse.statusCode != 200) {
-      console.log(SSOreq);
+    if (SSOResponse.statusCode !== 200) {
+      console.error(SSOreq);
       return;
     }
 
     const trustedClientsReq = await getTrustedClients();
     const trustedClientsResponse = await trustedClientsReq.json();
 
-    if (trustedClientsResponse.statusCode != 200) {
-      console.log(SSOreq);
+    if (trustedClientsResponse.statusCode !== 200) {
+      console.error(SSOreq);
       return;
     }
 
     const passkeysReq = await getPasskeys();
     const passkeysResponse = await passkeysReq.json();
 
-    if (passkeysResponse.statusCode != 200) {
-      console.log(passkeysResponse);
+    if (passkeysResponse.statusCode !== 200) {
+      console.error(passkeysResponse);
+      return;
+    }
+
+    const devicesReq = await getDevices();
+    const devicesResponse = await devicesReq.json();
+
+    if (devicesResponse.statusCode !== 200) {
+      console.error(devicesResponse);
       return;
     }
 
@@ -229,7 +237,8 @@ LoginManager.isLoggedIn().then(async (e) => {
       api_keys: apiKeyResponse.data,
       trusted_sso_clients: trustedClientsResponse.data,
       sso_clients: SSOResponse.data,
-      passkeys: passkeysResponse.data
+      passkeys: passkeysResponse.data,
+      devices: devicesResponse.data,
     };
     currentUser = user;
   }
@@ -243,24 +252,20 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('preferredlang').dataset.key = currentUser.preferredLang;
 
   if (currentUser.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
-
   if (currentUser.spotifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
-
   if (currentUser.twitchId !== null) document.getElementById('ca_twitch').classList.add('connected');
-
   if (currentUser.githubId !== null) document.getElementById('ca_github').classList.add('connected');
-
   if (currentUser.googleId !== null) document.getElementById('ca_google').classList.add('connected');
 
   Array.from(document.getElementsByClassName('connected')).forEach((element) => {
     element.addEventListener('click', disconnectAccount);
   });
 
-  if (currentUser['2fa'] && currentUser['2faType'] == 'App') document.getElementById('cp_2fa').classList.remove('d-none');
+  if (currentUser['2fa'] && currentUser['2faType'] === 'App') document.getElementById('cp_2fa').classList.remove('d-none');
 
   if (currentUser['2fa']) {
     document.getElementById('2fa_status').innerText = 'Enabled';
-    document.getElementById('2fa_type').value = currentUser['2faType'] == 'App' ? 0 : currentUser['2faType'] == 'Mail' ? 1 : 2;
+    document.getElementById('2fa_type').value = currentUser['2faType'] === 'App' ? 0 : currentUser['2faType'] === 'Mail' ? 1 : 2;
     document.getElementById('2fa_type').disabled = true;
     document.getElementById('2fa_enable').innerText = 'Disable';
     document.getElementById('2fa_enable').addEventListener('click', disable2fa);
@@ -279,7 +284,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   currentUser.trusted_sso_clients.forEach((client) => {
     const row = document.createElement('div');
-    row.id = 'trusted_' + client.id;
+    row.id = `trusted_${  client.id}`;
     const img = document.createElement('img');
     img.src = client.logo;
     img.alt = client.name;
@@ -306,7 +311,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       this.classList.toggle('active');
 
       if (this.nextElementSibling.style.maxHeight) this.nextElementSibling.style.maxHeight = null;
-      else this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 'px';
+      else this.nextElementSibling.style.maxHeight = `${this.nextElementSibling.scrollHeight  }px`;
     });
   });
 
@@ -324,7 +329,7 @@ async function buildPasskeys(keys) {
   keys.forEach((key) => {
     const item = document.createElement('div');
     item.classList.add('passkey');
-    item.id = 'passkey_' + key.id;
+    item.id = `passkey_${  key.id}`;
 
     const itemText = document.createElement('div');
 
@@ -333,11 +338,11 @@ async function buildPasskeys(keys) {
     itemText.appendChild(keyElement);
 
     const lastLogin = document.createElement('p');
-    lastLogin.innerText = 'Last login: ' + new Date(key.lastLogin).toLocaleString();
+    lastLogin.innerText = `Last login: ${  new Date(key.lastLogin).toLocaleString()}`;
     itemText.appendChild(lastLogin);
 
     const createdAt = document.createElement('p');
-    createdAt.innerText = 'Created at: ' + new Date(key.createdAt).toLocaleString();
+    createdAt.innerText = `Created at: ${  new Date(key.createdAt).toLocaleString()}`;
     itemText.appendChild(createdAt);
 
     item.appendChild(itemText);
@@ -350,7 +355,7 @@ async function buildPasskeys(keys) {
     container.appendChild(item);
   });
 
-  if (keys.length == 0) container.innerHTML = '<p>No passkeys found!</p>';
+  if (keys.length === 0) container.innerHTML = '<p>No passkeys found!</p>';
 
   document.getElementById('createPasskey').onclick = async () => await createPasskey();
 }
@@ -358,16 +363,16 @@ async function buildPasskeys(keys) {
 async function deletePasskey(id) {
   const req = await deletePasskeyReq(id);
 
-  document.getElementById('passkey_' + id).remove();
+  document.getElementById(`passkey_${  id}`).remove();
 
   const container = document.getElementById('passkeysTable');
 
-  if (container.children.length == 0) container.innerHTML = '<p>No passkeys found!</p>';
+  if (container.children.length === 0) container.innerHTML = '<p>No passkeys found!</p>';
 }
 
 async function createPasskey() {
   const req = await createPasskeyReq();
-  
+
   //TODO: add to list
 }
 
@@ -376,7 +381,7 @@ async function linkAccount(code) {
   const req = await linkSocialAccount(provider, code);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
+  if (res.statusCode !== 200) {
     createDialog('Error', 'An error occured while linking your account!', 'error');
     return;
   }
@@ -394,16 +399,16 @@ async function deleteTrustedSsoClient(clientId) {
   const req = await untrustClient(clientId);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     return;
   }
 
-  document.getElementById('trusted_' + clientId).remove();
+  document.getElementById(`trusted_${  clientId}`).remove();
 
   const container = document.getElementById('thirdPartyAppsContainer');
 
-  if (container.children.length == 0)
+  if (container.children.length === 0)
     container.innerHTML = '<p>No third party apps connected!</p>';
 }
 
@@ -421,7 +426,7 @@ async function createSsoCredentials() {
     document.getElementById('createSSODialog').addEventListener(
       'onHide',
       (e) => {
-        if (e.detail.reason == 'canceled') {
+        if (e.detail.reason === 'canceled') {
           resolve(false);
           return;
         }
@@ -440,21 +445,21 @@ async function createSsoCredentials() {
   const req = await createClient(name, websiteUrl, logoUrl);
   const res = await req.json();
 
-  if (req.status != 200 || res.statusCode != 203) {
+  if (req.status !== 200 || res.statusCode !== 203) {
     createDialog('Error', 'An error occured while creating the SSO credentials!', 'error');
     return;
   }
 
-  if (document.getElementById('ssoClientsContainer').children[0].tagName == 'P') document.getElementById('ssoClientsContainer').innerHTML = '';
+  if (document.getElementById('ssoClientsContainer').children[0].tagName === 'P') document.getElementById('ssoClientsContainer').innerHTML = '';
 
   const item = createSSOClient(logoUrl, name, websiteUrl, res.data.clientId, res.data.clientSecret, [], []);
   document.getElementById('ssoClientsContainer').appendChild(item);
 
-  item.children[0].addEventListener('click', function () {
+  item.children[0].addEventListener('click', () => {
     item.classList.toggle('active');
 
     if (item.children[0].nextElementSibling.style.maxHeight) item.children[0].nextElementSibling.style.maxHeight = null;
-    else item.children[0].nextElementSibling.style.maxHeight = item.children[0].nextElementSibling.scrollHeight + 'px';
+    else item.children[0].nextElementSibling.style.maxHeight = `${item.children[0].nextElementSibling.scrollHeight  }px`;
   });
 }
 
@@ -462,7 +467,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   const template = document.importNode(document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content, true);
   const item = template.querySelector('div');
 
-  item.id = 'sso_' + clientId;
+  item.id = `sso_${  clientId}`;
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
   item.querySelector('img').title = clientName;
@@ -486,7 +491,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
   audiences.forEach((audience) => {
     const audienceItem = document.createElement('div');
-    audienceItem.id = 'sso_audience_' + audience.id;
+    audienceItem.id = `sso_audience_${  audience.id}`;
 
     const audienceInput = document.createElement('input');
     audienceInput.type = 'text';
@@ -506,7 +511,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
   redirects.forEach((redirect) => {
     const redirectItem = document.createElement('div');
-    redirectItem.id = 'sso_redirect_' + redirect.id;
+    redirectItem.id = `sso_redirect_${  redirect.id}`;
 
     const url = document.createElement('input');
     url.type = 'text';
@@ -529,40 +534,40 @@ async function deleteSSOClient(clientId) {
   const req = await deleteClient(clientId);
   const res = await req.json();
 
-  if (req.status != 200 || res.statusCode != 200) {
+  if (req.status !== 200 || res.statusCode !== 200) {
     createDialog('Error', 'An error occured while deleting the SSO credentials!', 'error');
     return;
   }
 
-  document.getElementById('sso_' + clientId).remove();
+  document.getElementById(`sso_${  clientId}`).remove();
 }
 
 async function deleteAudience(clientId, audienceId) {
   const req = await deleteAudienceReq(clientId, audienceId);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     return;
   }
 
-  document.getElementById('sso_audience_' + audienceId).remove();
+  document.getElementById(`sso_audience_${  audienceId}`).remove();
 }
 
 async function deleteSSORedirect(clientId, redirectId) {
   const req = await deleteRedirect(clientId, redirectId);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     return;
   }
 
-  document.getElementById('sso_redirect_' + redirectId).remove();
+  document.getElementById(`sso_redirect_${  redirectId}`).remove();
 }
 
 async function addAudience(clientId) {
-  const item = document.getElementById('sso_' + clientId);
+  const item = document.getElementById(`sso_${  clientId}`);
   const redirects = item.querySelector('#sso_audiences');
 
   //TODO: add button feedback
@@ -570,15 +575,15 @@ async function addAudience(clientId) {
   const req = await addAudienceReq(clientId, item.querySelector('#sso_addAudience').previousElementSibling.value);
   const res = await req.json();
 
-  if (res.statusCode != 203) {
-    console.log(res);
+  if (res.statusCode !== 203) {
+    console.error(res);
     return;
   }
 
   item.querySelector('#sso_addAudience').previousElementSibling.value = '';
 
   const redirect = document.createElement('div');
-  redirect.id = 'sso_audience_' + res.data.id;
+  redirect.id = `sso_audience_${  res.data.id}`;
   const url = document.createElement('input');
   url.type = 'text';
   url.value = res.data.url;
@@ -598,7 +603,7 @@ async function addAudience(clientId) {
 }
 
 async function addSSORedirect(clientId) {
-  const item = document.getElementById('sso_' + clientId);
+  const item = document.getElementById(`sso_${  clientId}`);
   const redirects = item.querySelector('#sso_redirects');
 
   //TODO: add button feedback
@@ -606,15 +611,15 @@ async function addSSORedirect(clientId) {
   const req = await addRedirect(clientId, item.querySelector('#sso_addRedirect').previousElementSibling.value);
   const res = await req.json();
 
-  if (res.statusCode != 203) {
-    console.log(res);
+  if (res.statusCode !== 203) {
+    console.error(res);
     return;
   }
 
   item.querySelector('#sso_addRedirect').previousElementSibling.value = '';
 
   const redirect = document.createElement('div');
-  redirect.id = 'sso_redirect_' + res.data.id;
+  redirect.id = `sso_redirect_${  res.data.id}`;
   const url = document.createElement('input');
   url.type = 'text';
   url.value = res.data.url;
@@ -634,12 +639,12 @@ async function addSSORedirect(clientId) {
 }
 
 async function saveSSOClient(clientId) {
-  const item = document.getElementById('sso_' + clientId);
+  const item = document.getElementById(`sso_${  clientId}`);
   const req = await saveClientReq(clientId, item.querySelector('#sso_logoUrl').value, item.querySelector('#sso_websiteUrl').value, item.querySelector('#sso_name').value);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     createDialog('Error', 'An error occured while saving the SSO credentials!', 'error');
     return;
   }
@@ -648,7 +653,7 @@ async function saveSSOClient(clientId) {
 }
 
 async function doubleClickButton(e, func) {
-  if (e.target.dataset.clicked == 'true') {
+  if (e.target.dataset.clicked === 'true') {
     await func();
     return;
   }
@@ -690,7 +695,7 @@ async function createApiKey() {
     document.getElementById('apiKeyDialog').addEventListener(
       'onHide',
       (e) => {
-        if (e.detail.reason == 'canceled') {
+        if (e.detail.reason === 'canceled') {
           resolve(false);
           return;
         }
@@ -705,7 +710,7 @@ async function createApiKey() {
 
   const scope = document.getElementById('scope').value;
 
-  if (scope.length == 0) {
+  if (scope.length === 0) {
     createDialog('Error', 'Please fill out all fields!', 'error');
     return;
   }
@@ -713,7 +718,7 @@ async function createApiKey() {
   const scopeReq = await getScopes();
   const availableScopes = await scopeReq.json();
   const inputScopes = scope.split(' ');
-  
+
   for (const inputScope of inputScopes) {
     const [category, scopeValue] = inputScope.split(':');
     const categoryScopes = availableScopes.find(sc => sc.category === category);
@@ -731,36 +736,36 @@ async function createApiKey() {
   const req = await createApiKeyReq(scope);
   const res = await req.json();
 
-  if (res.statusCode != 203) {
-    console.log(res);
+  if (res.statusCode !== 203) {
+    console.error(res);
     createDialog('Error', 'An error occured while creating the API key!', 'error');
     return;
   }
 
   document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId, res.data.scope));
 
-  createDialog('Success', 'Successfully created API key! Please save it now, as it will not be shown again! ' + res.data.clientSecret, 'info');
+  createDialog('Success', `Successfully created API key! Please save it now, as it will not be shown again! ${  res.data.clientSecret}`, 'info');
 }
 
 async function regenerateApiKey(clientId) {
   const req = await regenerateApiKeyReq(clientId);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     createDialog('Error', 'An error occured while regenerating the API key!', 'error');
     return;
   }
 
-  createDialog('Success', 'Successfully regenerated API key! Please save it now, as it will not be shown again! ' + res.data.clientSecret, 'info');
+  createDialog('Success', `Successfully regenerated API key! Please save it now, as it will not be shown again! ${  res.data.clientSecret}`, 'info');
 }
 
 async function deleteApiKey(clientId) {
   const req = await deleteApiKeyReq(clientId);
   const data = await req.json();
 
-  if (data.statusCode != 200) {
-    console.log(data);
+  if (data.statusCode !== 200) {
+    console.error(data);
     createDialog('Error', 'An error occured while deleting the API key!', 'error');
     return;
   }
@@ -772,27 +777,27 @@ function linkAccounts(type) {
   localStorage.setItem('linkType', type);
 
   switch (type) {
-    case 'spotify': {
-      window.location.href = 'https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://netdb.at/profile&scope=user-read-private%20user-read-email';
-      break;
-    }
-    case 'discord': {
-      window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://netdb.at/profile&response_type=code&scope=identify%20email';
-      break;
-    }
-    case 'twitch': {
-      window.location.href = 'https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.at/profile&response_type=code&scope=user_read';
-      break;
-    }
-    case 'github': {
-      window.location.href = 'https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805';
-      break;
-    }
-    case 'google': {
-      window.location.href =
+  case 'spotify': {
+    window.location.href = 'https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://netdb.at/profile&scope=user-read-private%20user-read-email';
+    break;
+  }
+  case 'discord': {
+    window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://netdb.at/profile&response_type=code&scope=identify%20email';
+    break;
+  }
+  case 'twitch': {
+    window.location.href = 'https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.at/profile&response_type=code&scope=user_read';
+    break;
+  }
+  case 'github': {
+    window.location.href = 'https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805';
+    break;
+  }
+  case 'google': {
+    window.location.href =
         'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com';
-      break;
-    }
+    break;
+  }
   }
 }
 
@@ -800,8 +805,8 @@ async function savePersonalInformation() {
   const req = await saveUser(document.getElementById('firstname').value, document.getElementById('lastname').value, document.getElementById('country').dataset.key, document.getElementById('preferredlang').dataset.key, document.getElementById('username').value);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     displayButtonFeedback(document.getElementById('pi_save'), 'error');
     return;
   }
@@ -839,8 +844,8 @@ async function changePassword() {
   const req = await changePasswordReq(oldPw, email, pw, currentUser['2fa'] ? document.getElementById('cp_2fa').value : null);
   const res = await req.json();
 
-  if (res.statusCode != 200) {
-    console.log(res);
+  if (res.statusCode !== 200) {
+    console.error(res);
     return;
   }
 
@@ -866,34 +871,34 @@ async function deleteAccount() {
 
   const data = await req.json();
 
-  if (data.statusCode != 200) {
+  if (data.statusCode !== 200) {
     createDialog('Error', 'An error occured while deleting your account!', 'error');
     return;
   }
 
-  LoginManager.deleteCookie('token', '/', '.' + LoginManager.domain);
-  LoginManager.deleteCookie('refreshToken', '/', '.' + LoginManager.domain);
+  LoginManager.deleteCookie('token', '/', `.${  LoginManager.domain}`);
+  LoginManager.deleteCookie('refreshToken', '/', `.${  LoginManager.domain}`);
   window.location.href = LoginManager.buildLoginUrl(window.location.href);
 }
 
 async function enable2fa() {
   const mfaType = document.getElementById('2fa_type').value;
 
-  if (mfaType == 2) {
+  if (mfaType === 2) {
     alert('Select a valid 2FA type!');
     return;
   }
 
-  const req = await activateMfaReq(mfaType == 0 ? '"app"' : mfaType == 1 ? '"mail"' : null);
+  const req = await activateMfaReq(mfaType === 0 ? '"app"' : mfaType === 1 ? '"mail"' : null);
 
-  if (req.status != 200) {
+  if (req.status !== 200) {
     createDialog('Error', 'An error occured while enabling 2FA!', 'error');
     return;
   }
 
   const res = await req.json();
 
-  if (mfaType == 0) { //App
+  if (mfaType === 0) { //App
     const qr = res.data.qrCodeSetupImageUrl;
     const secret = res.data.manualEntryKey;
 
@@ -905,7 +910,7 @@ async function enable2fa() {
       document.getElementById('authenticatorDialog').addEventListener(
         'onHide',
         (e) => {
-          if (e.detail.reason == 'canceled') {
+          if (e.detail.reason === 'canceled') {
             resolve(false);
             return;
           }
@@ -929,14 +934,14 @@ async function verify2fa() {
 
   const req = await verifyMfaReq(creds.password, creds.mfaToken);
 
-  if (req.status != 200) {
+  if (req.status !== 200) {
     createDialog('Error', 'An error occured while verifying 2FA!', 'error');
     return false;
   }
 
   const res = await req.json();
 
-  if (res.statusCode != 200) {
+  if (res.statusCode !== 200) {
     createDialog('Error', 'An error occured while verifying 2FA!', 'error');
     return false;
   }
@@ -952,19 +957,19 @@ async function disable2fa() {
   let req = await deactivateMfaReq(creds.password, creds.mfaToken);
   const res = await req.json();
 
-  if (req.status != 200 || res.statusCode != 200) {
+  if (req.status !== 200 || res.statusCode !== 200) {
     createDialog('Error', 'An error occured while disabling 2FA!', 'error');
     return;
   }
 
-  if (!res.statusCode == 409) {
+  if (!res.statusCode === 409) {
     const mfaToken = await getCreds(true, true);
 
     if (!mfaToken) return;
 
     req = await disableMfaRequest(creds.password, mfaToken.mfaToken);
 
-    if (req.status != 200 || res.statusCode != 200) {
+    if (req.status !== 200 || res.statusCode !== 200) {
       createDialog('Error', 'An error occured while disabling 2FA!', 'error');
       return;
     }
@@ -975,7 +980,7 @@ async function getCreds(mfa = false, mfaOnly = false, forceMfa = false) {
   document.getElementById('passwordInput').value = '';
   document.getElementById('2faInput').value = '';
 
-  if ((mfa && (currentUser['2faType'] == 'App' || mfaOnly)) || forceMfa) document.getElementById('2faInput').classList.remove('d-none');
+  if ((mfa && (currentUser['2faType'] === 'App' || mfaOnly)) || forceMfa) document.getElementById('2faInput').classList.remove('d-none');
   else document.getElementById('2faInput').classList.add('d-none');
 
   if (mfaOnly) document.getElementById('passwordInput').classList.add('d-none');
@@ -987,7 +992,7 @@ async function getCreds(mfa = false, mfaOnly = false, forceMfa = false) {
     document.getElementById('passwordDialog').addEventListener(
       'onHide',
       (e) => {
-        if (e.detail.reason == 'canceled') {
+        if (e.detail.reason === 'canceled') {
           resolve(false);
           return;
         }
@@ -1003,11 +1008,11 @@ async function getCreds(mfa = false, mfaOnly = false, forceMfa = false) {
   const pw = document.getElementById('passwordInput').classList.contains('d-none') ? null : document.getElementById('passwordInput').value;
   const mfaToken = document.getElementById('2faInput').classList.contains('d-none') ? null : document.getElementById('2faInput').value;
 
-  if (pw != null && validatePw(null, pw, pw)) {
+  if (pw !== null && validatePw(null, pw, pw)) {
     createDialog('Invalid password', 'The password you entered is invalid!', 'error');
     return false;
   }
-  if (mfaToken != null && !validateMfaToken(mfaToken)) {
+  if (mfaToken !== null && !validateMfaToken(mfaToken)) {
     createDialog('Invalid 2FA token', 'The 2FA token you entered is invalid!', 'error');
     return false;
   }

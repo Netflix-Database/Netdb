@@ -1,10 +1,9 @@
-export async function linkSocialAccount(provider, code) {
+export async function logoutAllDevices() {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/link/${provider}?code=${code}`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/revoke/all`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${LoginManager.getCookie('token')}`,
-      'Content-Type': 'application/json',
     },
   });
 

@@ -3,11 +3,11 @@ export async function getTrustedClients() {
   const req = await fetch(`https://api.login.${LoginManager.domain}/oauth/trust`, {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
+      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
     },
   });
 
-  if (req.status == 401) {
+  if (req.status === 401) {
     window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }

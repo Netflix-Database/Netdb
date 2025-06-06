@@ -27,7 +27,7 @@ export function initLocalization() {
   i18next.on('initialized', () => {
     applyLocalization();
 
-    i18next.on('languageChanged', (e) => {
+    i18next.on('languageChanged', () => {
       applyLocalization();
     });
   });

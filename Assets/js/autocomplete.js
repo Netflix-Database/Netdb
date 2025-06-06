@@ -3,12 +3,12 @@ export function initSearchbar(data, id) {
   const inputBox = searchbar.querySelector('input');
 
   try {
-    if (inputBox.dataset.key && inputBox.dataset.key != 'null') inputBox.value = data.find((e) => e.key == inputBox.dataset.key).name;
+    if (inputBox.dataset.key && inputBox.dataset.key !== 'null') inputBox.value = data.find((e) => e.key === inputBox.dataset.key).name;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 
-  inputBox.addEventListener('keyup', (e) => e.key != 'ArrowDown' && e.key != 'ArrowUp' && filterSearch(inputBox.value, data, searchbar));
+  inputBox.addEventListener('keyup', (e) => e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && filterSearch(inputBox.value, data, searchbar));
   inputBox.addEventListener('focus', () => searchbar.querySelector('.autocom-box').classList.add('active'));
   window.addEventListener('click', (e) => {
     if (!searchbar.contains(e.target)) searchbar.querySelector('.autocom-box').classList.remove('active');
@@ -16,7 +16,7 @@ export function initSearchbar(data, id) {
   });
 
   inputBox.onkeydown = (e) => {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       const currentFocus = searchbar.querySelector('.autocom-box h1.focus');
 
       if (currentFocus) {
@@ -28,7 +28,7 @@ export function initSearchbar(data, id) {
       return;
     }
 
-    if (e.key == 'ArrowDown') {
+    if (e.key === 'ArrowDown') {
       let currentFocus = searchbar.querySelector('.autocom-box h1.focus');
 
       if (currentFocus) currentFocus.classList.remove('focus');
@@ -41,7 +41,7 @@ export function initSearchbar(data, id) {
       currentFocus.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    if (e.key == 'ArrowUp') {
+    if (e.key === 'ArrowUp') {
       let currentFocus = searchbar.querySelector('.autocom-box h1.focus');
 
       if (currentFocus) currentFocus.classList.remove('focus');
@@ -54,7 +54,7 @@ export function initSearchbar(data, id) {
       currentFocus.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    if (e.key == 'Escape') {
+    if (e.key === 'Escape') {
       searchbar.querySelector('.autocom-box').classList.remove('active');
       return;
     }
@@ -66,7 +66,7 @@ export function initSearchbar(data, id) {
 function filterSearch(userData, data, searchbar) {
   const suggestions = [];
 
-  for (var i = 0; i < data.length; i++) suggestions.push(data[i]);
+  for (let i = 0; i < data.length; i++) suggestions.push(data[i]);
 
   const emptyArray = suggestions.filter((data) => data.name.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()));
 
@@ -83,7 +83,7 @@ function filterSearch(userData, data, searchbar) {
 
 function showSuggestions(list, searchbar) {
   list = list.map((data) => {
-    return (data = '<h1 data-key="' + data.key + '">' + data.name + '</h1>');
+    return (data = `<h1 data-key="${  data.key  }">${  data.name  }</h1>`);
   });
 
   let listData = '';

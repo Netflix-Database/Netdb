@@ -21,11 +21,11 @@ export async function createCreds(options) {
   if (typeof options.challenge === 'string') options.challenge = fromBase64Url(options.challenge);
   if (typeof options.user.id === 'string') options.user.id = fromBase64Url(options.user.id);
   if (options.rp.id === null) options.rp.id = undefined;
-  for (let cred of options.excludeCredentials) {
+  for (const cred of options.excludeCredentials) {
     if (typeof cred.id === 'string') cred.id = fromBase64Url(cred.id);
   }
-  var newCreds = await navigator.credentials.create({ publicKey: options });
-  const response = newCreds.response;
+  const newCreds = await navigator.credentials.create({ publicKey: options });
+  const { response } = newCreds;
   const retval = {
     id: base64StringToUrl(newCreds.id),
     rawId: toBase64Url(newCreds.rawId),
@@ -43,13 +43,13 @@ export async function createCreds(options) {
 export async function verify(options) {
   if (typeof options.challenge === 'string') options.challenge = fromBase64Url(options.challenge);
   if (options.allowCredentials) {
-    for (var i = 0; i < options.allowCredentials.length; i++) {
-      const id = options.allowCredentials[i].id;
+    for (let i = 0; i < options.allowCredentials.length; i++) {
+      const { id } = options.allowCredentials[i];
       if (typeof id === 'string') options.allowCredentials[i].id = fromBase64Url(id);
     }
   }
-  var creds = await navigator.credentials.get({ publicKey: options });
-  const response = creds.response;
+  const creds = await navigator.credentials.get({ publicKey: options });
+  const { response } = creds;
   const retval = {
     id: creds.id,
     rawId: toBase64Url(creds.rawId),

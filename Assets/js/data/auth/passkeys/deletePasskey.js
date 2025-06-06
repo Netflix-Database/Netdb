@@ -3,13 +3,13 @@ export async function deletePasskey(id) {
   const req = await fetch(`https://api.login.${LoginManager.domain}/passkey`, {
     method: 'DELETE',
     headers: {
-      Authorization: 'Bearer ' + LoginManager.getCookie('token'),
+      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
       'Content-Type': 'application/json',
     },
-    body: `"${id}"`
+    body: `"${id}"`,
   });
 
-  if (req.status == 401) {
+  if (req.status === 401) {
     window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }

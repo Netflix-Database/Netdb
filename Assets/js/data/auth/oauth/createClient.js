@@ -3,7 +3,7 @@ export async function createClient(name, websiteUrl, logoUrl) {
   const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth`, {
     method: 'POST',
     headers: {
-      'Authorization': 'Bearer ' + LoginManager.getCookie('token'),
+      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -13,7 +13,7 @@ export async function createClient(name, websiteUrl, logoUrl) {
     }),
   });
 
-  if (req.status == 401) {
+  if (req.status === 401) {
     window.location.href = LoginManager.buildLoginUrl(window.location.href);
     return;
   }
