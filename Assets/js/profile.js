@@ -6,6 +6,7 @@ import { changePassword as changePasswordReq } from './data/auth/changePassword'
 import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
 import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
 import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
+import { deleteDevice } from './data/auth/deleteDevice';
 import { getApiKeys } from './data/auth/getApiKeys';
 import { getDevices } from './data/auth/getDevices';
 import { getScopes } from './data/auth/getScopes';
@@ -146,8 +147,8 @@ LoginManager.isLoggedIn().then(async (e) => {
       api_keys: [
         {
           clientId: '1234567890',
-          scope: 'admin'
-        }
+          scope: 'admin',
+        },
       ],
       trusted_sso_clients: [
         {
@@ -161,8 +162,8 @@ LoginManager.isLoggedIn().then(async (e) => {
           id: 'test',
           lastLogin: new Date().getTime(),
           name: 'iCloud-Schlüsselbund',
-          createdAt: new Date().getTime()
-        }
+          createdAt: new Date().getTime(),
+        },
       ],
       sso_clients: [
         {
@@ -280,11 +281,35 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.clientId, key.scope));
   });
 
+  if (currentUser.devices.length > 0) document.getElementById('devicesContainer').innerHTML = '';
+
+  const currentDeviceId = LoginManager.getCookie(LoginManager.deviceIdCookie);
+
+  currentUser.devices.forEach((device) => {
+    const row = document.createElement('div');
+    row.id = `device_${device.id}`;
+    const name = document.createElement('h1');
+    name.innerText = `${device.os} ${device.browser}`;
+
+    if (device.id === currentDeviceId)
+      name.innerText += ' (Current Device)';
+
+    row.appendChild(name);
+    const lastUsed = document.createElement('p');
+    lastUsed.innerText = `Last used: ${new Date(device.lastLogin).toLocaleString()}`;
+    row.appendChild(lastUsed);
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', async () => await deleteDevice(device.id));
+    row.appendChild(deleteBtn);
+    document.getElementById('devicesContainer').appendChild(row);
+  });
+
   if (currentUser.trusted_sso_clients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
 
   currentUser.trusted_sso_clients.forEach((client) => {
     const row = document.createElement('div');
-    row.id = `trusted_${  client.id}`;
+    row.id = `trusted_${client.id}`;
     const img = document.createElement('img');
     img.src = client.logo;
     img.alt = client.name;
@@ -311,7 +336,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       this.classList.toggle('active');
 
       if (this.nextElementSibling.style.maxHeight) this.nextElementSibling.style.maxHeight = null;
-      else this.nextElementSibling.style.maxHeight = `${this.nextElementSibling.scrollHeight  }px`;
+      else this.nextElementSibling.style.maxHeight = `${this.nextElementSibling.scrollHeight}px`;
     });
   });
 
@@ -329,7 +354,7 @@ async function buildPasskeys(keys) {
   keys.forEach((key) => {
     const item = document.createElement('div');
     item.classList.add('passkey');
-    item.id = `passkey_${  key.id}`;
+    item.id = `passkey_${key.id}`;
 
     const itemText = document.createElement('div');
 
@@ -338,11 +363,11 @@ async function buildPasskeys(keys) {
     itemText.appendChild(keyElement);
 
     const lastLogin = document.createElement('p');
-    lastLogin.innerText = `Last login: ${  new Date(key.lastLogin).toLocaleString()}`;
+    lastLogin.innerText = `Last login: ${new Date(key.lastLogin).toLocaleString()}`;
     itemText.appendChild(lastLogin);
 
     const createdAt = document.createElement('p');
-    createdAt.innerText = `Created at: ${  new Date(key.createdAt).toLocaleString()}`;
+    createdAt.innerText = `Created at: ${new Date(key.createdAt).toLocaleString()}`;
     itemText.appendChild(createdAt);
 
     item.appendChild(itemText);
@@ -363,7 +388,7 @@ async function buildPasskeys(keys) {
 async function deletePasskey(id) {
   const req = await deletePasskeyReq(id);
 
-  document.getElementById(`passkey_${  id}`).remove();
+  document.getElementById(`passkey_${id}`).remove();
 
   const container = document.getElementById('passkeysTable');
 
@@ -404,12 +429,11 @@ async function deleteTrustedSsoClient(clientId) {
     return;
   }
 
-  document.getElementById(`trusted_${  clientId}`).remove();
+  document.getElementById(`trusted_${clientId}`).remove();
 
   const container = document.getElementById('thirdPartyAppsContainer');
 
-  if (container.children.length === 0)
-    container.innerHTML = '<p>No third party apps connected!</p>';
+  if (container.children.length === 0) container.innerHTML = '<p>No third party apps connected!</p>';
 }
 
 async function createSsoCredentials() {
@@ -459,7 +483,7 @@ async function createSsoCredentials() {
     item.classList.toggle('active');
 
     if (item.children[0].nextElementSibling.style.maxHeight) item.children[0].nextElementSibling.style.maxHeight = null;
-    else item.children[0].nextElementSibling.style.maxHeight = `${item.children[0].nextElementSibling.scrollHeight  }px`;
+    else item.children[0].nextElementSibling.style.maxHeight = `${item.children[0].nextElementSibling.scrollHeight}px`;
   });
 }
 
@@ -467,7 +491,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   const template = document.importNode(document.getElementById('ssoCredentials').getElementsByTagName('template')[0].content, true);
   const item = template.querySelector('div');
 
-  item.id = `sso_${  clientId}`;
+  item.id = `sso_${clientId}`;
   item.querySelector('img').src = logoUrl;
   item.querySelector('img').alt = clientName;
   item.querySelector('img').title = clientName;
@@ -486,12 +510,11 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   content.querySelector('#sso_addRedirect').addEventListener('click', async () => await addSSORedirect(clientId));
   content.querySelector('#sso_addAudience').addEventListener('click', async () => await addAudience(clientId));
 
-
   const audiencesContainer = content.querySelector('#sso_audiences');
 
   audiences.forEach((audience) => {
     const audienceItem = document.createElement('div');
-    audienceItem.id = `sso_audience_${  audience.id}`;
+    audienceItem.id = `sso_audience_${audience.id}`;
 
     const audienceInput = document.createElement('input');
     audienceInput.type = 'text';
@@ -511,7 +534,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
 
   redirects.forEach((redirect) => {
     const redirectItem = document.createElement('div');
-    redirectItem.id = `sso_redirect_${  redirect.id}`;
+    redirectItem.id = `sso_redirect_${redirect.id}`;
 
     const url = document.createElement('input');
     url.type = 'text';
@@ -539,7 +562,7 @@ async function deleteSSOClient(clientId) {
     return;
   }
 
-  document.getElementById(`sso_${  clientId}`).remove();
+  document.getElementById(`sso_${clientId}`).remove();
 }
 
 async function deleteAudience(clientId, audienceId) {
@@ -551,7 +574,7 @@ async function deleteAudience(clientId, audienceId) {
     return;
   }
 
-  document.getElementById(`sso_audience_${  audienceId}`).remove();
+  document.getElementById(`sso_audience_${audienceId}`).remove();
 }
 
 async function deleteSSORedirect(clientId, redirectId) {
@@ -563,11 +586,11 @@ async function deleteSSORedirect(clientId, redirectId) {
     return;
   }
 
-  document.getElementById(`sso_redirect_${  redirectId}`).remove();
+  document.getElementById(`sso_redirect_${redirectId}`).remove();
 }
 
 async function addAudience(clientId) {
-  const item = document.getElementById(`sso_${  clientId}`);
+  const item = document.getElementById(`sso_${clientId}`);
   const redirects = item.querySelector('#sso_audiences');
 
   //TODO: add button feedback
@@ -583,7 +606,7 @@ async function addAudience(clientId) {
   item.querySelector('#sso_addAudience').previousElementSibling.value = '';
 
   const redirect = document.createElement('div');
-  redirect.id = `sso_audience_${  res.data.id}`;
+  redirect.id = `sso_audience_${res.data.id}`;
   const url = document.createElement('input');
   url.type = 'text';
   url.value = res.data.url;
@@ -603,7 +626,7 @@ async function addAudience(clientId) {
 }
 
 async function addSSORedirect(clientId) {
-  const item = document.getElementById(`sso_${  clientId}`);
+  const item = document.getElementById(`sso_${clientId}`);
   const redirects = item.querySelector('#sso_redirects');
 
   //TODO: add button feedback
@@ -619,7 +642,7 @@ async function addSSORedirect(clientId) {
   item.querySelector('#sso_addRedirect').previousElementSibling.value = '';
 
   const redirect = document.createElement('div');
-  redirect.id = `sso_redirect_${  res.data.id}`;
+  redirect.id = `sso_redirect_${res.data.id}`;
   const url = document.createElement('input');
   url.type = 'text';
   url.value = res.data.url;
@@ -639,7 +662,7 @@ async function addSSORedirect(clientId) {
 }
 
 async function saveSSOClient(clientId) {
-  const item = document.getElementById(`sso_${  clientId}`);
+  const item = document.getElementById(`sso_${clientId}`);
   const req = await saveClientReq(clientId, item.querySelector('#sso_logoUrl').value, item.querySelector('#sso_websiteUrl').value, item.querySelector('#sso_name').value);
   const res = await req.json();
 
@@ -721,7 +744,7 @@ async function createApiKey() {
 
   for (const inputScope of inputScopes) {
     const [category, scopeValue] = inputScope.split(':');
-    const categoryScopes = availableScopes.find(sc => sc.category === category);
+    const categoryScopes = availableScopes.find((sc) => sc.category === category);
     if (!categoryScopes) {
       createDialog('Error', `Invalid category: ${category}`, 'error');
       return false;
@@ -744,7 +767,7 @@ async function createApiKey() {
 
   document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId, res.data.scope));
 
-  createDialog('Success', `Successfully created API key! Please save it now, as it will not be shown again! ${  res.data.clientSecret}`, 'info');
+  createDialog('Success', `Successfully created API key! Please save it now, as it will not be shown again! ${res.data.clientSecret}`, 'info');
 }
 
 async function regenerateApiKey(clientId) {
@@ -757,7 +780,7 @@ async function regenerateApiKey(clientId) {
     return;
   }
 
-  createDialog('Success', `Successfully regenerated API key! Please save it now, as it will not be shown again! ${  res.data.clientSecret}`, 'info');
+  createDialog('Success', `Successfully regenerated API key! Please save it now, as it will not be shown again! ${res.data.clientSecret}`, 'info');
 }
 
 async function deleteApiKey(clientId) {
@@ -777,32 +800,36 @@ function linkAccounts(type) {
   localStorage.setItem('linkType', type);
 
   switch (type) {
-  case 'spotify': {
-    window.location.href = 'https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://netdb.at/profile&scope=user-read-private%20user-read-email';
-    break;
-  }
-  case 'discord': {
-    window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://netdb.at/profile&response_type=code&scope=identify%20email';
-    break;
-  }
-  case 'twitch': {
-    window.location.href = 'https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.at/profile&response_type=code&scope=user_read';
-    break;
-  }
-  case 'github': {
-    window.location.href = 'https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805';
-    break;
-  }
-  case 'google': {
-    window.location.href =
-        'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com';
-    break;
-  }
+    case 'spotify': {
+      window.location.href = 'https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://netdb.at/profile&scope=user-read-private%20user-read-email';
+      break;
+    }
+    case 'discord': {
+      window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://netdb.at/profile&response_type=code&scope=identify%20email';
+      break;
+    }
+    case 'twitch': {
+      window.location.href = 'https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.at/profile&response_type=code&scope=user_read';
+      break;
+    }
+    case 'github': {
+      window.location.href = 'https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805';
+      break;
+    }
+    case 'google': {
+      window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com';
+      break;
+    }
   }
 }
 
 async function savePersonalInformation() {
-  const req = await saveUser(document.getElementById('firstname').value, document.getElementById('lastname').value, document.getElementById('country').dataset.key, document.getElementById('preferredlang').dataset.key, document.getElementById('username').value);
+  const req = await saveUser(
+    document.getElementById('firstname').value,
+    document.getElementById('lastname').value,
+    document.getElementById('country').dataset.key,
+    document.getElementById('preferredlang').dataset.key,
+    document.getElementById('username').value);
   const res = await req.json();
 
   if (res.statusCode !== 200) {
@@ -876,8 +903,8 @@ async function deleteAccount() {
     return;
   }
 
-  LoginManager.deleteCookie('token', '/', `.${  LoginManager.domain}`);
-  LoginManager.deleteCookie('refreshToken', '/', `.${  LoginManager.domain}`);
+  LoginManager.deleteCookie('token', '/', `.${LoginManager.domain}`);
+  LoginManager.deleteCookie('refreshToken', '/', `.${LoginManager.domain}`);
   window.location.href = LoginManager.buildLoginUrl(window.location.href);
 }
 
@@ -898,7 +925,8 @@ async function enable2fa() {
 
   const res = await req.json();
 
-  if (mfaType === 0) { //App
+  if (mfaType === 0) {
+    //App
     const qr = res.data.qrCodeSetupImageUrl;
     const secret = res.data.manualEntryKey;
 
