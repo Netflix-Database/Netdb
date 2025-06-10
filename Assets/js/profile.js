@@ -283,15 +283,13 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   if (currentUser.devices.length > 0) document.getElementById('devicesContainer').innerHTML = '';
 
-  const currentDeviceId = LoginManager.getCookie(LoginManager.deviceIdCookie);
-
   currentUser.devices.forEach((device) => {
     const row = document.createElement('div');
     row.id = `device_${device.id}`;
     const name = document.createElement('h1');
     name.innerText = `${device.os} ${device.browser}`;
 
-    if (device.id === currentDeviceId)
+    if (device.isCurrentDevice === true)
       name.innerText += ' (Current Device)';
 
     row.appendChild(name);
@@ -300,7 +298,11 @@ LoginManager.isLoggedIn().then(async (e) => {
     row.appendChild(lastUsed);
     const deleteBtn = document.createElement('button');
     deleteBtn.innerText = 'Delete';
-    deleteBtn.addEventListener('click', async () => await deleteDevice(device.id));
+    deleteBtn.addEventListener('click', async () => {
+      await deleteDevice(device.id);
+
+      document.getElementById(`device_${device.id}`).remove();
+    });
     row.appendChild(deleteBtn);
     document.getElementById('devicesContainer').appendChild(row);
   });
