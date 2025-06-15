@@ -70,6 +70,7 @@ h4, h5 {
   padding: 1em;
   margin: 1em 0;
   box-shadow: 0 0 1em rgba(0, 0, 0, .2);
+  overflow: hidden;
 }
 
 .settings-container > .item > h1 {
@@ -414,16 +415,19 @@ th {
   width: 100%;
   gap: 1em;
   flex-wrap: wrap;
+  overflow: hidden;
+  justify-content: center;
 }
 
 .thirdPartyApps-container > div {
   background-color: #111;
   padding: 1em;
   border-radius: .5em;
-  width: 100%;
+  width: calc(100% - 2em);
   display: flex;
   align-items: center;
   gap: 1em;
+  overflow: auto;
 }
 
 .thirdPartyApps-container > div > img {
@@ -456,6 +460,10 @@ a {
   text-decoration: none;
 }
 
+.passkey {
+  overflow: auto;
+}
+
 .passkeys > div {
   background-color: #111;
   padding: 1em;
@@ -469,4 +477,17 @@ a {
 
 .passkeys > div h1, .passkeys > div p {
   margin: 0;
+}
+
+.spin {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

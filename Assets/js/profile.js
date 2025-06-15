@@ -6,9 +6,7 @@ import { changePassword as changePasswordReq } from './data/auth/changePassword'
 import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
 import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
 import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
-import { deleteDevice } from './data/auth/deleteDevice';
 import { getApiKeys } from './data/auth/getApiKeys';
-import { getDevices } from './data/auth/getDevices';
 import { getScopes } from './data/auth/getScopes';
 import { getUser } from './data/auth/getUser';
 import { linkSocialAccount } from './data/auth/linkSocialAccount';
@@ -29,6 +27,7 @@ import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateA
 import { saveUser } from './data/auth/saveUser';
 import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
 import { createDialog, initDialog } from './dialog';
+import './settings/device';
 import { initLocalization } from './util/localization';
 import { validateMfaToken, validatePw } from './util/validation';
 
@@ -225,21 +224,12 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
-    const devicesReq = await getDevices();
-    const devicesResponse = await devicesReq.json();
-
-    if (devicesResponse.statusCode !== 200) {
-      console.error(devicesResponse);
-      return;
-    }
-
     const user = {
       ...userResponse.data,
       api_keys: apiKeyResponse.data,
       trusted_sso_clients: trustedClientsResponse.data,
       sso_clients: SSOResponse.data,
       passkeys: passkeysResponse.data,
-      devices: devicesResponse.data,
     };
     currentUser = user;
   }
@@ -279,32 +269,6 @@ LoginManager.isLoggedIn().then(async (e) => {
 
   currentUser.api_keys.forEach((key) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.clientId, key.scope));
-  });
-
-  if (currentUser.devices.length > 0) document.getElementById('devicesContainer').innerHTML = '';
-
-  currentUser.devices.forEach((device) => {
-    const row = document.createElement('div');
-    row.id = `device_${device.id}`;
-    const name = document.createElement('h1');
-    name.innerText = `${device.os} ${device.browser}`;
-
-    if (device.isCurrentDevice === true)
-      name.innerText += ' (Current Device)';
-
-    row.appendChild(name);
-    const lastUsed = document.createElement('p');
-    lastUsed.innerText = `Last used: ${new Date(device.lastLogin).toLocaleString()}`;
-    row.appendChild(lastUsed);
-    const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Delete';
-    deleteBtn.addEventListener('click', async () => {
-      await deleteDevice(device.id);
-
-      document.getElementById(`device_${device.id}`).remove();
-    });
-    row.appendChild(deleteBtn);
-    document.getElementById('devicesContainer').appendChild(row);
   });
 
   if (currentUser.trusted_sso_clients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
