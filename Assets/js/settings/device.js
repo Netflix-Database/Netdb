@@ -4,9 +4,14 @@ import { logoutAllDevices } from '../data/auth/logoutAllDevices';
 import { logoutDevice } from '../data/auth/logoutDevice';
 
 LoginManager.isLoggedIn().then(async (e) => {
+  if (!e && import.meta.env.MODE !== 'development') {
+    window.location.href = LoginManager.buildLoginUrl(window.location.href);
+    return;
+  }
+
   let devices = [];
 
-  if (!e && import.meta.env.MODE !== 'development') {
+  if (e && import.meta.env.MODE !== 'development') {
     const devicesReq = await getDevices();
     const devicesResponse = await devicesReq.json();
 
