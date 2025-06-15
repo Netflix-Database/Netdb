@@ -1,6 +1,6 @@
 export async function logoutDevice(id) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/device/${id}}/logout`, {
+  const req = await fetch(`https://api.login.${LoginManager.domain}/user/device/${id}/logout`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${LoginManager.getCookie('token')}`,
