@@ -70,7 +70,6 @@ h4, h5 {
   padding: 1em;
   margin: 1em 0;
   box-shadow: 0 0 1em rgba(0, 0, 0, .2);
-  overflow: hidden;
 }
 
 .settings-container > .item > h1 {
