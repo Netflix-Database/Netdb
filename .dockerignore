@@ -1,0 +1,23 @@
+node_modules
+
+dist
+build
+
+# IDE and editor files
+.vscode
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Docker
+Dockerfile
+.dockerignore
