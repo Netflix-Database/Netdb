@@ -76,24 +76,6 @@ footer {
   padding: 0 15vw;
 }
 
-.feature-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.feature-container .item {
-  background-color: #222222b0;
-  border-radius: 15px;
-  border: 1px solid #666;
-  padding: 1em;
-  width: calc(33% - 2em - 1em);
-  box-shadow: 0 0 10px #060606;
-  backdrop-filter: blur(16px);
-}
-
 .service-container {
   display: flex;
   padding: 1em;
@@ -191,15 +173,13 @@ footer>div:nth-child(1) {
 }
 
 @media (max-width: 1100px) {
-
-  .feature-container .item,
   .service-container .item {
     width: 100%;
   }
 }
 
 .service-outer {
-  padding-top: 6em;
+  padding-top: 10em;
   padding-bottom: 5em;
 }
 
