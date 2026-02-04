@@ -6,17 +6,12 @@ body {
 }
 
 .stroke {
-  fill: none;
   stroke-width: 3px;
   stroke: white;
 }
 
 h1 {
   margin: 0;
-}
-
-.st0 {
-  fill: none;
 }
 
 .st1 {

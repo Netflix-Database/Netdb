@@ -1,4 +1,4 @@
-import anime from 'animejs';
+import { animate, createDrawable } from 'animejs';
 import { initLocalization } from './util/localization';
 
 initLocalization();
@@ -9,62 +9,46 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('profile').classList.remove('d-none');
 
     document.getElementById('username').innerText = LoginManager.getUsername();
-    document.getElementById('avatar').src = LoginManager.getAvatar();
+    document.getElementById('avatar').src = LoginManager.getAvatarURL();
   } else {
     document.getElementById('loginLoading').style.display = 'none';
     document.getElementById('loginLink').classList.remove('d-none');
   }
 });
 
-anime({
-  targets: '.logo path',
-  strokeDashoffset: [anime.setDashoffset, 0],
-  easing: 'easeInOutCubic',
+animate(createDrawable('.logo path'), {
+  draw: '0 1',
+  ease: 'inOutCubic',
   duration: 1500,
-  begin: function () {
-    document.querySelector('path').setAttribute('stroke', 'black');
-    document.querySelector('path').setAttribute('fill', 'none');
-  },
-  complete: function () {
-    document.querySelector('path').setAttribute('fill', 'yellow');
-  },
   autoplay: true,
 });
 
-anime({
-  targets: '.stroke',
+animate('.logo .stroke', {
   duration: 1500,
   delay: 1000,
   strokeWidth: ['3px', '0'],
-  direction: 'forward',
-  easing: 'easeInOutQuad',
+  ease: 'inOutQuad',
 });
 
-anime({
-  targets: '.st0',
+animate('.logo .st0', {
   duration: 1500,
   delay: 800,
-  fill: ['#F2F2F2'],
-  direction: 'forward',
-  easing: 'easeInOutQuad',
+  fill: '#F2F2F2',
+  ease: 'inOutQuad',
 });
 
-anime({
-  targets: '#startColor',
+animate('#startColor', {
   duration: 1500,
   delay: 800,
-  stopColor: ['none', '#fd1414'],
-  direction: 'forward',
-  easing: 'easeInOutQuad',
+  stopColor: ['#fff0', '#fd1414'],
+  ease: 'inOutQuad',
 });
 
-anime({
-  targets: '#endColor',
+animate('#endColor', {
   duration: 1500,
   delay: 800,
-  stopColor: ['none', '#7c0d00'],
-  direction: 'forward',
-  easing: 'easeInOutQuad',
+  stopColor: ['#fff0', '#7c0d00'],
+  ease: 'inOutQuad',
 });
 
 setColors();
@@ -89,30 +73,24 @@ function setColors() {
 }
 
 function changeColor(startColor, endColor) {
-  anime({
-    targets: '.st0',
+  animate('.st0', {
     duration: 1500,
     delay: 1000,
-    fill: ['#F2F2F2'],
-    direction: 'forward',
-    easing: 'easeInOutQuad',
+    fill: '#F2F2F2',
+    ease: 'inOutQuad',
   });
 
-  anime({
-    targets: '#startColor',
+  animate('#startColor', {
     duration: 1500,
     delay: 1000,
     stopColor: [startColor],
-    direction: 'forward',
-    easing: 'easeInOutQuad',
+    ease: 'inOutQuad',
   });
 
-  anime({
-    targets: '#endColor',
+  animate('#endColor', {
     duration: 1500,
     delay: 1000,
     stopColor: [endColor],
-    direction: 'forward',
-    easing: 'easeInOutQuad',
+    ease: 'inOutQuad',
   });
 }
