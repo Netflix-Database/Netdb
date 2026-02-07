@@ -99,6 +99,42 @@ let currentUser;
 
 initLocalization();
 initDialog();
+
+// Mobile menu toggle functionality
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const mobileOverlay = document.getElementById('mobileOverlay');
+const sidebar = document.querySelector('.sidebar');
+
+function toggleMobileMenu() {
+  sidebar.classList.toggle('active');
+  mobileOverlay.classList.toggle('active');
+  document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+}
+
+function closeMobileMenu() {
+  sidebar.classList.remove('active');
+  mobileOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+if (mobileMenuToggle) {
+  mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+}
+
+if (mobileOverlay) {
+  mobileOverlay.addEventListener('click', closeMobileMenu);
+}
+
+// Close menu when clicking on a sidebar link
+const sidebarLinks = document.querySelectorAll('.sidebar a');
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+      closeMobileMenu();
+    }
+  });
+});
+
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 document.getElementById('createApiKey').addEventListener('click', createApiKey);

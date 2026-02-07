@@ -35,13 +35,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
-  <script src="https://assets.netdb.at/login/js/lm/LoginManager.portable.js" allowUnauthorized></script>
+  <script src="https://login.netdb.at/js/LoginManager.portable.js" allowUnauthorized></script>
   <link rel="stylesheet" href="../Assets/css/profile.css">
   <link rel="stylesheet" href="../Assets/css/dialog.css">
   <script type="module" src="../Assets/js/profile.js" defer></script>
 </head>
 
 <body>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+  </button>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
   <div class="container">
     <div class="sidebar">
       <a href="/" class="back">
@@ -70,7 +76,7 @@
         </li>
       </ul>
     </div>
-    <div class="settings-container" style="padding-top: 3em;">
+    <div class="settings-container">
       <div id="personalInformation" class="item">
         <h1>Personal Information</h1>
         <input type="text" id="pi_email" disabled placeholder="Email">

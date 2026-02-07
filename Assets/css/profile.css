@@ -60,6 +60,7 @@ h4, h5 {
   overflow: hidden;
   overflow-y: auto;
   padding: 0 1em;
+  padding-top: 3em;
   scroll-behavior: smooth;
 }
 
@@ -488,5 +489,161 @@ a {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  z-index: 1001;
+  background-color: #1e1e1e;
+  border: 2px solid #4d4d4d;
+  border-radius: .5em;
+  padding: .75em;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  width: calc(100% - 2em);
+}
+
+.mobile-menu-toggle:hover {
+  background-color: #4d4d4d;
+}
+
+.mobile-menu-toggle svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100vw;
+    flex-direction: column;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80vw;
+    max-width: 300px;
+    height: 100vh;
+    background-color: #000;
+    z-index: 1000;
+    transition: left .3s ease-in-out;
+    overflow-y: auto;
+    border-right: 1px solid #4d4d4d;
+  }
+
+  .sidebar.active {
+    left: 0;
+    padding-left: 1em;
+  }
+
+  .sidebar > a {
+    margin-top: 3em;
+  }
+
+  .settings-container {
+    width: calc(100% - 2em);
+    padding: 4em 1em 1em 1em;
+  }
+
+  .settings-container > .item {
+    width: calc(100% - 2em);
+  }
+
+  .connected-accounts .item {
+    flex: 100%;
+    font-size: 1.2em;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .input-group > div {
+    width: 100%;
+  }
+
+  button {
+    padding: .5em 2em;
+    width: 100%;
+  }
+
+  .flex.end {
+    flex-direction: column;
+  }
+
+  .flex.end button, .passkeys > div button {
+    width: 100%;
+  }
+
+  .apiKeysTable {
+    font-size: 0.85em;
+  }
+
+  .apiKeysTable td:nth-child(2) {
+    flex-direction: column;
+    gap: .5em;
+  }
+
+  .apiKeysTable td:nth-child(2) button {
+    padding: .5em;
+    width: 100%;
+  }
+
+  .ssoClients > div > .collapsible {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ssoClients > div > .collapsible a {
+    margin-left: 0;
+  }
+
+  .thirdPartyApps-container > div {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .thirdPartyApps-container > div > button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .passkeys > div {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Overlay for mobile menu */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.mobile-overlay.active {
+  display: block;
+}
+
+@media screen and (max-width: 480px) {
+  .sidebar {
+    width: 90vw;
   }
 }
