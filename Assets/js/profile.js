@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { initSearchbar } from './autocomplete';
 import { activate as activateMfaReq } from './data/auth/2fa/activate';
 import { deactivate as deactivateMfaReq } from './data/auth/2fa/deactivate';
@@ -26,75 +27,13 @@ import { getPasskeys } from './data/auth/passkeys/getPasskeys';
 import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateApiKey';
 import { saveUser } from './data/auth/saveUser';
 import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
+import { getCountries } from './data/countries';
+import { languages } from './data/languages';
 import { createDialog, initDialog } from './dialog';
 import './settings/device';
 import { initLocalization } from './util/localization';
 import { validateMfaToken, validatePw } from './util/validation';
 
-const languages = [
-  { key: 'en-us', name: 'English' },
-  { key: 'de-at', name: 'German' },
-  { key: 'fr-fr', name: 'French' },
-  { key: 'it-it', name: 'Italian' },
-  { key: 'es-es', name: 'Spanish' },
-  { key: 'pl-pl', name: 'Polish' },
-  { key: 'nl-nl', name: 'Dutch' },
-  { key: 'pt-pt', name: 'Portuguese' },
-  { key: 'ru-ru', name: 'Russian' },
-  { key: 'tr-tr', name: 'Turkish' },
-  { key: 'zh-cn', name: 'Chinese' },
-  { key: 'ja-jp', name: 'Japanese' },
-  { key: 'ko-kr', name: 'Korean' },
-  { key: 'ar-sa', name: 'Arabic' },
-  { key: 'hi-in', name: 'Hindi' },
-  { key: 'no-no', name: 'Norwegian' },
-  { key: 'sv-se', name: 'Swedish' },
-  { key: 'fi-fi', name: 'Finnish' },
-  { key: 'da-dk', name: 'Danish' },
-  { key: 'cs-cz', name: 'Czech' },
-  { key: 'hu-hu', name: 'Hungarian' },
-  { key: 'el-gr', name: 'Greek' },
-  { key: 'th-th', name: 'Thai' },
-  { key: 'id-id', name: 'Indonesian' },
-  { key: 'ro-ro', name: 'Romanian' },
-  { key: 'sk-sk', name: 'Slovak' },
-  { key: 'uk-ua', name: 'Ukrainian' },
-  { key: 'bg-bg', name: 'Bulgarian' },
-  { key: 'hr-hr', name: 'Croatian' },
-  { key: 'ca-es', name: 'Catalan' },
-  { key: 'et-ee', name: 'Estonian' },
-  { key: 'fa-ir', name: 'Persian' },
-  { key: 'he-il', name: 'Hebrew' },
-  { key: 'is-is', name: 'Icelandic' },
-  { key: 'lt-lt', name: 'Lithuanian' },
-  { key: 'lv-lv', name: 'Latvian' },
-  { key: 'sr-rs', name: 'Serbian' },
-  { key: 'sl-si', name: 'Slovenian' },
-  { key: 'vi-vn', name: 'Vietnamese' },
-  { key: 'xx-ms', name: 'Wingdings' },
-];
-
-const countries = [
-  { key: 'at', name: 'Austria' },
-  { key: 'de', name: 'Germany' },
-  { key: 'ch', name: 'Switzerland' },
-  { key: 'us', name: 'United States' },
-  { key: 'gb', name: 'United Kingdom' },
-  { key: 'fr', name: 'France' },
-  { key: 'it', name: 'Italy' },
-  { key: 'es', name: 'Spain' },
-  { key: 'pl', name: 'Poland' },
-  { key: 'nl', name: 'Netherlands' },
-  { key: 'pt', name: 'Portugal' },
-  { key: 'ru', name: 'Russia' },
-  { key: 'tr', name: 'Turkey' },
-  { key: 'cn', name: 'China' },
-  { key: 'jp', name: 'Japan' },
-  { key: 'kr', name: 'Korea' },
-  { key: 'ar', name: 'Argentina' },
-  { key: 'au', name: 'Australia' },
-  { key: 'be', name: 'Belgium' },
-];
 let currentUser;
 
 initLocalization();
@@ -171,7 +110,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       lastname: 'User',
       email: 'amogus@example.com',
       country: 'at',
-      preferredLang: 'de-at',
+      preferredLang: 'de-AT',
       discordId: null,
       spotifyId: null,
       twitchId: null,
@@ -300,8 +239,15 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('2fa_enable').addEventListener('click', enable2fa);
   }
 
+  const countries = await getCountries();
   initSearchbar(countries, 'country_search');
   initSearchbar(languages, 'language_search');
+
+  // Reload countries when language changes
+  i18next.on('languageChanged', async () => {
+    const updatedCountries = await getCountries();
+    initSearchbar(updatedCountries, 'country_search');
+  });
 
   currentUser.api_keys.forEach((key) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.clientId, key.scope));
