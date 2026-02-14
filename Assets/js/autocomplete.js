@@ -104,5 +104,5 @@ function showSuggestions(list, searchbar) {
       searchbar.querySelector('.autocom-box').classList.remove('active');
     });
 
-  searchbar.querySelector('.autocom-box h1').classList.add('focus');
+  searchbar.querySelector('.autocom-box h1')?.classList.add('focus');
 }

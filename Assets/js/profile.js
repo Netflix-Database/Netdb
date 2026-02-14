@@ -240,6 +240,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   }
 
   const countries = await getCountries();
+
   initSearchbar(countries, 'country_search');
   initSearchbar(languages, 'language_search');
 
