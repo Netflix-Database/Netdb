@@ -338,13 +338,13 @@ th {
   overflow: hidden;
 }
 
-.apiKeysTable td:nth-child(2) {
+.apiKeysTable td:nth-child(4) {
   display: flex;
-  gap: 1em;
+  gap: .5em;
 }
 
-.apiKeysTable td:nth-child(2) button {
-  padding: .8em;
+.apiKeysTable td:nth-child(4) button {
+  padding: .5em;
 }
 
 .apiKeysTable td {
@@ -439,6 +439,7 @@ th {
 
 .thirdPartyApps-container > div > button {
   margin-left: auto;
+  padding: .5em 2em;
 }
 
 .thirdPartyApps-container > div > h1 {
@@ -474,6 +475,14 @@ a {
   align-items: center;
   gap: 1em;
   margin-bottom: 1em;
+}
+
+.passkeys > div h1 {
+  font-size: 1.5em;
+}
+
+.passkeys > div p {
+  font-size: 0.9em;
 }
 
 .passkeys > div h1, .passkeys > div p {
@@ -592,12 +601,12 @@ a {
     font-size: 0.85em;
   }
 
-  .apiKeysTable td:nth-child(2) {
+  .apiKeysTable td:nth-child(4) {
     flex-direction: column;
     gap: .5em;
   }
 
-  .apiKeysTable td:nth-child(2) button {
+  .apiKeysTable td:nth-child(4) button {
     padding: .5em;
     width: 100%;
   }

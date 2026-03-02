@@ -120,6 +120,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       '2faType': 'App',
       api_keys: [
         {
+          label: 'Test API Key',
           clientId: '1234567890',
           scope: 'admin',
         },
@@ -251,7 +252,7 @@ LoginManager.isLoggedIn().then(async (e) => {
   });
 
   currentUser.api_keys.forEach((key) => {
-    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.clientId, key.scope));
+    document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.label, key.clientId, key.scope));
   });
 
   if (currentUser.trusted_sso_clients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
@@ -639,10 +640,10 @@ async function doubleClickButton(e, func) {
   }, 3000);
 }
 
-function createApiKeyRow(client_id, scope) {
+function createApiKeyRow(label, client_id, scope) {
   const row = document.createElement('tr');
   row.id = client_id;
-  row.innerHTML = `<td>${client_id}</td><td>${scope}</td>`;
+  row.innerHTML = `<td>${label}</td><td>${client_id}</td><td>${scope}</td>`;
   const td = document.createElement('td');
   const deleteBtn = document.createElement('button');
   const regenBtn = document.createElement('button');
@@ -660,6 +661,7 @@ function createApiKeyRow(client_id, scope) {
 }
 
 async function createApiKey() {
+  document.getElementById('label').value = '';
   document.getElementById('scope').value = '';
   document.getElementById('apiKeyDialog').show();
 
@@ -680,9 +682,10 @@ async function createApiKey() {
 
   if (!dialogRes) return false;
 
+  const label = document.getElementById('label').value;
   const scope = document.getElementById('scope').value;
 
-  if (scope.length === 0) {
+  if (label.length === 0 || scope.length === 0) {
     createDialog('Error', 'Please fill out all fields!', 'error');
     return;
   }
@@ -705,7 +708,7 @@ async function createApiKey() {
     }
   }
 
-  const req = await createApiKeyReq(scope);
+  const req = await createApiKeyReq(label, scope);
   const res = await req.json();
 
   if (res.statusCode !== 203) {
@@ -714,7 +717,7 @@ async function createApiKey() {
     return;
   }
 
-  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.clientId, res.data.scope));
+  document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.label, res.data.clientId, res.data.scope));
 
   createDialog('Success', `Successfully created API key! Please save it now, as it will not be shown again! ${res.data.clientSecret}`, 'info');
 }
