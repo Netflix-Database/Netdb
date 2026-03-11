@@ -35,7 +35,7 @@ export function initLocalization() {
 
 export function applyLocalization(area = document) {
   area.querySelectorAll('[i18n]').forEach((element) => {
-    element.innerText = i18next.t(element.getAttribute('i18n')) + element.innerText;
+    element.innerText = i18next.t(element.getAttribute('i18n'));
   });
 
   area.querySelectorAll('[i18n-placeholder]').forEach((element) => {
