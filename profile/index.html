@@ -79,6 +79,16 @@
     <div class="settings-container">
       <div id="personalInformation" class="item">
         <h1 i18n="profile_personalInformation"></h1>
+        <div class="avatar-upload">
+          <img id="avatarPreview" class="rounded" src="" alt="Avatar" width="80" height="80">
+          <div>
+            <input type="file" id="avatarInput" accept="image/*" class="d-none">
+            <div class="flex">
+              <button id="avatarSelectBtn" i18n="profile_selectAvatar" type="button"></button>
+              <button id="avatarUploadBtn" i18n="profile_uploadAvatar" type="button" disabled></button>
+            </div>
+          </div>
+        </div>
         <input type="text" id="pi_email" disabled i18n-placeholder="profile_placeholder_email">
         <input type="text" id="username" i18n-placeholder="profile_placeholder_username">
         <div class="input-group">

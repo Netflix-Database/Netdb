@@ -81,5 +81,7 @@
   "profile_placeholder_mfaToken": "MFA-Token",
   "profile_placeholder_name": "Name",
   "profile_placeholder_url": "URL",
-  "profile_placeholder_logoUrl": "Logo-URL"
+  "profile_placeholder_logoUrl": "Logo-URL",
+  "profile_selectAvatar": "Bild auswählen",
+  "profile_uploadAvatar": "Avatar hochladen"
 }

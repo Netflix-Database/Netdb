@@ -27,6 +27,7 @@ import { getPasskeys } from './data/auth/passkeys/getPasskeys';
 import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateApiKey';
 import { saveUser } from './data/auth/saveUser';
 import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
+import { uploadAvatar as uploadAvatarReq } from './data/auth/uploadAvatar';
 import { getCountries } from './data/countries';
 import { languages } from './data/languages';
 import { createDialog, initDialog } from './dialog';
@@ -35,6 +36,7 @@ import { applyLocalization, initLocalization } from './util/localization';
 import { validateMfaToken, validatePw } from './util/validation';
 
 let currentUser;
+let avatarObjectUrl = null;
 
 initLocalization();
 initDialog();
@@ -75,6 +77,19 @@ sidebarLinks.forEach(link => {
 });
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
+document.getElementById('avatarSelectBtn').addEventListener('click', () => document.getElementById('avatarInput').click());
+document.getElementById('avatarInput').addEventListener('change', () => {
+  const file = document.getElementById('avatarInput').files[0];
+  if (file) {
+    if (avatarObjectUrl) {
+      URL.revokeObjectURL(avatarObjectUrl);
+    }
+    avatarObjectUrl = URL.createObjectURL(file);
+    document.getElementById('avatarPreview').src = avatarObjectUrl;
+    document.getElementById('avatarUploadBtn').disabled = false;
+  }
+});
+document.getElementById('avatarUploadBtn').addEventListener('click', uploadAvatar);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
 document.getElementById('ca_spotify_link').addEventListener('click', () => linkAccounts('spotify'));
@@ -217,6 +232,8 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('cp_email').value = currentUser.email;
   document.getElementById('country').dataset.key = currentUser.country;
   document.getElementById('preferredlang').dataset.key = currentUser.preferredLang;
+
+  document.getElementById('avatarPreview').src = LoginManager.getAvatarURL();
 
   if (currentUser.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
   if (currentUser.spotifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
@@ -777,6 +794,30 @@ function linkAccounts(type) {
       break;
     }
   }
+}
+
+async function uploadAvatar() {
+  const file = document.getElementById('avatarInput').files[0];
+
+  if (!file) return;
+
+  const req = await uploadAvatarReq(file);
+  const res = await req.json();
+
+  if (res.statusCode !== 200) {
+    console.error(res);
+    displayButtonFeedback(document.getElementById('avatarUploadBtn'), 'error');
+    return;
+  }
+
+  if (avatarObjectUrl) {
+    URL.revokeObjectURL(avatarObjectUrl);
+    avatarObjectUrl = null;
+  }
+
+  document.getElementById('avatarUploadBtn').disabled = true;
+  document.getElementById('avatarInput').value = '';
+  displayButtonFeedback(document.getElementById('avatarUploadBtn'), 'success');
 }
 
 async function savePersonalInformation() {
