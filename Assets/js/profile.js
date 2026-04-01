@@ -804,11 +804,11 @@ function linkAccounts(type) {
       break;
     }
     case 'microsoft': {
-      window.location.href = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=87982514-333e-4376-b6c4-1873c1dc2e00&response_type=code&redirect_uri=https://api.login.netdb.at/login/microsoft&scope=openid%20profile%20email%20User.Read';
+      window.location.href = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=87982514-333e-4376-b6c4-1873c1dc2e00&response_type=code&redirect_uri=https://netdb.at/profile&scope=openid%20profile%20email%20User.Read';
       break;
     }
     case 'remotex': {
-      window.location.href = 'https://remotex.zip/api/oauth/authorize?client_id=f1911b46-6350-4f2f-9bab-a1c9daa3c5b5&redirect_uri=https%3A%2F%2Fapi.login.netdb.at%2Flogin%2Fremotex&response_type=code&scope=read';
+      window.location.href = 'https://remotex.zip/api/oauth/authorize?client_id=f1911b46-6350-4f2f-9bab-a1c9daa3c5b5&redirect_uri=https://netdb.at/profile&response_type=code&scope=read';
       break;
     }
   }
