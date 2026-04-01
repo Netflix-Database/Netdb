@@ -267,6 +267,22 @@ select[disabled] {
   justify-content: flex-end;
 }
 
+.avatar-upload {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.avatar-upload img {
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatar-upload button {
+  padding: .5em 1.5em;
+}
+
 .input-group {
   display: flex;
   align-items: center;

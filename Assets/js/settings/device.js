@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { deleteDevice } from '../data/auth/deleteDevice';
 import { getDevices } from '../data/auth/getDevices';
 import { logoutAllDevices } from '../data/auth/logoutAllDevices';
@@ -37,7 +38,7 @@ function createDevices(devices) {
 
   if (devices.length === 0) {
     const noDevices = document.createElement('p');
-    noDevices.innerText = 'No devices found.';
+    noDevices.innerText = i18next.t('profile_noDevices');
     document.getElementById('devicesContainer').appendChild(noDevices);
     return;
   }
@@ -48,14 +49,14 @@ function createDevices(devices) {
     const name = document.createElement('h1');
     name.innerText = `${device.os} ${device.browser}`;
 
-    if (device.isCurrentDevice === true) name.innerText += ' (Current Device)';
+    if (device.isCurrentDevice === true) name.innerText += ` ${i18next.t('profile_currentDevice')}`;
 
     row.appendChild(name);
     const lastUsed = document.createElement('p');
-    lastUsed.innerText = `Last used: ${new Date(device.lastLogin).toLocaleString()}`;
+    lastUsed.innerText = `${i18next.t('profile_lastUsed')} ${new Date(device.lastLogin).toLocaleString()}`;
     row.appendChild(lastUsed);
     const logoutBtn = document.createElement('button');
-    logoutBtn.innerText = 'Logout';
+    logoutBtn.innerText = i18next.t('profile_logout');
     logoutBtn.addEventListener('click', async () => {
       await logoutDevice(device.id);
 
@@ -67,7 +68,7 @@ function createDevices(devices) {
     row.appendChild(logoutBtn);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Delete';
+    deleteBtn.innerText = i18next.t('profile_delete');
     deleteBtn.addEventListener('click', async () => {
       await deleteDevice(device.id);
 

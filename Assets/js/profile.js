@@ -28,14 +28,16 @@ import { getPasskeys } from './data/auth/passkeys/getPasskeys';
 import { regenerateApiKey as regenerateApiKeyReq } from './data/auth/regenerateApiKey';
 import { saveUser } from './data/auth/saveUser';
 import { unlinkSocialAccount as unlinkSocialAccountReq } from './data/auth/unlinkSocialAccount';
+import { uploadAvatar as uploadAvatarReq } from './data/auth/uploadAvatar';
 import { getCountries } from './data/countries';
 import { languages } from './data/languages';
 import { createDialog, initDialog } from './dialog';
 import './settings/device';
-import { initLocalization } from './util/localization';
+import { applyLocalization, initLocalization } from './util/localization';
 import { validateMfaToken, validatePw } from './util/validation';
 
 let currentUser;
+let avatarObjectUrl = null;
 
 initLocalization();
 initDialog();
@@ -76,6 +78,19 @@ sidebarLinks.forEach(link => {
 });
 
 document.getElementById('pi_save').addEventListener('click', savePersonalInformation);
+document.getElementById('avatarSelectBtn').addEventListener('click', () => document.getElementById('avatarInput').click());
+document.getElementById('avatarInput').addEventListener('change', () => {
+  const file = document.getElementById('avatarInput').files[0];
+  if (file) {
+    if (avatarObjectUrl) {
+      URL.revokeObjectURL(avatarObjectUrl);
+    }
+    avatarObjectUrl = URL.createObjectURL(file);
+    document.getElementById('avatarPreview').src = avatarObjectUrl;
+    document.getElementById('avatarUploadBtn').disabled = false;
+  }
+});
+document.getElementById('avatarUploadBtn').addEventListener('click', uploadAvatar);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
 document.getElementById('ca_spotify_link').addEventListener('click', () => linkAccounts('spotify'));
@@ -226,6 +241,8 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('country').dataset.key = currentUser.country;
   document.getElementById('preferredlang').dataset.key = currentUser.preferredLang;
 
+  document.getElementById('avatarPreview').src = LoginManager.getAvatarURL();
+
   if (currentUser.connectedAccounts.includes('discord')) document.getElementById('ca_discord').classList.add('connected');
   if (currentUser.connectedAccounts.includes('spotify')) document.getElementById('ca_spotify').classList.add('connected');
   if (currentUser.connectedAccounts.includes('twitch')) document.getElementById('ca_twitch').classList.add('connected');
@@ -241,12 +258,14 @@ LoginManager.isLoggedIn().then(async (e) => {
   if (currentUser['2fa'] && currentUser['2faType'] === 'App') document.getElementById('cp_2fa').classList.remove('d-none');
 
   if (currentUser['2fa']) {
-    document.getElementById('2fa_status').innerText = 'Enabled';
+    document.getElementById('2fa_status').innerText = i18next.t('profile_enabled');
     document.getElementById('2fa_type').value = currentUser['2faType'] === 'App' ? 0 : currentUser['2faType'] === 'Mail' ? 1 : 2;
     document.getElementById('2fa_type').disabled = true;
-    document.getElementById('2fa_enable').innerText = 'Disable';
+    document.getElementById('2fa_enable').innerText = i18next.t('profile_disable');
     document.getElementById('2fa_enable').addEventListener('click', disable2fa);
   } else {
+    document.getElementById('2fa_status').innerText = i18next.t('profile_disabled');
+    document.getElementById('2fa_enable').innerText = i18next.t('profile_enable');
     document.getElementById('2fa_enable').addEventListener('click', enable2fa);
   }
 
@@ -279,7 +298,7 @@ LoginManager.isLoggedIn().then(async (e) => {
     name.innerText = client.name;
     row.appendChild(name);
     const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Delete';
+    deleteBtn.innerText = i18next.t('profile_delete');
     deleteBtn.addEventListener('click', async () => await deleteTrustedSsoClient(client.id));
     row.appendChild(deleteBtn);
     document.getElementById('thirdPartyAppsContainer').appendChild(row);
@@ -323,24 +342,24 @@ async function buildPasskeys(keys) {
     itemText.appendChild(keyElement);
 
     const lastLogin = document.createElement('p');
-    lastLogin.innerText = `Last login: ${new Date(key.lastLogin).toLocaleString()}`;
+    lastLogin.innerText = `${i18next.t('profile_lastLogin')} ${new Date(key.lastLogin).toLocaleString()}`;
     itemText.appendChild(lastLogin);
 
     const createdAt = document.createElement('p');
-    createdAt.innerText = `Created at: ${new Date(key.createdAt).toLocaleString()}`;
+    createdAt.innerText = `${i18next.t('profile_createdAt')} ${new Date(key.createdAt).toLocaleString()}`;
     itemText.appendChild(createdAt);
 
     item.appendChild(itemText);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Delete';
+    deleteBtn.innerText = i18next.t('profile_delete');
     deleteBtn.addEventListener('click', async () => await deletePasskey(key.id));
     item.appendChild(deleteBtn);
 
     container.appendChild(item);
   });
 
-  if (keys.length === 0) container.innerHTML = '<p>No passkeys found!</p>';
+  if (keys.length === 0) container.innerHTML = `<p>${i18next.t('profile_noPasskeys')}</p>`;
 
   document.getElementById('createPasskey').onclick = async () => await createPasskey();
 }
@@ -352,7 +371,7 @@ async function deletePasskey(id) {
 
   const container = document.getElementById('passkeysTable');
 
-  if (container.children.length === 0) container.innerHTML = '<p>No passkeys found!</p>';
+  if (container.children.length === 0) container.innerHTML = `<p>${i18next.t('profile_noPasskeys')}</p>`;
 }
 
 async function createPasskey() {
@@ -393,7 +412,7 @@ async function deleteTrustedSsoClient(clientId) {
 
   const container = document.getElementById('thirdPartyAppsContainer');
 
-  if (container.children.length === 0) container.innerHTML = '<p>No third party apps connected!</p>';
+  if (container.children.length === 0) container.innerHTML = `<p>${i18next.t('profile_noThirdPartyApps')}</p>`;
 }
 
 async function createSsoCredentials() {
@@ -470,6 +489,8 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
   content.querySelector('#sso_addRedirect').addEventListener('click', async () => await addSSORedirect(clientId));
   content.querySelector('#sso_addAudience').addEventListener('click', async () => await addAudience(clientId));
 
+  applyLocalization(item);
+
   const audiencesContainer = content.querySelector('#sso_audiences');
 
   audiences.forEach((audience) => {
@@ -483,7 +504,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
     audienceItem.appendChild(audienceInput);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Delete';
+    deleteBtn.innerText = i18next.t('profile_delete');
     deleteBtn.addEventListener('click', async () => await deleteAudience(clientId, audience.id));
     audienceItem.appendChild(deleteBtn);
 
@@ -503,7 +524,7 @@ function createSSOClient(logoUrl, clientName, websiteUrl, clientId, clientSecret
     redirectItem.appendChild(url);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Delete';
+    deleteBtn.innerText = i18next.t('profile_delete');
     deleteBtn.addEventListener('click', async () => await deleteSSORedirect(clientId, redirect.id));
     redirectItem.appendChild(deleteBtn);
 
@@ -573,7 +594,7 @@ async function addAudience(clientId) {
   url.disabled = true;
   redirect.appendChild(url);
   const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = 'Delete';
+  deleteBtn.innerText = i18next.t('profile_delete');
   deleteBtn.addEventListener('click', async () => await deleteAudienceReq(clientId, res.data.id));
   redirect.appendChild(deleteBtn);
 
@@ -609,7 +630,7 @@ async function addSSORedirect(clientId) {
   url.disabled = true;
   redirect.appendChild(url);
   const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = 'Delete';
+  deleteBtn.innerText = i18next.t('profile_delete');
   deleteBtn.addEventListener('click', async () => await deleteSSORedirect(clientId, res.data.id));
   redirect.appendChild(deleteBtn);
 
@@ -642,11 +663,11 @@ async function doubleClickButton(e, func) {
   }
 
   e.target.dataset.clicked = 'true';
-  e.target.innerText = 'Confirm';
+  e.target.innerText = i18next.t('profile_confirm');
 
   setTimeout(() => {
     e.target.dataset.clicked = 'false';
-    e.target.innerText = 'Delete Account';
+    e.target.innerText = i18next.t('profile_deleteAccount');
   }, 3000);
 }
 
@@ -657,8 +678,8 @@ function createApiKeyRow(label, client_id, scope) {
   const td = document.createElement('td');
   const deleteBtn = document.createElement('button');
   const regenBtn = document.createElement('button');
-  deleteBtn.innerText = 'Delete';
-  regenBtn.innerText = 'Regenerate';
+  deleteBtn.innerText = i18next.t('profile_delete');
+  regenBtn.innerText = i18next.t('profile_regenerate');
 
   deleteBtn.addEventListener('click', () => deleteApiKey(client_id));
   regenBtn.addEventListener('click', () => regenerateApiKey(client_id));
@@ -791,6 +812,30 @@ function linkAccounts(type) {
       break;
     }
   }
+}
+
+async function uploadAvatar() {
+  const file = document.getElementById('avatarInput').files[0];
+
+  if (!file) return;
+
+  const req = await uploadAvatarReq(file);
+  const res = await req.json();
+
+  if (res.statusCode !== 200) {
+    console.error(res);
+    displayButtonFeedback(document.getElementById('avatarUploadBtn'), 'error');
+    return;
+  }
+
+  if (avatarObjectUrl) {
+    URL.revokeObjectURL(avatarObjectUrl);
+    avatarObjectUrl = null;
+  }
+
+  document.getElementById('avatarUploadBtn').disabled = true;
+  document.getElementById('avatarInput').value = '';
+  displayButtonFeedback(document.getElementById('avatarUploadBtn'), 'success');
 }
 
 async function savePersonalInformation() {

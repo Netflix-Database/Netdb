@@ -54,66 +54,76 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
         </svg>
-        Back
+        <span i18n="profile_back"></span>
       </a>
-      <h1>Account Management</h1>
+      <h1 i18n="profile_accountManagement"></h1>
       <ul>
-        <h2>General</h2>
-        <li><a href="#personalInformation">Personal Information</a></li>
-        <li><a href="#password">Password</a></li>
-        <li><a href="#connectedAccounts">Connected Accounts</a></li>
-        <h2>Security</h2>
-        <li><a href="#2fa">Two Factor Authentication</a></li>
-        <li><a href="#passkeys">Passkeys</a></li>
-        <li><a href="#myDevices">My Devices</a></li>
-        <li><a href="#thirdPartyApps">Third Party Apps</a></li>
-        <h2>Developer</h2>
-        <li><a href="#apiKeys">Api Keys</a></li>
-        <li><a href="#ssoCredentials">Sso Credentials</a></li>
+        <h2 i18n="profile_general"></h2>
+        <li><a href="#personalInformation" i18n="profile_personalInformation"></a></li>
+        <li><a href="#password" i18n="profile_password"></a></li>
+        <li><a href="#connectedAccounts" i18n="profile_connectedAccounts"></a></li>
+        <h2 i18n="profile_security"></h2>
+        <li><a href="#2fa" i18n="profile_twoFactorAuth"></a></li>
+        <li><a href="#passkeys" i18n="profile_passkeys"></a></li>
+        <li><a href="#myDevices" i18n="profile_myDevices"></a></li>
+        <li><a href="#thirdPartyApps" i18n="profile_thirdPartyApps"></a></li>
+        <h2 i18n="profile_developer"></h2>
+        <li><a href="#apiKeys" i18n="profile_apiKeys"></a></li>
+        <li><a href="#ssoCredentials" i18n="profile_ssoCredentials"></a></li>
         <li>
-          <div id="logout" style="margin-top: 2em; cursor: pointer;">Logout</div>
-          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;">Delete Account</a></div>
+          <div id="logout" style="margin-top: 2em; cursor: pointer;" i18n="profile_logout"></div>
+          <div style="background-color: #5f1414; border-radius: .2em; padding: .5em; width: fit-content; margin-top: .5em;"><a href="#dangerZone" style="text-decoration: none; color: white;" i18n="profile_deleteAccount"></a></div>
         </li>
       </ul>
     </div>
     <div class="settings-container">
       <div id="personalInformation" class="item">
-        <h1>Personal Information</h1>
-        <input type="text" id="pi_email" disabled placeholder="Email">
-        <input type="text" id="username" placeholder="Username">
+        <h1 i18n="profile_personalInformation"></h1>
+        <div class="avatar-upload">
+          <img id="avatarPreview" class="rounded" src="" alt="Avatar" width="80" height="80">
+          <div>
+            <input type="file" id="avatarInput" accept="image/*" class="d-none">
+            <div class="flex">
+              <button id="avatarSelectBtn" i18n="profile_selectAvatar" type="button"></button>
+              <button id="avatarUploadBtn" i18n="profile_uploadAvatar" type="button" disabled></button>
+            </div>
+          </div>
+        </div>
+        <input type="text" id="pi_email" disabled i18n-placeholder="profile_placeholder_email">
+        <input type="text" id="username" i18n-placeholder="profile_placeholder_username">
         <div class="input-group">
-          <input type="text" id="firstname" placeholder="Firstname">
-          <input type="text" id="lastname" placeholder="Lastname">
+          <input type="text" id="firstname" i18n-placeholder="profile_placeholder_firstname">
+          <input type="text" id="lastname" i18n-placeholder="profile_placeholder_lastname">
         </div>
         <div class="input-group">
           <div id="country_search" class="searchbar">
-            <input id="country" type="search" placeholder="Country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
+            <input id="country" type="search" i18n-placeholder="profile_placeholder_country" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
             <div class="autocom-box"></div>
           </div>
           <div id="language_search" class="searchbar">
-            <input id="preferredlang" type="search" placeholder="Preferred Language" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
+            <input id="preferredlang" type="search" i18n-placeholder="profile_placeholder_preferredLanguage" aria-describedby="search" class="form-control border-0 bg-light" autocomplete="none">
             <div class="autocom-box"></div>
           </div>
         </div>
 
         <div class="flex end">
-          <button id="pi_save">Save</button>
+          <button id="pi_save" i18n="profile_save"></button>
         </div>
       </div>
       <div id="password" class="item">
-        <h1>Password</h1>
-        <input type="text" id="cp_email" placeholder="Email" disabled>
-        <input id="oldPassword" type="password" placeholder="Old Password">
-        <input id="newPassword1" type="password" placeholder="New Password">
-        <input id="newPassword2" type="password" placeholder="Repeat Password">
-        <input id="cp_2fa" class="d-none" type="text" placeholder="2fa Token">
+        <h1 i18n="profile_password"></h1>
+        <input type="text" id="cp_email" i18n-placeholder="profile_placeholder_email" disabled>
+        <input id="oldPassword" type="password" i18n-placeholder="profile_placeholder_oldPassword">
+        <input id="newPassword1" type="password" i18n-placeholder="profile_placeholder_newPassword">
+        <input id="newPassword2" type="password" i18n-placeholder="profile_placeholder_repeatPassword">
+        <input id="cp_2fa" class="d-none" type="text" i18n-placeholder="profile_placeholder_2faToken">
 
         <div class="flex end">
-          <button id="cp_save">Save</button>
+          <button id="cp_save" i18n="profile_save"></button>
         </div>
       </div>
       <div id="connectedAccounts" class="item">
-        <h1>Connected Accounts</h1>
+        <h1 i18n="profile_connectedAccounts"></h1>
 
         <div class="connected-accounts">
           <h1 id="ca_spotify" class="item" data-type="spotify">
@@ -128,7 +138,7 @@
               </svg>
             </span>
             <span>
-              <h1>Disconnect</h1>
+              <h1 i18n="profile_disconnect"></h1>
             </span>
             </h1>
             <h1 id="ca_twitch" class="item" data-type="twitch">
@@ -148,7 +158,7 @@
               </svg>
             </span>
             <span>
-              <h1>Disconnect</h1>
+              <h1 i18n="profile_disconnect"></h1>
             </span>
           </h1>
           <h1 id="ca_discord" class="item" data-type="discord">
@@ -179,7 +189,7 @@
               </svg>
             </span>
             <span>
-              <h1>Disconnect</h1>
+              <h1 i18n="profile_disconnect"></h1>
             </span>
           </h1>
           <h1 id="ca_google" class="item" data-type="google">
@@ -192,7 +202,7 @@
               </svg>
             </span>
             <span>
-              <h1>Disconnect</h1>
+              <h1 i18n="profile_disconnect"></h1>
             </span>
           </h1>
           <h1 id="ca_github" class="item" data-type="github">
@@ -207,7 +217,7 @@
               </svg>
             </span>
             <span>
-              <h1>Disconnect</h1>
+              <h1 i18n="profile_disconnect"></h1>
             </span>
           </h1>
           <h1 id="ca_microsoft" class="item" data-type="microsoft">
@@ -248,36 +258,36 @@
 
       </div>
       <div id="2fa" class="item">
-        <h1>Two Factor Authentication</h1>
+        <h1 i18n="profile_twoFactorAuth"></h1>
         <div class="flex">
-          <h4>Status:</h4>
-          <h4 id="2fa_status">Disabled</h5>
+          <h4 i18n="profile_status"></h4>
+          <h4 id="2fa_status"></h4>
         </div>
         <div class="flex">
-          <h4>Type:</h4>
+          <h4 i18n="profile_type"></h4>
           <select name="Type" id="2fa_type">
-            <option value="0">Authenticator</option>
-            <option value="1">Email</option>
-            <option value="2">Please select a type</option>
+            <option value="0" i18n="profile_authenticator"></option>
+            <option value="1" i18n="profile_emailType"></option>
+            <option value="2" i18n="profile_selectType"></option>
           </select>
         </div>
 
         <div class="flex end">
-          <Button id="2fa_enable">Enable</Button>
+          <Button id="2fa_enable"></Button>
         </div>
       </div>
       <div id="passkeys" class="item">
-        <h1>Passkeys</h1>
+        <h1 i18n="profile_passkeys"></h1>
 
         <div id="passkeysTable" class="passkeys">
         </div>
 
         <div class="flex end">
-          <button id="createPasskey">Create Passkey</button>
+          <button id="createPasskey" i18n="profile_createPasskey"></button>
         </div>
       </div>
       <div class="item">
-        <h1>My Devices</h1>
+        <h1 i18n="profile_myDevices"></h1>
 
         <div id="devicesContainer" class="thirdPartyApps-container">
           <svg class="spin" width="32" height="32" fill="white">
@@ -286,38 +296,38 @@
         </div>
 
         <div class="flex end">
-          <button id="logoutAllDevices">Logout all devices</button>
+          <button id="logoutAllDevices" i18n="profile_logoutAllDevices"></button>
         </div>
       </div>
       <div id="thirdPartyApps" class="item">
-        <h1>Third Party Apps</h1>
+        <h1 i18n="profile_thirdPartyApps"></h1>
         <div id="thirdPartyAppsContainer" class="thirdPartyApps-container">
-          <p>No third party apps connected!</p>
+          <p i18n="profile_noThirdPartyApps"></p>
         </div>
       </div>
       <div id="apiKeys" class="item">
-        <h1>Api Keys</h1>
+        <h1 i18n="profile_apiKeys"></h1>
 
         <table id="apiKeysTable" class="apiKeysTable">
           <tr>
-            <th>Label</th>
-            <th>Key</th>
-            <th>Scope</th>
-            <th>Actions</th>
+            <th i18n="profile_label"></th>
+            <th i18n="profile_key"></th>
+            <th i18n="profile_scope"></th>
+            <th i18n="profile_actions"></th>
           </tr>
         </table>
         <div class="flex end">
-          <button id="createApiKey">Create new</button>
+          <button id="createApiKey" i18n="profile_createNew"></button>
         </div>
       </div>
       <div id="ssoCredentials" class="item">
-        <h1>Single Sign On Credentials</h1>
+        <h1 i18n="profile_singleSignOn"></h1>
         <div id="ssoClientsContainer" class="ssoClients">
-          <p>No sso clients found!</p>
+          <p i18n="profile_noSsoClients"></p>
         </div>
 
         <div class="flex end">
-          <button id="createSsoCredentials">Create new</button>
+          <button id="createSsoCredentials" i18n="profile_createNew"></button>
         </div>
 
         <template>
@@ -330,48 +340,48 @@
             <div class="collapsible-content">
               <div class="input-group">
                 <div style="display:inline-block;width: 50%;">
-                  <label for="sso_clientId">Client Id</label>
+                  <label for="sso_clientId" i18n="profile_clientId"></label>
                   <input id="sso_clientId" type="text" disabled>
                 </div>
                 <div style="display:inline-block;width: 50%;">
-                  <label for="sso_clientSecret">Client Secret</label>
+                  <label for="sso_clientSecret" i18n="profile_clientSecret"></label>
                   <input id="sso_clientSecret" type="text" disabled>
                 </div>
               </div>
               <div class="input-group">
                 <div style="display:inline-block;width: 50%;">
-                  <label for="sso_logoUrl">Logo Url</label>
+                  <label for="sso_logoUrl" i18n="profile_logoUrl"></label>
                   <input id="sso_logoUrl" type="text">
                 </div>
                 <div style="display:inline-block;width: 50%;">
-                  <label for="sso_websiteUrl">Website Url</label>
+                  <label for="sso_websiteUrl" i18n="profile_websiteUrl"></label>
                   <input id="sso_websiteUrl" type="text">
                 </div>
               </div>
               <div class="input-group">
                 <div style="display:inline-block;width: 50%;">
-                  <label for="sso_name">Name</label>
+                  <label for="sso_name" i18n="profile_name"></label>
                   <input id="sso_name" type="text">
                 </div>
               </div>
               <div class="flex end">
-                <button id="sso_delete">Delete</button>
-                <button id="sso_save">Save</button>
+                <button id="sso_delete" i18n="profile_delete"></button>
+                <button id="sso_save" i18n="profile_save"></button>
               </div>
 
-              <p>Audiences</p>
+              <p i18n="profile_audiences"></p>
               <div id="sso_audiences" class="ssoRedirects">
                 <div>
                   <input type="text">
-                  <button id="sso_addAudience">Add</button>
+                  <button id="sso_addAudience" i18n="profile_add"></button>
                 </div>
               </div>
               
-              <p>Redirects</p>
+              <p i18n="profile_redirects"></p>
               <div id="sso_redirects" class="ssoRedirects">
                 <div>
                   <input type="text">
-                  <button id="sso_addRedirect">Add</button>
+                  <button id="sso_addRedirect" i18n="profile_add"></button>
                 </div>
               </div>
             </div>
@@ -380,13 +390,13 @@
       </div>
 
       <div id="dangerZone" class="item dangerZone">
-        <h1>Danger Zone</h1>
+        <h1 i18n="profile_dangerZone"></h1>
 
         <p>
-          <b>Warning:</b> Deleting your account is irreversible. All your data will be deleted and cannot be restored.
+          <b i18n="profile_warning"></b> <span i18n="profile_dangerWarning"></span>
         </p>
 
-        <button id="deleteAccount">Delete Account</button>
+        <button id="deleteAccount" i18n="profile_deleteAccount"></button>
       </div>
     </div>
   </div>
@@ -395,19 +405,19 @@
   <button target-dialog target="createSSODialog" style="display: none;"></button>
   <button target-dialog target="apiKeyDialog" style="display: none;"></button>
   <div id="apiKeyDialog" class="custom-dialog">
-    <input id="label" placeholder="Label" type="text">
-    <input id="scope" placeholder="Scope" type="text">
+    <input id="label" i18n-placeholder="profile_placeholder_label" type="text">
+    <input id="scope" i18n-placeholder="profile_placeholder_scope" type="text">
 
     <div class="flex end">
-      <Button type="submit">Create</Button>
+      <Button type="submit" i18n="profile_create"></Button>
     </div>
   </div>
   <div id="passwordDialog" class="custom-dialog">
-    <input id="passwordInput" placeholder="Password" type="password">
-    <input id="2faInput" placeholder="MFA Token" type="text">
+    <input id="passwordInput" i18n-placeholder="profile_placeholder_password" type="password">
+    <input id="2faInput" i18n-placeholder="profile_placeholder_mfaToken" type="text">
 
     <div class="flex end">
-      <Button type="submit">Confirm</Button>
+      <Button type="submit" i18n="profile_confirm"></Button>
     </div>
   </div>
   <div id="authenticatorDialog" class="custom-dialog">
@@ -415,17 +425,17 @@
     <h1></h1>
 
     <div class="flex end">
-      <Button type="submit">Confirm</Button>
+      <Button type="submit" i18n="profile_confirm"></Button>
     </div>
   </div>
   <div id="createSSODialog" class="custom-dialog">
-    <h1>Create new SSO client</h1>
-    <input id="c_sso_name" type="text" placeholder="Name">
-    <input id="c_sso_url" type="text" placeholder="Url">
-    <input id="c_sso_logoUrl" type="text" placeholder="LogoUrl">
+    <h1 i18n="profile_createSsoClient"></h1>
+    <input id="c_sso_name" type="text" i18n-placeholder="profile_placeholder_name">
+    <input id="c_sso_url" type="text" i18n-placeholder="profile_placeholder_url">
+    <input id="c_sso_logoUrl" type="text" i18n-placeholder="profile_placeholder_logoUrl">
 
     <div class="flex end">
-      <Button type="submit">Confirm</Button>
+      <Button type="submit" i18n="profile_confirm"></Button>
     </div>
   </div>
 
