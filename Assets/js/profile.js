@@ -8,6 +8,7 @@ import { createApiKey as createApiKeyReq } from './data/auth/createApiKey';
 import { deleteAccount as deleteAccountReq } from './data/auth/deleteAccount';
 import { deleteApiKey as deleteApiKeyReq } from './data/auth/deleteApiKey';
 import { getApiKeys } from './data/auth/getApiKeys';
+import { getConnectedAccounts } from './data/auth/getConnectedAccounts';
 import { getScopes } from './data/auth/getScopes';
 import { getUser } from './data/auth/getUser';
 import { linkSocialAccount } from './data/auth/linkSocialAccount';
@@ -82,6 +83,8 @@ document.getElementById('ca_twitch_link').addEventListener('click', () => linkAc
 document.getElementById('ca_discord_link').addEventListener('click', () => linkAccounts('discord'));
 document.getElementById('ca_google_link').addEventListener('click', () => linkAccounts('google'));
 document.getElementById('ca_github_link').addEventListener('click', () => linkAccounts('github'));
+document.getElementById('ca_microsoft_link').addEventListener('click', () => linkAccounts('microsoft'));
+document.getElementById('ca_remotex_link').addEventListener('click', () => linkAccounts('remotex'));
 document.getElementById('logout').addEventListener('click', async () => {
   await LoginManager.logout();
   window.location.href = LoginManager.buildLoginUrl(window.location.href);
@@ -111,11 +114,7 @@ LoginManager.isLoggedIn().then(async (e) => {
       email: 'amogus@example.com',
       country: 'at',
       preferredLang: 'de-AT',
-      discordId: null,
-      spotifyId: null,
-      twitchId: null,
-      githubId: null,
-      googleId: null,
+      connectedAccounts: [],
       '2fa': false,
       '2faType': 'App',
       api_keys: [
@@ -168,6 +167,14 @@ LoginManager.isLoggedIn().then(async (e) => {
       return;
     }
 
+    const connectedAccountsReq = await getConnectedAccounts();
+    const connectedAccountsResponse = await connectedAccountsReq.json();
+
+    if (connectedAccountsResponse.statusCode !== 200) {
+      console.error(connectedAccountsResponse);
+      return;
+    }
+
     const apiKeyReq = await getApiKeys();
     const apiKeyResponse = await apiKeyReq.json();
 
@@ -202,6 +209,7 @@ LoginManager.isLoggedIn().then(async (e) => {
 
     const user = {
       ...userResponse.data,
+      connectedAccounts: connectedAccountsResponse.data,
       api_keys: apiKeyResponse.data,
       trusted_sso_clients: trustedClientsResponse.data,
       sso_clients: SSOResponse.data,
@@ -218,11 +226,13 @@ LoginManager.isLoggedIn().then(async (e) => {
   document.getElementById('country').dataset.key = currentUser.country;
   document.getElementById('preferredlang').dataset.key = currentUser.preferredLang;
 
-  if (currentUser.discordId !== null) document.getElementById('ca_discord').classList.add('connected');
-  if (currentUser.spotifyId !== null) document.getElementById('ca_spotify').classList.add('connected');
-  if (currentUser.twitchId !== null) document.getElementById('ca_twitch').classList.add('connected');
-  if (currentUser.githubId !== null) document.getElementById('ca_github').classList.add('connected');
-  if (currentUser.googleId !== null) document.getElementById('ca_google').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('discord')) document.getElementById('ca_discord').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('spotify')) document.getElementById('ca_spotify').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('twitch')) document.getElementById('ca_twitch').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('github')) document.getElementById('ca_github').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('google')) document.getElementById('ca_google').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('microsoft')) document.getElementById('ca_microsoft').classList.add('connected');
+  if (currentUser.connectedAccounts.includes('remotex')) document.getElementById('ca_remotex').classList.add('connected');
 
   Array.from(document.getElementsByClassName('connected')).forEach((element) => {
     element.addEventListener('click', disconnectAccount);
@@ -770,6 +780,14 @@ function linkAccounts(type) {
     }
     case 'google': {
       window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com';
+      break;
+    }
+    case 'microsoft': {
+      window.location.href = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=87982514-333e-4376-b6c4-1873c1dc2e00&response_type=code&redirect_uri=https://api.login.netdb.at/login/microsoft&scope=openid%20profile%20email%20User.Read';
+      break;
+    }
+    case 'remotex': {
+      window.location.href = 'https://remotex.zip/api/oauth/authorize?client_id=f1911b46-6350-4f2f-9bab-a1c9daa3c5b5&redirect_uri=https%3A%2F%2Fapi.login.netdb.at%2Flogin%2Fremotex&response_type=code&scope=read';
       break;
     }
   }

@@ -237,7 +237,11 @@ select[disabled] {
 }
 
 .connected-accounts h1:nth-child(6) {
-  background-color: black;
+  background-color: white;
+}
+
+.connected-accounts h1:nth-child(7) {
+  background-color: #720067;
 }
 
 .connected-accounts .item > span:nth-child(3) {
