@@ -132,14 +132,14 @@ LoginManager.isLoggedIn().then(async (e) => {
       connectedAccounts: [],
       '2fa': false,
       '2faType': 'App',
-      api_keys: [
+      apiKeys: [
         {
           label: 'Test API Key',
           clientId: '1234567890',
           scope: 'admin',
         },
       ],
-      trusted_sso_clients: [
+      trustedSsoClients: [
         {
           id: '1234567890',
           name: 'TestClient',
@@ -154,7 +154,7 @@ LoginManager.isLoggedIn().then(async (e) => {
           createdAt: new Date().getTime(),
         },
       ],
-      sso_clients: [
+      ssoClients: [
         {
           id: '1234567890',
           name: 'TestClient',
@@ -225,9 +225,9 @@ LoginManager.isLoggedIn().then(async (e) => {
     const user = {
       ...userResponse.data,
       connectedAccounts: connectedAccountsResponse.data,
-      api_keys: apiKeyResponse.data,
-      trusted_sso_clients: trustedClientsResponse.data,
-      sso_clients: SSOResponse.data,
+      apiKeys: apiKeyResponse.data,
+      trustedSsoClients: trustedClientsResponse.data,
+      ssoClients: SSOResponse.data,
       passkeys: passkeysResponse.data,
     };
     currentUser = user;
@@ -280,13 +280,13 @@ LoginManager.isLoggedIn().then(async (e) => {
     initSearchbar(updatedCountries, 'country_search');
   });
 
-  currentUser.api_keys.forEach((key) => {
+  currentUser.apiKeys.forEach((key) => {
     document.getElementById('apiKeysTable').appendChild(createApiKeyRow(key.label, key.clientId, key.scope));
   });
 
-  if (currentUser.trusted_sso_clients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
+  if (currentUser.trustedSsoClients.length > 0) document.getElementById('thirdPartyAppsContainer').innerHTML = '';
 
-  currentUser.trusted_sso_clients.forEach((client) => {
+  currentUser.trustedSsoClients.forEach((client) => {
     const row = document.createElement('div');
     row.id = `trusted_${client.id}`;
     const img = document.createElement('img');
@@ -304,10 +304,13 @@ LoginManager.isLoggedIn().then(async (e) => {
     document.getElementById('thirdPartyAppsContainer').appendChild(row);
   });
 
-  if (currentUser.sso_clients.length > 0) document.getElementById('ssoClientsContainer').innerHTML = '';
+  if (currentUser.ssoClients.length > 0) document.getElementById('ssoClientsContainer').innerHTML = '';
 
-  currentUser.sso_clients.forEach((client) => {
-    document.getElementById('ssoClientsContainer').appendChild(createSSOClient(client.logo, client.name, client.url, client.id, client.secret, client.redirects, client.audiences));
+  currentUser.ssoClients.forEach((client) => {
+    const { logo, name, url, id, secret, redirects, audiences } = client;
+    document.getElementById('ssoClientsContainer').appendChild(
+      createSSOClient(logo, name, url, id, secret, redirects, audiences)
+    );
   });
 
   Array.from(document.getElementsByClassName('collapsible')).forEach((element) => {
@@ -365,7 +368,7 @@ async function buildPasskeys(keys) {
 }
 
 async function deletePasskey(id) {
-  const req = await deletePasskeyReq(id);
+  await deletePasskeyReq(id);
 
   document.getElementById(`passkey_${id}`).remove();
 
@@ -375,12 +378,24 @@ async function deletePasskey(id) {
 }
 
 async function createPasskey() {
-  const req = await createPasskeyReq();
+  await createPasskeyReq();
 
   //TODO: add to list
 }
 
 async function linkAccount(code) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const returnedState = urlParams.get('state');
+  const expectedState = sessionStorage.getItem('oauthState');
+
+  sessionStorage.removeItem('oauthState');
+
+  if (!returnedState || returnedState !== expectedState) {
+    createDialog('Error', 'Invalid state parameter. The request may have been tampered with.', 'error');
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
+
   const provider = localStorage.getItem('linkType');
   const req = await linkSocialAccount(provider, code);
   const res = await req.json();
@@ -391,10 +406,7 @@ async function linkAccount(code) {
   }
 
   localStorage.removeItem('linkType');
-  const urlParams = new URLSearchParams(window.location.search);
-  urlParams.delete('code');
-
-  window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+  window.history.replaceState({}, document.title, window.location.pathname);
 
   createDialog('Success', 'Account successfully linked!', 'info');
 }
@@ -644,7 +656,12 @@ async function addSSORedirect(clientId) {
 
 async function saveSSOClient(clientId) {
   const item = document.getElementById(`sso_${clientId}`);
-  const req = await saveClientReq(clientId, item.querySelector('#sso_logoUrl').value, item.querySelector('#sso_websiteUrl').value, item.querySelector('#sso_name').value);
+  const req = await saveClientReq(
+    clientId,
+    item.querySelector('#sso_logoUrl').value,
+    item.querySelector('#sso_websiteUrl').value,
+    item.querySelector('#sso_name').value,
+  );
   const res = await req.json();
 
   if (res.statusCode !== 200) {
@@ -671,18 +688,18 @@ async function doubleClickButton(e, func) {
   }, 3000);
 }
 
-function createApiKeyRow(label, client_id, scope) {
+function createApiKeyRow(label, clientId, scope) {
   const row = document.createElement('tr');
-  row.id = client_id;
-  row.innerHTML = `<td>${label}</td><td>${client_id}</td><td>${scope}</td>`;
+  row.id = clientId;
+  row.innerHTML = `<td>${label}</td><td>${clientId}</td><td>${scope}</td>`;
   const td = document.createElement('td');
   const deleteBtn = document.createElement('button');
   const regenBtn = document.createElement('button');
   deleteBtn.innerText = i18next.t('profile_delete');
   regenBtn.innerText = i18next.t('profile_regenerate');
 
-  deleteBtn.addEventListener('click', () => deleteApiKey(client_id));
-  regenBtn.addEventListener('click', () => regenerateApiKey(client_id));
+  deleteBtn.addEventListener('click', () => deleteApiKey(clientId));
+  regenBtn.addEventListener('click', () => regenerateApiKey(clientId));
 
   td.appendChild(regenBtn);
   td.appendChild(deleteBtn);
@@ -780,37 +797,60 @@ async function deleteApiKey(clientId) {
 }
 
 function linkAccounts(type) {
+  const state = Array.from(
+    crypto.getRandomValues(new Uint8Array(16)),
+    (b) => b.toString(16).padStart(2, '0'),
+  ).join('');
+  sessionStorage.setItem('oauthState', state);
   localStorage.setItem('linkType', type);
 
   switch (type) {
-    case 'spotify': {
-      window.location.href = 'https://accounts.spotify.com/de/authorize?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code&redirect_uri=https://netdb.at/profile&scope=user-read-private%20user-read-email';
-      break;
-    }
-    case 'discord': {
-      window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=802237562625196084&redirect_uri=https://netdb.at/profile&response_type=code&scope=identify%20email';
-      break;
-    }
-    case 'twitch': {
-      window.location.href = 'https://id.twitch.tv/oauth2/authorize?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.at/profile&response_type=code&scope=user_read';
-      break;
-    }
-    case 'github': {
-      window.location.href = 'https://github.com/login/oauth/authorize?scope=user:email&client_id=de5e22518d66ab50a805';
-      break;
-    }
-    case 'google': {
-      window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.email&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=https://netdb.at/profile&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com';
-      break;
-    }
-    case 'microsoft': {
-      window.location.href = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=87982514-333e-4376-b6c4-1873c1dc2e00&response_type=code&redirect_uri=https://netdb.at/profile&scope=openid%20profile%20email%20User.Read';
-      break;
-    }
-    case 'remotex': {
-      window.location.href = 'https://remotex.zip/api/oauth/authorize?client_id=f1911b46-6350-4f2f-9bab-a1c9daa3c5b5&redirect_uri=https://netdb.at/profile&response_type=code&scope=read';
-      break;
-    }
+  case 'spotify': {
+    window.location.href = 'https://accounts.spotify.com/de/authorize'
+      + `?client_id=a7c2014c0531405983d7050277dee3cb&response_type=code`
+      + `&redirect_uri=https://netdb.at/profile`
+      + `&scope=user-read-private%20user-read-email&state=${state}`;
+    break;
+  }
+  case 'discord': {
+    window.location.href = 'https://discord.com/api/oauth2/authorize'
+      + `?client_id=802237562625196084&redirect_uri=https://netdb.at/profile`
+      + `&response_type=code&scope=identify%20email&state=${state}`;
+    break;
+  }
+  case 'twitch': {
+    window.location.href = 'https://id.twitch.tv/oauth2/authorize'
+      + `?client_id=okxhfdyyoyx724c5zf0h869x9ry1sx&redirect_uri=https://netdb.at/profile`
+      + `&response_type=code&scope=user_read&state=${state}`;
+    break;
+  }
+  case 'github': {
+    window.location.href = `https://github.com/login/oauth/authorize`
+      + `?scope=user:email&client_id=de5e22518d66ab50a805&state=${state}`;
+    break;
+  }
+  case 'google': {
+    window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth'
+      + '?scope=https%3A//www.googleapis.com/auth/userinfo.email'
+      + '&access_type=offline&include_granted_scopes=true'
+      + '&response_type=code&redirect_uri=https://netdb.at/profile'
+      + `&client_id=736018590984-nh2ifch6ps8art9v35avipv16se1b720.apps.googleusercontent.com`
+      + `&state=${state}`;
+    break;
+  }
+  case 'microsoft': {
+    window.location.href = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
+      + '?client_id=87982514-333e-4376-b6c4-1873c1dc2e00&response_type=code'
+      + '&redirect_uri=https://netdb.at/profile'
+      + `&scope=openid%20profile%20email%20User.Read&state=${state}`;
+    break;
+  }
+  case 'remotex': {
+    window.location.href = 'https://remotex.zip/api/oauth/authorize'
+      + `?client_id=f1911b46-6350-4f2f-9bab-a1c9daa3c5b5&redirect_uri=https://netdb.at/profile`
+      + `&response_type=code&scope=read&state=${state}`;
+    break;
+  }
   }
 }
 
@@ -1010,7 +1050,7 @@ async function disable2fa() {
 
     if (!mfaToken) return;
 
-    req = await disableMfaRequest(creds.password, mfaToken.mfaToken);
+    req = await deactivateMfaReq(creds.password, mfaToken.mfaToken);
 
     if (req.status !== 200 || res.statusCode !== 200) {
       createDialog('Error', 'An error occured while disabling 2FA!', 'error');
