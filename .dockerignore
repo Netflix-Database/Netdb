@@ -21,3 +21,6 @@ README.md
 # Docker
 Dockerfile
 .dockerignore
+
+# Npm
+.npmrc
