@@ -83,7 +83,7 @@ function filterSearch(userData, data, searchbar) {
 
 function showSuggestions(list, searchbar) {
   list = list.map((data) => {
-    return (data = `<h1 data-key="${  data.key  }">${  data.name  }</h1>`);
+    return `<h1 data-key="${  data.key  }">${  data.name  }</h1>`;
   });
 
   let listData = '';

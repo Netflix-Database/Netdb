@@ -54,6 +54,11 @@
   "profile_noSsoClients": "No sso clients found!",
   "profile_clientId": "Client Id",
   "profile_clientSecret": "Client Secret",
+  "profile_copy": "Copy",
+  "profile_copied": "Copied!",
+  "profile_apiKeyCreated": "API key created",
+  "profile_apiKeyRegenerated": "API key regenerated",
+  "profile_apiKeySaveWarning": "Please save the secret now, as it will not be shown again!",
   "profile_logoUrl": "Logo Url",
   "profile_websiteUrl": "Website Url",
   "profile_name": "Name",
@@ -87,4 +92,4 @@
   "profile_placeholder_logoUrl": "LogoUrl",
   "profile_selectAvatar": "Select Image",
   "profile_uploadAvatar": "Upload Avatar"
-}
+}

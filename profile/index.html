@@ -236,7 +236,7 @@
               </svg>
             </span>
             <span>
-              <h1>Disconnect</h1>
+              <h1 i18n="profile_disconnect"></h1>
             </span>
           </h1>
           <h1 id="ca_remotex" class="item" data-type="remotex">
@@ -404,12 +404,31 @@
   <button target-dialog target="authenticatorDialog" style="display: none;"></button>
   <button target-dialog target="createSSODialog" style="display: none;"></button>
   <button target-dialog target="apiKeyDialog" style="display: none;"></button>
+  <button target-dialog target="apiKeyCredentialsDialog" style="display: none;"></button>
   <div id="apiKeyDialog" class="custom-dialog">
     <input id="label" i18n-placeholder="profile_placeholder_label" type="text">
     <input id="scope" i18n-placeholder="profile_placeholder_scope" type="text">
 
     <div class="flex end">
       <Button type="submit" i18n="profile_create"></Button>
+    </div>
+  </div>
+  <div id="apiKeyCredentialsDialog" class="custom-dialog">
+    <h1 id="apiKeyCredentialsTitle"></h1>
+    <p i18n="profile_apiKeySaveWarning"></p>
+    <label for="apiKeyCredentialsClientId" i18n="profile_clientId"></label>
+    <div class="copy-field">
+      <input id="apiKeyCredentialsClientId" type="text" readonly>
+      <button class="copy-button" data-copy-target="apiKeyCredentialsClientId" i18n="profile_copy"></button>
+    </div>
+    <label for="apiKeyCredentialsClientSecret" i18n="profile_clientSecret"></label>
+    <div class="copy-field">
+      <input id="apiKeyCredentialsClientSecret" type="text" readonly>
+      <button class="copy-button" data-copy-target="apiKeyCredentialsClientSecret" i18n="profile_copy"></button>
+    </div>
+
+    <div class="flex end">
+      <Button type="submit" i18n="profile_confirm"></Button>
     </div>
   </div>
   <div id="passwordDialog" class="custom-dialog">
@@ -446,4 +465,4 @@
    </svg>
 </body>
 
-</html>
+</html>

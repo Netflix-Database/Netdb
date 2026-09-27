@@ -141,3 +141,16 @@
 .custom-dialog.visible {
   display: block;
 }
+
+.copy-field {
+  display: flex;
+  gap: .5em;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.copy-field input {
+  flex: 1;
+  min-width: 0;
+  font-family: monospace;
+}

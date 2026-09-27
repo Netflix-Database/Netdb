@@ -93,6 +93,7 @@ document.getElementById('avatarInput').addEventListener('change', () => {
 document.getElementById('avatarUploadBtn').addEventListener('click', uploadAvatar);
 document.getElementById('cp_save').addEventListener('click', changePassword);
 document.getElementById('createApiKey').addEventListener('click', createApiKey);
+document.querySelectorAll('.copy-button').forEach((btn) => btn.addEventListener('click', copyToClipboard));
 document.getElementById('ca_spotify_link').addEventListener('click', () => linkAccounts('spotify'));
 document.getElementById('ca_twitch_link').addEventListener('click', () => linkAccounts('twitch'));
 document.getElementById('ca_discord_link').addEventListener('click', () => linkAccounts('discord'));
@@ -767,7 +768,7 @@ async function createApiKey() {
 
   document.getElementById('apiKeysTable').appendChild(createApiKeyRow(res.data.label, res.data.clientId, res.data.scope));
 
-  createDialog('Success', `Successfully created API key! Please save it now, as it will not be shown again! ${res.data.clientSecret}`, 'info');
+  showApiKeyCredentials(i18next.t('profile_apiKeyCreated'), res.data.clientId, res.data.clientSecret);
 }
 
 async function regenerateApiKey(clientId) {
@@ -780,7 +781,31 @@ async function regenerateApiKey(clientId) {
     return;
   }
 
-  createDialog('Success', `Successfully regenerated API key! Please save it now, as it will not be shown again! ${res.data.clientSecret}`, 'info');
+  showApiKeyCredentials(i18next.t('profile_apiKeyRegenerated'), res.data.clientId ?? clientId, res.data.clientSecret);
+}
+
+function showApiKeyCredentials(title, clientId, clientSecret) {
+  document.getElementById('apiKeyCredentialsTitle').innerText = title;
+  document.getElementById('apiKeyCredentialsClientId').value = clientId;
+  document.getElementById('apiKeyCredentialsClientSecret').value = clientSecret;
+  document.getElementById('apiKeyCredentialsDialog').show();
+}
+
+async function copyToClipboard(e) {
+  const button = e.currentTarget;
+  const input = document.getElementById(button.dataset.copyTarget);
+
+  try {
+    await navigator.clipboard.writeText(input.value);
+  } catch {
+    input.select();
+    document.execCommand('copy');
+  }
+
+  button.innerText = i18next.t('profile_copied');
+  setTimeout(() => {
+    button.innerText = i18next.t('profile_copy');
+  }, 2000);
 }
 
 async function deleteApiKey(clientId) {
