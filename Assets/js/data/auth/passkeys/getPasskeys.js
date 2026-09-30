@@ -1,9 +1,9 @@
 export async function getPasskeys() {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/passkey`, {
+  const req = await fetch(`${LoginManager.apiUrl}/passkey`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
   });

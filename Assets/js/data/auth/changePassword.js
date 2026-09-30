@@ -1,9 +1,9 @@
 export async function changePassword(oldPw, email, pw, mfaToken) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/resetpassword`, {
+  const req = await fetch(`${LoginManager.apiUrl}/resetpassword`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

@@ -4,10 +4,10 @@ export async function uploadAvatar(file) {
   const formData = new FormData();
   formData.append('avatar', file);
 
-  const req = await fetch(`https://api.login.${LoginManager.domain}/avatar`, {
+  const req = await fetch(`${LoginManager.apiUrl}/avatar`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
     body: formData,
   });

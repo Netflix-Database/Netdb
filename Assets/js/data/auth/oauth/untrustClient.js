@@ -1,9 +1,9 @@
 export async function untrustClient(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/oauth/untrust`, {
+  const req = await fetch(`${LoginManager.apiUrl}/oauth/untrust`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: `"${clientId}"`,

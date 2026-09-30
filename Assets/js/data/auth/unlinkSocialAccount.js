@@ -1,9 +1,9 @@
 export async function unlinkSocialAccount(provider) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/unlink/${provider}`, {
+  const req = await fetch(`${LoginManager.apiUrl}/unlink/${provider}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
   });
 

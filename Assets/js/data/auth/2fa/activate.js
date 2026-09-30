@@ -1,9 +1,9 @@
 export async function activate(mfaType) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/activate`, {
+  const req = await fetch(`${LoginManager.apiUrl}/2fa/activate`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: mfaType,

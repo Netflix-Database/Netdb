@@ -1,9 +1,9 @@
 export async function getTrustedClients() {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/oauth/trust`, {
+  const req = await fetch(`${LoginManager.apiUrl}/oauth/trust`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
   });
 

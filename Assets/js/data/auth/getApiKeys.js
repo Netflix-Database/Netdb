@@ -1,9 +1,9 @@
 export async function getApiKeys() {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
+  const req = await fetch(`${LoginManager.apiUrl}/user/apikey`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
   });
 

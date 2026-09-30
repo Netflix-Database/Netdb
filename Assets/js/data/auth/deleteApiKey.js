@@ -1,9 +1,9 @@
 export async function deleteApiKey(clientId) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/apikey`, {
+  const req = await fetch(`${LoginManager.apiUrl}/user/apikey`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: `"${  clientId  }"`,

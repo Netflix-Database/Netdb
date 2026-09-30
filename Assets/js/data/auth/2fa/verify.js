@@ -1,9 +1,9 @@
 export async function verify(password, mfaToken) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/2fa/verify`, {
+  const req = await fetch(`${LoginManager.apiUrl}/2fa/verify`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

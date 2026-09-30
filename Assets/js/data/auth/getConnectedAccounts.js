@@ -1,9 +1,9 @@
 export async function getConnectedAccounts() {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/connectedAccounts`, {
+  const req = await fetch(`${LoginManager.apiUrl}/user/connectedAccounts`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
   });
 

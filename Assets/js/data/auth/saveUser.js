@@ -1,9 +1,9 @@
 export async function saveUser(firstname, lastname, country, preferredLang, username) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user`, {
+  const req = await fetch(`${LoginManager.apiUrl}/user`, {
     method: 'PUT',
     headers: {
-      'Authorization': `Bearer ${  LoginManager.getCookie('token')}`,
+      'Authorization': `Bearer ${  LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

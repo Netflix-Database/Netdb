@@ -7,10 +7,10 @@ export async function createPasskey() {
   }
 
   await LoginManager.validateToken();
-  const optionsReq = await fetch(`https://api.login.${LoginManager.domain}/passkey/options`, {
+  const optionsReq = await fetch(`${LoginManager.apiUrl}/passkey/options`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
   });
 
@@ -22,10 +22,10 @@ export async function createPasskey() {
   const options = await optionsReq.json();
   const creds = await createCreds(options);
 
-  const createReq = await fetch(`https://api.login.${LoginManager.domain}/passkey/createCredentials`, {
+  const createReq = await fetch(`${LoginManager.apiUrl}/passkey/createCredentials`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(creds),

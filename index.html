@@ -35,7 +35,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
-  <script src="https://login.netdb.at/js/LoginManager.portable.js" allowUnauthorized></script>
+  <meta name="auth-domain" content="__AUTH_DOMAIN__">
+  <script src="https://__AUTH_DOMAIN__/js/LoginManager.portable.js" allowUnauthorized></script>
   <link rel="stylesheet" href="./Assets/css/style.css">
   <script type="module" src="./Assets/js/app.js" defer></script>
 </head>
@@ -46,7 +47,7 @@
 
     </div>
     <div id="loginLink" class="d-none">
-      <a href="https://login.netdb.at?redirect=https://netdb.at" i18n="login"></a>
+      <a href="https://__AUTH_DOMAIN__?redirect=https://netdb.at" i18n="login"></a>
     </div>
     <div id="profile" class="profile d-none">
       <a href="/profile/">
@@ -179,7 +180,7 @@
               </svg>
             </a>
             <hr />
-            <a target="_blank" href="https://login.netdb.at">login.netdb.at</a>
+            <a target="_blank" href="https://__AUTH_DOMAIN__">__AUTH_DOMAIN__</a>
           </h1>
         </div>
         <div class="item">

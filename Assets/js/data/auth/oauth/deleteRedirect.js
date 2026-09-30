@@ -1,9 +1,9 @@
 export async function deleteRedirect(clientId, redirectId) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/oauth/redirects`, {
+  const req = await fetch(`${LoginManager.apiUrl}/user/oauth/redirects`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

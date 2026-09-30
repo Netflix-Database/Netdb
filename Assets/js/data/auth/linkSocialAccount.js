@@ -1,9 +1,9 @@
 export async function linkSocialAccount(provider, code) {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/link/${provider}?code=${code}`, {
+  const req = await fetch(`${LoginManager.apiUrl}/link/${provider}?code=${code}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
   });

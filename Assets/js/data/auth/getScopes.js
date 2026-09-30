@@ -1,5 +1,5 @@
 export async function getScopes() {
-  const req = await fetch(`https://api.login.${LoginManager.domain}/scopes`, {
+  const req = await fetch(`${LoginManager.apiUrl}/scopes`, {
     method: 'GET',
   });
 

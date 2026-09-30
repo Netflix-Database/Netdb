@@ -1,4 +1,4 @@
-FROM node:23-alpine AS dependencies
+FROM node:26-alpine AS dependencies
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm ci
 
-FROM node:23-alpine AS builder
+FROM node:26-alpine AS builder
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ FROM nginx:alpine AS production
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 EXPOSE 80
 

@@ -1,9 +1,9 @@
 export async function getDevices() {
   await LoginManager.validateToken();
-  const req = await fetch(`https://api.login.${LoginManager.domain}/user/device`, {
+  const req = await fetch(`${LoginManager.apiUrl}/user/device`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${LoginManager.getCookie('token')}`,
+      Authorization: `Bearer ${LoginManager.getAccessToken()}`,
     },
   });
 
