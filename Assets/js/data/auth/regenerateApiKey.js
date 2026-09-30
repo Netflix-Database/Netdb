@@ -1,12 +1,12 @@
 export async function regenerateApiKey(clientId) {
   await LoginManager.validateToken();
   const req = await fetch(`${LoginManager.apiUrl}/user/apikey`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       Authorization: `Bearer ${LoginManager.getAccessToken()}`,
       'Content-Type': 'application/json',
     },
-    body: `"${clientId}"`,
+    body: JSON.stringify(clientId),
   });
 
   if (req.status === 401) {
