@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: resolve('index.html'),
         profile: resolve('profile/index.html'),
+        brand: resolve('brand/index.html'),
       },
     },
   },
